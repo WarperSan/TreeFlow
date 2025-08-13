@@ -1,3 +1,4 @@
+using TreeFlow.Runtime.Core;
 using UnityEngine;
 
 namespace TreeFlow.Editor.Renderers
@@ -35,8 +36,16 @@ namespace TreeFlow.Editor.Renderers
         /// </summary>
         public void Draw(VisualizerNode node)
         {
-            if (node.Self == null)
-                return;
+            string name;
+
+            if (node.Self != null)
+                name = node.Self.GetType().Name;
+            else
+                name = "NULL";
+
+            var originalColor = style.normal.textColor;
+            
+            style.normal.textColor = node.Color;
             
             GUI.Button(
                 new Rect(
@@ -45,9 +54,11 @@ namespace TreeFlow.Editor.Renderers
                     NODE_WIDTH,
                     NODE_HEIGHT
                 ),
-                "Test",
+                name,
                 style
             );
+            
+            style.normal.textColor = originalColor;
         }
 
         public static float GetScreenX(float x) => x * (NODE_WIDTH + NODE_PADDING);

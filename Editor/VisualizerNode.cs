@@ -14,7 +14,14 @@ namespace TreeFlow.Editor
         public Vector2 Position;
         public readonly BaseNode Self;
         public readonly List<VisualizerNode> Children = new();
-        public Color Color => Color.yellow;
+
+        public Color Color => Self.Status switch
+        {
+            NodeStatus.FAILURE => Color.red,
+            NodeStatus.SUCCESS => Color.green,
+            NodeStatus.RUNNING => Color.yellow,
+            _ => Color.gray
+        };
 
         public VisualizerNode(BaseNode node)
         {

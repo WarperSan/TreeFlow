@@ -12,6 +12,11 @@ namespace TreeFlow.Runtime.Core
         SUCCESS = 1,
 
         /// <summary>The node is still processing, and the outcome is undetermined</summary>
-        RUNNING = 2
+        RUNNING = 2,
+        
+#if UNITY_EDITOR
+        /// <summary>The node has not been processed yet</summary>
+        NONE = 3
+#endif
     }
 }

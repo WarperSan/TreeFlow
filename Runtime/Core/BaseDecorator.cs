@@ -19,6 +19,13 @@ namespace TreeFlow.Runtime.Core
         /// Gets the child of this node
         /// </summary>
         internal BaseNode GetChild() => child;
+        
+        /// <inheritdoc/>
+        internal override void Reset()
+        {
+            base.Reset();
+            child.Reset();
+        }
 #endif
 
         protected NodeStatus EvaluateChild() => child.Evaluate();

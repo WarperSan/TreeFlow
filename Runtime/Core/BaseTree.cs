@@ -16,6 +16,13 @@ namespace TreeFlow.Runtime.Core
         /// </summary>
         /// <returns>Root node of the tree</returns>
         protected abstract BaseNode BuildTree();
+        
+#if UNITY_EDITOR
+        /// <summary>
+        /// Gets the root of this tree
+        /// </summary>
+        internal BaseNode GetRoot() => root ??= BuildTree();
+#endif
 
         #endregion
         

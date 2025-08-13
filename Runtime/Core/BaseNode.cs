@@ -7,11 +7,45 @@ namespace TreeFlow.Runtime.Core
     {
         #region Evaluation
 
+#if UNITY_EDITOR
+        /// <summary>
+        /// Current status of this node
+        /// </summary>
+        internal NodeStatus Status { get; private set; }
+
+        /// <summary>
+        /// Resets the status of this node
+        /// </summary>
+        internal virtual void Reset()
+        {
+            Status = NodeStatus.NONE;
+        }
+#endif
+        
         /// <summary>
         /// Evaluates this node
         /// </summary>
         /// <returns>Status of this node</returns>
-        public abstract NodeStatus Evaluate();
+        public NodeStatus Evaluate()
+        {
+#if UNITY_EDITOR
+            Reset();
+#endif
+
+            var status = OnEvaluate();
+
+#if UNITY_EDITOR
+                Status = status;
+#endif
+
+            return status;
+        }
+
+        /// <summary>
+        /// Called when this node is evaluated
+        /// </summary>
+        /// <returns>Status of this node</returns>
+        protected abstract NodeStatus OnEvaluate();
 
         #endregion
 

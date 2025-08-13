@@ -26,7 +26,17 @@ namespace TreeFlow.Runtime.Core
                 children.Add(child);
             }
         }
-
+        
+#if UNITY_EDITOR
+        /// <inheritdoc/>
+        internal override void Reset()
+        {
+            base.Reset();
+            
+            foreach (var child in children)
+                child.Reset();
+        }
+#endif
         #endregion
 
         #region IEnumerable
