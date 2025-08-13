@@ -1,0 +1,18 @@
+{
+    "name": "warpersan.treeflow-Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c59993ff0e57ea1e884c2de3b3325c02"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
