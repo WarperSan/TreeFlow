@@ -1,0 +1,23 @@
+{
+    "name": "dev.warpersan.treeflow",
+    "version": "1.0.0",
+    "displayName": "TreeFlow",
+    "description": "A lightweight and modular Behavior Tree framework for Unity",
+    "unity": "2021.3",
+    "unityRelease": "0b5",
+    "documentationUrl": "https://github.com/warpersan/treeflow#readme",
+    "changelogUrl": "https://github.com/warpersan/treeflow/blob/main/CHANGELOG.md",
+    "licensesUrl": "https://github.com/warpersan/treeflow/blob/main/LICENSE",
+    "dependencies": {},
+    "keywords": [
+        "behavior-tree",
+        "ai",
+        "visualizer",
+        "unity",
+        "framework"
+    ],
+    "author": {
+        "name": "WarperSan",
+        "url": "https://github.com/warpersan"
+    }
+}
