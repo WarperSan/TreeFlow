@@ -6,6 +6,7 @@
 - Built-in nodes like selector, sequence and inverter
 - Supports custom nodes, using given classes or from scratch
 - Built-in visualizer to watch the tree in action
+- Supports aliases to easily identify nodes
 
 ## Usage
 ### Create a new node
