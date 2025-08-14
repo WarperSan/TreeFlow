@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TreeFlow.Core.Interfaces;
 
 namespace TreeFlow.Runtime.Core
@@ -23,6 +24,27 @@ namespace TreeFlow.Runtime.Core
 
         /// <inheritdoc/>
         public void SetParent(INode node) => parent = node;
+
+        #endregion
+
+        #region Data Context
+
+        private readonly Dictionary<string, object> dataContext = new();
+
+        /// <inheritdoc/>
+        public void WriteToContext(string key, object value)
+        {
+            dataContext[key] = value;
+        }
+
+        /// <inheritdoc/>
+        public object ReadFromContext(string key)
+        {
+            if (dataContext.TryGetValue(key, out var value))
+                return value;
+            
+            return parent?.ReadFromContext(key);
+        }
 
         #endregion
     }

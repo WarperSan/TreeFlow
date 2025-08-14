@@ -18,5 +18,19 @@ namespace TreeFlow.Core.Interfaces
         /// </summary>
         /// <param name="node">New parent of this node</param>
         public void SetParent(INode node);
+        
+        /// <summary>
+        /// Writes the given value to the context using the given key
+        /// </summary>
+        /// <param name="key">Key to store the value at</param>
+        /// <param name="value">Value to store</param>
+        public void WriteToContext(string key, object value);
+        
+        /// <summary>
+        /// Reads the given value from the context at the given key
+        /// </summary>
+        /// <param name="key">Key to read from</param>
+        /// <returns>Value stored</returns>
+        public object ReadFromContext(string key);
     }
 }
