@@ -7,7 +7,7 @@ namespace TreeFlow.Runtime.Nodes.Leaf
     /// <summary>
     /// Node that executes the given action
     /// </summary>
-    public class CallbackNode : BaseNode
+    public class CallbackNode : BaseLeaf
     {
         private readonly Func<INode, NodeStatus> CallBack;
 
