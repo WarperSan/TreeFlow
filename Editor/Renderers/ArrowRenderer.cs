@@ -25,7 +25,7 @@ namespace TreeFlow.Editor.Renderers
                 NodeRenderer.GetScreenY(end.Position.y) + NodeRenderer.NODE_MARGIN
             );
 
-            Handles.color = end.Color;
+            Handles.color = NodeRenderer.GetColor(end);
             
             var middleY = origin.y + NodeRenderer.NODE_MARGIN / 2f;
             

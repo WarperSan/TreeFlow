@@ -24,5 +24,10 @@ namespace TreeFlow.Runtime.Nodes.Decorator
                 _ => status
             };
         }
+
+#if UNITY_EDITOR
+        /// <inheritdoc/>
+        protected override string Alias => "NOT";
+#endif
     }
 }

@@ -9,6 +9,8 @@ namespace TreeFlow.Editor
     {
         private Vector2 scrollPos;
         private TreeRenderer treeRenderer;
+        
+        private bool lockSelection;
 
         [MenuItem("Window/TreeFlow/Visualizer")]
         public static void ShowWindow() => GetWindow<TreeVisualizer>("Tree Visualizer");
@@ -18,27 +20,35 @@ namespace TreeFlow.Editor
             if (Application.isPlaying)
                 Repaint();
         }
+        
+        private void OnSelectionChange()
+        {
+            if (lockSelection)
+                return;
+
+            var target = Selection.activeGameObject;
+
+            if (target is not null && target.TryGetComponent(out BaseTree tree))
+                treeRenderer.SetTree(tree);
+            else
+                treeRenderer.SetTree(null);
+            
+            Repaint();
+        }
 
         private void OnGUI()
         {
             treeRenderer ??= new TreeRenderer();
             
-            var target = Selection.activeGameObject;
-
-            if (target is not null && target.TryGetComponent(out BaseTree tree))
-                treeRenderer.SetTree(tree);
-            //else
-            //    treeRenderer.SetTree(null);
-            
             InitializeStyles();
             
             DrawHeader();
-            //DrawOptionsPanel();
-            //GUILayout.Space(10);
+            
+            DrawOptionsPanel();
+            GUILayout.Space(10);
+            
             DrawVisualizerArea();
         }
-
-        private void OnSelectionChange() => Repaint();
 
         #region Styles
 
@@ -89,6 +99,8 @@ namespace TreeFlow.Editor
 
             GUILayout.Space(4);
             EditorGUILayout.LabelField("Visual Settings", EditorStyles.miniBoldLabel);
+            
+            lockSelection = EditorGUILayout.ToggleLeft("Lock Selection", lockSelection);
 
             GUILayout.Space(4);
             EditorGUILayout.LabelField("Behavior Settings", EditorStyles.miniBoldLabel);

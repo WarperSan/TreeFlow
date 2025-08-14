@@ -22,5 +22,10 @@ namespace TreeFlow.Runtime.Nodes.Leaf
         protected override NodeStatus OnEvaluate() => CallBack(this);
 
         #endregion
+
+#if UNITY_EDITOR
+        /// <inheritdoc/>
+        protected override string Alias => CallBack.Method.Name.StartsWith('<') ? "Lambda" : CallBack.Method.Name + "()";
+#endif
     }
 }

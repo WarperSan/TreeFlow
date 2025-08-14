@@ -71,10 +71,26 @@ namespace TreeFlow.Runtime.Core
     public abstract partial class BaseNode
     {
         private NodeStatus _status;
+        private string _alias;
 
         /// <inheritdoc/>
         NodeStatus INode.Status => _status;
 
+        /// <inheritdoc/>
+        string INode.Alias => _alias ?? Alias;
+
+        /// <inheritdoc cref="INode.Alias"/>
+        protected virtual string Alias => GetType().Name;
+
+        /// <summary>
+        /// Sets the alias of this node
+        /// </summary>
+        public INode SetAlias(string alias)
+        {
+            _alias = alias;
+            return this;
+        }
+        
         /// <inheritdoc/>
         void INode.Reset() => _status = NodeStatus.NONE;
 
@@ -82,6 +98,7 @@ namespace TreeFlow.Runtime.Core
         /// Updates the node status after evaluation.
         /// </summary>
         partial void OnAfterEvaluate(NodeStatus status) => _status = status;
+        
     }
 #endif
 }

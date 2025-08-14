@@ -29,5 +29,10 @@ namespace TreeFlow.Runtime.Nodes.Composite
 
             return NodeStatus.SUCCESS;
         }
+
+#if UNITY_EDITOR
+        /// <inheritdoc/>
+        protected override string Alias => "AND";
+#endif
     }
 }

@@ -40,6 +40,11 @@ namespace TreeFlow.Core.Interfaces
         internal NodeStatus Status { get; }
         
         /// <summary>
+        /// Name to display when showing this node
+        /// </summary>
+        internal string Alias { get; }
+        
+        /// <summary>
         /// Resets the node status before evaluation.
         /// </summary>
         internal void Reset();

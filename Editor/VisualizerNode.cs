@@ -16,14 +16,6 @@ namespace TreeFlow.Editor
         public readonly INode Self;
         public readonly List<VisualizerNode> Children = new();
 
-        public Color Color => Self.Status switch
-        {
-            NodeStatus.FAILURE => Color.red,
-            NodeStatus.SUCCESS => Color.green,
-            NodeStatus.RUNNING => Color.yellow,
-            _ => Color.gray
-        };
-
         public VisualizerNode(INode node)
         {
             Self = node;
