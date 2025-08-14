@@ -1,3 +1,4 @@
+using TreeFlow.Core.Interfaces;
 using TreeFlow.Runtime.Core;
 
 namespace TreeFlow.Runtime.Nodes.Composite
@@ -10,7 +11,7 @@ namespace TreeFlow.Runtime.Nodes.Composite
     /// </remarks>
     public class SelectorNode : BaseComposite
     {
-        public SelectorNode(params BaseNode[] nodes) : base(nodes) { }
+        public SelectorNode(params INode[] nodes) : base(nodes) { }
 
         /// <inheritdoc/>
         public override NodeStatus Evaluate()

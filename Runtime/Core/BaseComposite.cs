@@ -8,17 +8,17 @@ namespace TreeFlow.Runtime.Core
     /// </summary>
     public abstract class BaseComposite : BaseNode, IParentNode
     {
-        protected BaseComposite(params BaseNode[] nodes) => Attach(nodes);
+        protected BaseComposite(params INode[] nodes) => Attach(nodes);
 
         #region Hierarchy
 
-        private readonly List<BaseNode> children = new();
+        private readonly List<INode> children = new();
 
         /// <summary>
         /// Attaches the children to this node
         /// </summary>
         /// <param name="nodes">Nodes to attach to this node</param>
-        public void Attach(params BaseNode[] nodes)
+        public void Attach(params INode[] nodes)
         {
             foreach (var child in nodes)
             {
@@ -32,7 +32,7 @@ namespace TreeFlow.Runtime.Core
         #region IParentNode
 
         /// <inheritdoc/>
-        IEnumerable<BaseNode> IParentNode.GetChildren() => children;
+        IEnumerable<INode> IParentNode.GetChildren() => children;
 
         #endregion
     }

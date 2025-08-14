@@ -1,3 +1,4 @@
+using TreeFlow.Core.Interfaces;
 using TreeFlow.Runtime.Core;
 
 namespace TreeFlow.Runtime.Nodes.Decorator
@@ -7,7 +8,7 @@ namespace TreeFlow.Runtime.Nodes.Decorator
     /// </summary>
     public class InverterNode : BaseDecorator
     {
-        public InverterNode(BaseNode child) : base(child)
+        public InverterNode(INode child) : base(child)
         {
         }
 

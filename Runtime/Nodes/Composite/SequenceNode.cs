@@ -1,3 +1,4 @@
+using TreeFlow.Core.Interfaces;
 using TreeFlow.Runtime.Core;
 
 namespace TreeFlow.Runtime.Nodes.Composite
@@ -10,7 +11,7 @@ namespace TreeFlow.Runtime.Nodes.Composite
     /// </remarks>
     public class SequenceNode : BaseComposite
     {
-        public SequenceNode(params BaseNode[] nodes) : base(nodes) { }
+        public SequenceNode(params INode[] nodes) : base(nodes) { }
 
         /// <inheritdoc/>
         public override NodeStatus Evaluate()

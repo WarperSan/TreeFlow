@@ -1,3 +1,4 @@
+using TreeFlow.Core.Interfaces;
 using UnityEngine;
 
 namespace TreeFlow.Runtime.Core
@@ -9,19 +10,19 @@ namespace TreeFlow.Runtime.Core
     {
         #region Root
 
-        private BaseNode root;
+        private INode root;
         
         /// <summary>
         /// Builds the behaviour tree of this tree
         /// </summary>
         /// <returns>Root node of the tree</returns>
-        protected abstract BaseNode BuildTree();
+        protected abstract INode BuildTree();
         
 #if UNITY_EDITOR
         /// <summary>
         /// Gets the root of this tree
         /// </summary>
-        internal BaseNode GetRoot() => root ??= BuildTree();
+        internal INode GetRoot() => root ??= BuildTree();
 #endif
 
         #endregion

@@ -1,27 +1,14 @@
+using TreeFlow.Core.Interfaces;
+
 namespace TreeFlow.Runtime.Core
 {
     /// <summary>
     /// Class that represents any node in a tree
     /// </summary>
-    public abstract class BaseNode
+    public abstract class BaseNode : INode
     {
         #region Evaluation
 
-#if UNITY_EDITOR
-        /// <summary>
-        /// Current status of this node
-        /// </summary>
-        internal NodeStatus Status { get; private set; }
-
-        /// <summary>
-        /// Resets the status of this node
-        /// </summary>
-        internal virtual void Reset()
-        {
-            Status = NodeStatus.NONE;
-        }
-#endif
-        
         /// <summary>
         /// Evaluates this node
         /// </summary>
@@ -32,13 +19,10 @@ namespace TreeFlow.Runtime.Core
 
         #region Hierarchy
         
-        private BaseNode parent;
+        private INode parent;
 
-        /// <summary>
-        /// Sets the parent of this node
-        /// </summary>
-        /// <param name="node">New parent of this node</param>
-        public void SetParent(BaseNode node) => parent = node;
+        /// <inheritdoc/>
+        public void SetParent(INode node) => parent = node;
 
         #endregion
     }

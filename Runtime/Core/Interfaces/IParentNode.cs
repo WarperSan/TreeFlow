@@ -1,21 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
-using TreeFlow.Runtime.Core;
 
 namespace TreeFlow.Core.Interfaces
 {
     /// <summary>
-    /// Defines every <see cref="BaseNode"/> that contains any children
+    /// Defines every <see cref="INode"/> that contains any children
     /// </summary>
-    public interface IParentNode : IEnumerable<BaseNode>
+    public interface IParentNode : IEnumerable<INode>
     {
         /// <summary>
         /// Gets the children of this node
         /// </summary>
-        protected IEnumerable<BaseNode> GetChildren();
+        protected IEnumerable<INode> GetChildren();
         
         /// <inheritdoc/>
-        IEnumerator<BaseNode> IEnumerable<BaseNode>.GetEnumerator() => GetChildren().GetEnumerator();
+        IEnumerator<INode> IEnumerable<INode>.GetEnumerator() => GetChildren().GetEnumerator();
 
         /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

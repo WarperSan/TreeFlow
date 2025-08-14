@@ -1,4 +1,5 @@
 using System;
+using TreeFlow.Core.Interfaces;
 using TreeFlow.Runtime.Core;
 
 namespace TreeFlow.Runtime.Nodes.Leaf
@@ -8,9 +9,9 @@ namespace TreeFlow.Runtime.Nodes.Leaf
     /// </summary>
     public class CallbackNode : BaseNode
     {
-        private readonly Func<BaseNode, NodeStatus> CallBack;
+        private readonly Func<INode, NodeStatus> CallBack;
 
-        public CallbackNode(Func<BaseNode, NodeStatus> callback)
+        public CallbackNode(Func<INode, NodeStatus> callback)
         {
             CallBack = callback;
         }

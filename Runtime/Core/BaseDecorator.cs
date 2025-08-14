@@ -8,14 +8,14 @@ namespace TreeFlow.Runtime.Core
     /// </summary>
     public abstract class BaseDecorator : BaseNode, IParentNode
     {
-        protected BaseDecorator(BaseNode child)
+        protected BaseDecorator(INode child)
         {
             this.child = child;
         }
 
         #region Hierarchy
 
-        private readonly BaseNode child;
+        private readonly INode child;
 
         protected NodeStatus EvaluateChild() => child.Evaluate();
 
@@ -24,7 +24,7 @@ namespace TreeFlow.Runtime.Core
         #region IParentNode
 
         /// <inheritdoc/>
-        IEnumerable<BaseNode> IParentNode.GetChildren() => new []{ child };
+        IEnumerable<INode> IParentNode.GetChildren() => new []{ child };
 
         #endregion
     }
