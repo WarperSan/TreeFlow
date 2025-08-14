@@ -12,7 +12,7 @@ namespace TreeFlow.Runtime.Nodes.Decorator
         }
 
         /// <inheritdoc/>
-        protected override NodeStatus OnEvaluate()
+        public override NodeStatus Evaluate()
         {
             var status = EvaluateChild();
 

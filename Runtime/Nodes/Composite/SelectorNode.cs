@@ -13,7 +13,7 @@ namespace TreeFlow.Runtime.Nodes.Composite
         public SelectorNode(params BaseNode[] nodes) : base(nodes) { }
 
         /// <inheritdoc/>
-        protected override NodeStatus OnEvaluate()
+        public override NodeStatus Evaluate()
         {
             foreach (var child in this)
             {

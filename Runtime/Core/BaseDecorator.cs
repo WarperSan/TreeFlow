@@ -16,15 +16,6 @@ namespace TreeFlow.Runtime.Core
         #region Hierarchy
 
         private readonly BaseNode child;
-        
-#if UNITY_EDITOR
-        /// <inheritdoc/>
-        internal override void Reset()
-        {
-            base.Reset();
-            child.Reset();
-        }
-#endif
 
         protected NodeStatus EvaluateChild() => child.Evaluate();
 

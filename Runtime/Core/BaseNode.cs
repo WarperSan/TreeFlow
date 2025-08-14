@@ -26,26 +26,7 @@ namespace TreeFlow.Runtime.Core
         /// Evaluates this node
         /// </summary>
         /// <returns>Status of this node</returns>
-        public NodeStatus Evaluate()
-        {
-#if UNITY_EDITOR
-            Reset();
-#endif
-
-            var status = OnEvaluate();
-
-#if UNITY_EDITOR
-                Status = status;
-#endif
-
-            return status;
-        }
-
-        /// <summary>
-        /// Called when this node is evaluated
-        /// </summary>
-        /// <returns>Status of this node</returns>
-        protected abstract NodeStatus OnEvaluate();
+        public abstract NodeStatus Evaluate();
 
         #endregion
 

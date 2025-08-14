@@ -18,7 +18,7 @@ namespace TreeFlow.Runtime.Nodes.Leaf
         #region BaseNode
 
         /// <inheritdoc/>
-        protected override NodeStatus OnEvaluate() => CallBack(this);
+        public override NodeStatus Evaluate() => CallBack(this);
 
         #endregion
     }
