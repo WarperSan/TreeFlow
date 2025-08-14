@@ -6,7 +6,7 @@ namespace TreeFlow.Runtime.Core
     /// <summary>
     /// Class that represents any node in a tree
     /// </summary>
-    public abstract class BaseNode : INode
+    public abstract partial class BaseNode : INode
     {
         #region Evaluation
 
@@ -14,7 +14,21 @@ namespace TreeFlow.Runtime.Core
         /// Evaluates this node
         /// </summary>
         /// <returns>Status of this node</returns>
-        public abstract NodeStatus Evaluate();
+        public NodeStatus Evaluate()
+        {
+            var status = OnEvaluate();
+            OnAfterEvaluate(status);
+            return status;
+
+        }
+        
+        /// <summary>
+        /// Called when this node gets evaluated
+        /// </summary>
+        /// <returns>Status of this node</returns>
+        protected abstract NodeStatus OnEvaluate();
+        
+        partial void OnAfterEvaluate(NodeStatus status);
 
         #endregion
 
@@ -48,4 +62,26 @@ namespace TreeFlow.Runtime.Core
 
         #endregion
     }
+
+#if UNITY_EDITOR
+
+    /// <summary>
+    /// Editor-only logic for BaseNode.
+    /// </summary>
+    public abstract partial class BaseNode
+    {
+        private NodeStatus _status;
+
+        /// <inheritdoc/>
+        NodeStatus INode.Status => _status;
+
+        /// <inheritdoc/>
+        void INode.Reset() => _status = NodeStatus.NONE;
+
+        /// <summary>
+        /// Updates the node status after evaluation.
+        /// </summary>
+        partial void OnAfterEvaluate(NodeStatus status) => _status = status;
+    }
+#endif
 }

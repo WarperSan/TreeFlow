@@ -32,5 +32,17 @@ namespace TreeFlow.Core.Interfaces
         /// <param name="key">Key to read from</param>
         /// <returns>Value stored</returns>
         public object ReadFromContext(string key);
+        
+#if UNITY_EDITOR
+        /// <summary>
+        /// Current status of this node
+        /// </summary>
+        internal NodeStatus Status { get; }
+        
+        /// <summary>
+        /// Resets the node status before evaluation.
+        /// </summary>
+        internal void Reset();
+#endif
     }
 }
