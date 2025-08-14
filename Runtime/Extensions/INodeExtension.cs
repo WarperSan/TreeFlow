@@ -1,6 +1,6 @@
-using TreeFlow.Core.Interfaces;
+using TreeFlow.Runtime.Core.Interfaces;
 
-namespace TreeFlow.Extensions
+namespace TreeFlow.Runtime.Extensions
 {
     public static class INodeExtension
     {

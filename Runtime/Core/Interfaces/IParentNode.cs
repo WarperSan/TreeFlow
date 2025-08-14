@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace TreeFlow.Core.Interfaces
+namespace TreeFlow.Runtime.Core.Interfaces
 {
     /// <summary>
     /// Defines every <see cref="INode"/> that contains any children

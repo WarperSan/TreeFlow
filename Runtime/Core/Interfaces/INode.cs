@@ -1,6 +1,4 @@
-using TreeFlow.Runtime.Core;
-
-namespace TreeFlow.Core.Interfaces
+namespace TreeFlow.Runtime.Core.Interfaces
 {
     /// <summary>
     /// Defines every class that can act as a node in a <see cref="BaseTree"/>
