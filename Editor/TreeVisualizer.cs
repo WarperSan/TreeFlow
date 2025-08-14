@@ -83,11 +83,6 @@ namespace TreeFlow.Editor
 
             GUILayout.FlexibleSpace();
             
-            if (GUILayout.Button("Refresh", EditorStyles.toolbarButton))
-            {
-                Debug.Log("Refresh clicked");
-            }
-
             GUILayout.EndHorizontal();
         }
         
