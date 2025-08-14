@@ -102,8 +102,8 @@ namespace TreeFlow.Editor
             
             lockSelection = EditorGUILayout.ToggleLeft("Lock Selection", lockSelection);
 
-            GUILayout.Space(4);
-            EditorGUILayout.LabelField("Behavior Settings", EditorStyles.miniBoldLabel);
+            //GUILayout.Space(4);
+            //EditorGUILayout.LabelField("Behavior Settings", EditorStyles.miniBoldLabel);
 
             GUILayout.EndVertical();
         }
