@@ -52,7 +52,6 @@ namespace TreeFlow.Editor.Renderers
                 GUILayout.Height(treeSize.y)
             );
 
-
             var stack = new Stack<VisualizerNode>();
             stack.Push(root);
             
