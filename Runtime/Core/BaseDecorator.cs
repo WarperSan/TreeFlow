@@ -1,9 +1,12 @@
+using System.Collections.Generic;
+using TreeFlow.Core.Interfaces;
+
 namespace TreeFlow.Runtime.Core
 {
     /// <summary>
     /// Class that represents any node containing only one child
     /// </summary>
-    public abstract class BaseDecorator : BaseNode
+    public abstract class BaseDecorator : BaseNode, IParentNode
     {
         protected BaseDecorator(BaseNode child)
         {
@@ -15,11 +18,6 @@ namespace TreeFlow.Runtime.Core
         private readonly BaseNode child;
         
 #if UNITY_EDITOR
-        /// <summary>
-        /// Gets the child of this node
-        /// </summary>
-        internal BaseNode GetChild() => child;
-        
         /// <inheritdoc/>
         internal override void Reset()
         {
@@ -29,6 +27,13 @@ namespace TreeFlow.Runtime.Core
 #endif
 
         protected NodeStatus EvaluateChild() => child.Evaluate();
+
+        #endregion
+
+        #region IParentNode
+
+        /// <inheritdoc/>
+        IEnumerable<BaseNode> IParentNode.GetChildren() => new []{ child };
 
         #endregion
     }

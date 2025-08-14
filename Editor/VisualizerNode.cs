@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TreeFlow.Core.Interfaces;
 using TreeFlow.Editor.Renderers;
 using TreeFlow.Runtime.Core;
 using UnityEngine;
@@ -27,18 +28,11 @@ namespace TreeFlow.Editor
         {
             Self = node;
 
-            switch (node)
-            {
-                case BaseComposite composite:
-                {
-                    foreach (var child in composite)
-                        Children.Add(new VisualizerNode(child));
-                    break;
-                }
-                case BaseDecorator decorator:
-                    Children.Add(new VisualizerNode(decorator.GetChild()));
-                    break;
-            }
+            if (node is not IParentNode parent)
+                return;
+
+            foreach (var child in parent)
+                Children.Add(new VisualizerNode(child));
         }
 
         /// <summary>

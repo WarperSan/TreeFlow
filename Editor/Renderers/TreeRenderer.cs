@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TreeFlow.Core.Interfaces;
 using TreeFlow.Runtime.Core;
 using UnityEditor;
 using UnityEngine;
@@ -66,7 +67,7 @@ namespace TreeFlow.Editor.Renderers
                     nodeRenderer.Draw(child);
                     arrowRenderer.Draw(current, child);
                     
-                    if (child.Self is BaseComposite or BaseDecorator)
+                    if (child.Self is IParentNode)
                         stack.Push(child);
                 }
             }

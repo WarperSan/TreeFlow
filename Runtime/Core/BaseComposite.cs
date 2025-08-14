@@ -1,19 +1,19 @@
-using System.Collections;
 using System.Collections.Generic;
+using TreeFlow.Core.Interfaces;
 
 namespace TreeFlow.Runtime.Core
 {
     /// <summary>
     /// Class that represents any node containing children
     /// </summary>
-    public abstract class BaseComposite : BaseNode, IEnumerable<BaseNode>
+    public abstract class BaseComposite : BaseNode, IParentNode
     {
         protected BaseComposite(params BaseNode[] nodes) => Attach(nodes);
 
         #region Hierarchy
 
         private readonly List<BaseNode> children = new();
-        
+
         /// <summary>
         /// Attaches the children to this node
         /// </summary>
@@ -39,13 +39,10 @@ namespace TreeFlow.Runtime.Core
 #endif
         #endregion
 
-        #region IEnumerable
+        #region IParentNode
 
         /// <inheritdoc/>
-        public IEnumerator<BaseNode> GetEnumerator() => children.GetEnumerator();
-
-        /// <inheritdoc/>
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        IEnumerable<BaseNode> IParentNode.GetChildren() => children;
 
         #endregion
     }
