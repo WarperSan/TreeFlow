@@ -1,5 +1,5 @@
 {
-    "name": "dev.warpersan.treeflow.editor",
+    "name": "treeflow.editor",
     "rootNamespace": "",
     "references": [
         "GUID:ba3d385c22150edcfb9b5c6dc0946852"
