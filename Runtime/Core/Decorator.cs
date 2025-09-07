@@ -13,7 +13,7 @@ namespace TreeFlow.Runtime.Core
         /// <summary>
         /// Current child of this node
         /// </summary>
-        protected Node Child { get; private set; }
+        public Node Child { get; private set; }
 
         /// <summary>
         /// Replaces the current child of this node with the given child
