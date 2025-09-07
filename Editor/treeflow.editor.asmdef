@@ -1,6 +1,6 @@
 {
     "name": "treeflow.editor",
-    "rootNamespace": "",
+    "rootNamespace": "TreeFlow.Editor",
     "references": [
         "GUID:ba3d385c22150edcfb9b5c6dc0946852"
     ],
