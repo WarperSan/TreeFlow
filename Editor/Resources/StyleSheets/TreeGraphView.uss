@@ -1,0 +1,6 @@
+.grid {
+    --thick-lines: 0;
+    --spacing: 25;
+    --grid-background-color: #1E1F22;
+    --line-color: #2B2D30;
+}
