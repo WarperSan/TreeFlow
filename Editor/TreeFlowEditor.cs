@@ -15,7 +15,7 @@ namespace TreeFlow.Editor
         private static void OpenWindow(BehaviorTreeAsset asset)
         {
             var window = EditorWindow.GetWindow<TreeFlowEditorWindow>();
-            window.titleContent.text = "Behavior Tree";
+            window.SetTree(asset);
             window.ShowTab();
         }
         
