@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 namespace TreeFlow.Editor
@@ -21,6 +22,26 @@ namespace TreeFlow.Editor
         
         [MenuItem("Window/TreeFlow/Designer")]
         private static void ShowWindow() => OpenWindow(null);
+
+        [OnOpenAsset]
+        private static bool OpenTree(int instanceID)
+        {
+            if (!AssetDatabase.CanOpenAssetInEditor(instanceID))
+                return false;
+
+            var path = AssetDatabase.GetAssetPath(instanceID);
+
+            if (path == null)
+                return false;
+
+            var asset = AssetDatabase.LoadAssetAtPath<BehaviorTreeAsset>(path);
+
+            if (asset is null)
+                return false;
+
+            OpenWindow(asset);
+            return true;
+        }
         
         /// <inheritdoc/>
         public override void OnInspectorGUI()
