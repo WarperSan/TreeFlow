@@ -44,8 +44,10 @@
     border-width: 0;
 }
 
+/* CONTENT */
 #contents {
     flex-grow: 1;
+    padding: 5px;
 }
 
 /* SELECTION */
