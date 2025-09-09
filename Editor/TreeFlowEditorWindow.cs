@@ -52,7 +52,7 @@ namespace TreeFlow.Editor
             if (treeAsset is not null && hasUnsavedChanges && PromptChanges())
                 return;
             
-            if (tree is null)
+            if (tree == null)
             {
                 titleContent.text = "Behavior Tree";
                 treeAsset = null;
