@@ -52,8 +52,26 @@ namespace TreeFlow.Editor
         /// </summary>
         public void SetTree(BehaviorTreeAsset tree)
         {
-            // TODO: Discard changes of the previous tree
+            if (treeAsset is not null && hasUnsavedChanges)
+            {
+                var optionIndex = EditorUtility.DisplayDialogComplex(
+                    "Tree Has Been Modified",
+                    "Do you want to save the changes you made to the tree? Your changes will be lost if you don't save them.",
+                    "Save",
+                    "Cancel",
+                    "Discard Changes"
+                );
+                
+                // ReSharper disable once ConvertIfStatementToSwitchStatement
+                if (optionIndex == 1)
+                    return;
 
+                if (optionIndex == 0)
+                    SaveChanges();
+                else
+                    DiscardChanges();
+            }
+            
             SetTitle(tree?.name);
 
             var obj = new SerializedObject(tree);
@@ -81,7 +99,7 @@ namespace TreeFlow.Editor
         /// </summary>
         private void CheckDirty()
         {
-            if (treeAsset == null)
+            if (treeAsset is null)
                 return;
             
             hasUnsavedChanges = EditorUtility.IsDirty(treeAsset);
@@ -90,7 +108,8 @@ namespace TreeFlow.Editor
         /// <inheritdoc/>
         public override void DiscardChanges()
         {
-            // TODO: Discard changes of the tree
+            if (treeAsset is not null)
+                Resources.UnloadAsset(treeAsset);
             
             base.DiscardChanges();
         }
