@@ -8,6 +8,11 @@ namespace TreeFlow.Editor.UIElements
     public sealed class NodeView : Node
     {
         /// <summary>
+        /// Current node displayed
+        /// </summary>
+        public GraphNode Node { get; private set; }
+        
+        /// <summary>
         /// Assigns the node to display to the given <see cref="GraphNode"/>
         /// </summary>
         /// <param name="node"></param>
@@ -16,6 +21,8 @@ namespace TreeFlow.Editor.UIElements
             var rect = GetPosition();
             rect.position = node.Position;
             SetPosition(rect);
+            
+            Node = node;
         }
     }
 }
