@@ -1,6 +1,5 @@
 using TreeFlow.Editor.UIElements;
 using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -38,7 +37,8 @@ namespace TreeFlow.Editor
             editorWindowUXML.CloneTree(rootVisualElement);
 
             treeGraphView = rootVisualElement.Q<TreeGraphView>();
-            treeGraphView.graphViewChanged += OnGraphChanged;
+
+            treeGraphView.OnTreeChanged += OnTreeChanged;
         }
 
         #endregion
@@ -87,11 +87,10 @@ namespace TreeFlow.Editor
         /// <summary>
         /// Called when <see cref="treeGraphView"/> is changed
         /// </summary>
-        private GraphViewChange OnGraphChanged(GraphViewChange graphViewChange)
+        private void OnTreeChanged()
         {
             hasUnsavedChanges = true;
             EditorUtility.SetDirty(treeAsset);
-            return graphViewChange;
         }
 
         /// <summary>

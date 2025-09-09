@@ -94,6 +94,9 @@ namespace TreeFlow.Editor.UIElements
         private BehaviorTreeAsset treeAsset;
 
         private readonly Dictionary<string, NodeView> nodeViewsByGuid = new();
+
+        public delegate void TreeChanged();
+        public TreeChanged OnTreeChanged;
         
         /// <summary>
         /// Assigns the tree to display to the given <see cref="BehaviorTreeAsset"/>
@@ -130,6 +133,7 @@ namespace TreeFlow.Editor.UIElements
             Undo.RecordObject(serializedTree.targetObject, "Created new Node");
             treeAsset.Nodes.Add(newNode);
             serializedTree.Update();
+            OnTreeChanged.Invoke();
             
             AddNodeToGraph(newNode);
         }
@@ -149,6 +153,7 @@ namespace TreeFlow.Editor.UIElements
                 nodeViewsByGuid.Remove(graphNode.GUID);
             }
             serializedTree.Update();
+            OnTreeChanged.Invoke();
         }
 
         /// <summary>
@@ -168,6 +173,7 @@ namespace TreeFlow.Editor.UIElements
                 nodeView.Node.Position = position;
             }
             serializedTree.Update();
+            OnTreeChanged.Invoke();
         }
 
         /// <summary>
@@ -190,6 +196,7 @@ namespace TreeFlow.Editor.UIElements
             Undo.RecordObject(serializedTree.targetObject, "Renamed Node");
             graphNode.Name = newName;
             serializedTree.Update();
+            OnTreeChanged.Invoke();
         }
 
         #endregion
