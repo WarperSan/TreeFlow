@@ -15,7 +15,8 @@ namespace TreeFlow.Editor.UIElements
         {
             CreateUI();
             
-            this.AddManipulator(new ContentZoomer());
+            SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
+
             this.AddManipulator(new ContentDragger());
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
