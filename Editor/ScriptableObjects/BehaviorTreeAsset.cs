@@ -18,7 +18,7 @@ namespace TreeFlow.Editor.ScriptableObjects
         /// <summary>
         /// List of every node present in the tree
         /// </summary>
-        [SerializeField] public List<NodeAsset> Nodes = new();
+        public List<NodeAsset> Nodes = new();
 
         /// <summary>
         /// Adds a brand-new node with the given type to this tree 
