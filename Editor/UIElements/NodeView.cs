@@ -22,7 +22,6 @@ namespace TreeFlow.Editor.UIElements
             styleSheets.Add(Helpers.Resources.Load<StyleSheet>("StyleSheets/NodeView.uss"));
             
             CreateHeader();
-            CreatePorts();
             
             // Assign node
             Node = node;
@@ -35,19 +34,20 @@ namespace TreeFlow.Editor.UIElements
             node.Customize(this);
         }
         
-        #region UI
+        #region Header
 
+        private VisualElement Header;
         private TextField TitleInput;
         private VisualElement HeaderBackground;
 
         private void CreateHeader()
         {
-            var header = this.Q("header");
+            Header = this.Q("header");
             
-            HeaderBackground = header.Q<VisualElement>("background");
+            HeaderBackground = Header.Q<VisualElement>("background");
 
-            var titleLabel = header.Q<Label>("title-label");
-            TitleInput = header.Q<TextField>("title-input");
+            var titleLabel = Header.Q<Label>("title-label");
+            TitleInput = Header.Q<TextField>("title-input");
 
             titleLabel.RegisterCallback<MouseDownEvent>(evt =>
             {
@@ -111,21 +111,10 @@ namespace TreeFlow.Editor.UIElements
             b / 255
         );
 
-        #endregion
-
-        #region Ports
-        
-        private void CreatePorts()
-        {
-            Temp();
-        }
-
-        public void Temp()
-        {
-            inputContainer.Add(InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool)));
-            
-            outputContainer.Add(InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(bool)));
-        }
+        /// <summary>
+        /// Sets the tooltip of the header section
+        /// </summary>
+        public void SetTooltip(string newTooltip) => Header.tooltip = newTooltip ?? "";
 
         #endregion
     }

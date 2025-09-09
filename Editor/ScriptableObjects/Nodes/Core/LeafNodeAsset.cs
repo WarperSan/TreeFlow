@@ -5,7 +5,7 @@ using UnityEditor.Experimental.GraphView;
 namespace TreeFlow.Editor.ScriptableObjects
 {
     [Serializable]
-    public abstract class DecoratorNodeAsset : NodeAsset
+    public abstract class LeafNodeAsset : NodeAsset
     {
         /// <inheritdoc/>
         public override void Customize(NodeView view)
@@ -13,7 +13,6 @@ namespace TreeFlow.Editor.ScriptableObjects
             base.Customize(view);
             
             view.inputContainer.Add(view.InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool)));
-            view.outputContainer.Add(view.InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(bool)));
         }
     }
 }

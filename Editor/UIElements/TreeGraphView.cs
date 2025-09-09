@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using TreeFlow.Editor.ScriptableObjects;
 using TreeFlow.Editor.ScriptableObjects.Nodes.Composite;
 using TreeFlow.Editor.ScriptableObjects.Nodes.Decorator;
-//using TreeFlow.Editor.ScriptableObjects.Nodes.Leaf;
+using TreeFlow.Editor.ScriptableObjects.Nodes.Leaf;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -56,8 +56,8 @@ namespace TreeFlow.Editor.UIElements
             evt.menu.AppendAction("Decorator/Inverter", _ => CreateNode<InverterNodeAsset>(mousePos));
             evt.menu.AppendAction("Decorator/Repeat", _ => CreateNode<RepeatNodeAsset>(mousePos));
 
-            //evt.menu.AppendAction("Leaf/Action", _ => CreateNode<ActionNodeAsset>(mousePos));
-            //evt.menu.AppendAction("Leaf/Condition", _ => CreateNode<ConditionNodeAsset>(mousePos));
+            evt.menu.AppendAction("Leaf/Action", _ => CreateNode<ActionNodeAsset>(mousePos));
+            evt.menu.AppendAction("Leaf/Condition", _ => CreateNode<ConditionNodeAsset>(mousePos));
         }
         
         private GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
@@ -79,6 +79,7 @@ namespace TreeFlow.Editor.UIElements
             }
 
             // Nodes removed
+            // ReSharper disable once InvertIf
             if (graphViewChange.elementsToRemove != null)
             {
                 var nodesToRemove = new List<string>();
@@ -95,6 +96,25 @@ namespace TreeFlow.Editor.UIElements
             }
             
             return graphViewChange;
+        }
+
+        /// <inheritdoc/>
+        public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
+        {
+            var validPorts = new List<Port>();
+
+            foreach (var port in ports)
+            {
+                if (port.direction == startPort.direction)
+                    continue;
+                
+                if (port.node == startPort.node)
+                    continue;
+                
+                validPorts.Add(port);
+            }
+
+            return validPorts;
         }
 
         #endregion
@@ -204,7 +224,7 @@ namespace TreeFlow.Editor.UIElements
             serializedTree.Update();
             OnTreeChanged.Invoke();
         }
-
+        
         #endregion
     }
 }
