@@ -15,6 +15,12 @@ namespace TreeFlow.Editor.UIElements
     /// </summary>
     internal class TreeGraphView : GraphView
     {
+        private SerializedObject serializedTree;
+        private BehaviorTreeAsset treeAsset;
+
+        public delegate void TreeChanged();
+        public TreeChanged OnTreeChanged;
+
         public TreeGraphView()
         {
             CreateUI();
@@ -33,7 +39,7 @@ namespace TreeFlow.Editor.UIElements
         private void CreateUI()
         {
             styleSheets.Add(Helpers.Resources.Load<StyleSheet>(Helpers.Resources.TREE_GRAPH_VIEW_USS));
-            
+
             var background = new GridBackground();
             background.AddToClassList("grid");
             background.name = "Background";
@@ -75,7 +81,8 @@ namespace TreeFlow.Editor.UIElements
                     newPositions.TryAdd(nodeView.Node.GUID, nodeView.GetPosition().position);
                 }
                 
-                MoveNodes(newPositions);
+                if (newPositions.Count > 0)
+                    MoveNodes(newPositions);
             }
 
             // Nodes removed
@@ -92,7 +99,8 @@ namespace TreeFlow.Editor.UIElements
                     nodesToRemove.Add(nodeView.Node.GUID);
                 }
                 
-                RemoveNodes(nodesToRemove);
+                if (nodesToRemove.Count > 0)
+                    RemoveNodes(nodesToRemove);
             }
             
             return graphViewChange;
@@ -121,25 +129,14 @@ namespace TreeFlow.Editor.UIElements
 
         #region Tree
 
-        private SerializedObject serializedTree;
-        private BehaviorTreeAsset treeAsset;
-
-        private readonly Dictionary<string, NodeView> nodeViewsByGuid = new();
-
-        public delegate void TreeChanged();
-        public TreeChanged OnTreeChanged;
-        
         /// <summary>
         /// Assigns the tree to display to the given <see cref="BehaviorTreeAsset"/>
         /// </summary>
         public void AssignTree(SerializedObject obj)
         {
             graphViewChanged -= OnGraphViewChanged;
-            
-            foreach (var (_, nodeView) in nodeViewsByGuid)
-                RemoveElement(nodeView);
 
-            nodeViewsByGuid.Clear();
+            DeleteElements(graphElements);
             
             serializedTree = obj;
             treeAsset = (BehaviorTreeAsset)serializedTree.targetObject;
@@ -149,6 +146,24 @@ namespace TreeFlow.Editor.UIElements
             
             graphViewChanged += OnGraphViewChanged;
         }
+        
+        /// <summary>
+        /// Updates the tree using <see cref="action"/>, with the given title
+        /// </summary>
+        private void UpdateTree(System.Action action, string actionName)
+        {
+            Undo.RecordObject(serializedTree.targetObject, actionName);
+
+            action?.Invoke();
+
+            serializedTree.Update();
+            OnTreeChanged?.Invoke();
+        }
+        
+        /// <summary>
+        /// Adds the given <see cref="NodeAsset"/> to the graph
+        /// </summary>
+        private void AddNodeToGraph(NodeAsset graphNode) => AddElement(new NodeView(graphNode, this));
 
         #endregion
 
@@ -157,73 +172,37 @@ namespace TreeFlow.Editor.UIElements
         /// <summary>
         /// Creates a brand new <see cref="NodeAsset"/> from the given information
         /// </summary>
-        private void CreateNode<T>(Vector2 position) where T : NodeAsset, new()
+        private void CreateNode<T>(Vector2 position) where T : NodeAsset, new() => UpdateTree(() =>
         {
-            Undo.RecordObject(serializedTree.targetObject, "Created new Node");
-            
             var newNode = treeAsset.AddNode<T>();
             newNode.Position = position;
-            
-            serializedTree.Update();
-            OnTreeChanged.Invoke();
 
             AddNodeToGraph(newNode);
-        }
+        }, "Created new Node");
 
         /// <summary>
         /// Removes the given nodes from the graph
         /// </summary>
-        private void RemoveNodes(List<string> guids)
-        {
-            if (guids.Count == 0)
-                return;
-            
-            Undo.RecordObject(serializedTree.targetObject, "Removed Nodes");
-            treeAsset.RemoveNodes(guids);
-
-            foreach (var guid in guids)
-                nodeViewsByGuid.Remove(guid);
-            
-            serializedTree.Update();
-            OnTreeChanged.Invoke();
-        }
+        private void RemoveNodes(List<string> guids) => UpdateTree(
+            () => treeAsset?.RemoveNodes(guids),
+            "Removed Nodes"
+        );
 
         /// <summary>
         /// Moves the given nodes at the given positions
         /// </summary>
-        private void MoveNodes(Dictionary<string, Vector2> positions)
-        {
-            if (positions.Count == 0)
-                return;
-            
-            Undo.RecordObject(serializedTree.targetObject, "Moved Nodes");
-            treeAsset.SetPositions(positions);
-            serializedTree.Update();
-            OnTreeChanged.Invoke();
-        }
-
-        /// <summary>
-        /// Adds the given <see cref="NodeAsset"/> to the graph
-        /// </summary>
-        private void AddNodeToGraph(NodeAsset graphNode)
-        {
-            var node = new NodeView(graphNode, this);
-            
-            nodeViewsByGuid.Add(graphNode.GUID, node);
-
-            AddElement(node);
-        }
+        private void MoveNodes(Dictionary<string, Vector2> positions) => UpdateTree(
+            () => treeAsset?.SetPositions(positions),
+            "Moved Nodes"
+        );
 
         /// <summary>
         /// Renames the given node to the given name
         /// </summary>
-        public void RenameNode(NodeAsset graphNode, string newName)
-        {
-            Undo.RecordObject(serializedTree.targetObject, "Renamed Node");
-            graphNode.Name = newName;
-            serializedTree.Update();
-            OnTreeChanged.Invoke();
-        }
+        public void RenameNode(NodeAsset graphNode, string newName) => UpdateTree(
+            () => graphNode.Name = newName,
+            "Renamed Node"
+        );
         
         #endregion
     }

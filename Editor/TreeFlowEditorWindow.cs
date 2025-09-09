@@ -11,43 +11,56 @@ namespace TreeFlow.Editor
     /// </summary>
     internal class TreeFlowEditorWindow : EditorWindow
     {
+        private BehaviorTreeAsset treeAsset;
+        private TreeGraphView treeGraphView;
+        
         #region EditorWindow
 
-        private void OnEnable() => SetTree(treeAsset);
+        /// <summary>
+        /// Opens this window with the given asset
+        /// </summary>
+        public static void Open(BehaviorTreeAsset asset = null)
+        {
+            var window = GetWindow<TreeFlowEditorWindow>();
+            window.SetTree(asset);
+            window.ShowTab();
+        }
 
-        #endregion
+        private void OnEnable()
+        {
+            if (treeAsset is null)
+                return;
 
-        #region UI
+            SetTree(treeAsset);
+        }
+        
+        private void OnGUI()
+        {
+            if (treeAsset is null)
+                return;
 
-        private TreeGraphView treeGraphView;
-
+            hasUnsavedChanges = EditorUtility.IsDirty(treeAsset);
+        }
+        
         private void CreateGUI()
         {
             var editorWindowUXML = Helpers.Resources.Load<VisualTreeAsset>(Helpers.Resources.EDITOR_WINDOW_UXML);
             editorWindowUXML.CloneTree(rootVisualElement);
 
             treeGraphView = rootVisualElement.Q<TreeGraphView>();
-
             treeGraphView.OnTreeChanged += OnTreeChanged;
             
             SetTree(treeAsset);
-        }
-        
-        private void OnGUI()
-        {
-            hasUnsavedChanges = EditorUtility.IsDirty(treeAsset);
         }
 
         #endregion
 
         #region Tree
 
-        private BehaviorTreeAsset treeAsset;
-
         /// <summary>
         /// Sets the tree in used to the given tree
         /// </summary>
-        public void SetTree(BehaviorTreeAsset tree)
+        private void SetTree(BehaviorTreeAsset tree)
         {
             if (treeAsset is not null && hasUnsavedChanges && PromptChanges())
                 return;

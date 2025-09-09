@@ -11,18 +11,8 @@ namespace TreeFlow.Editor
     [CustomEditor(typeof(BehaviorTreeAsset))]
     internal class TreeFlowEditor : UnityEditor.Editor
     {
-        /// <summary>
-        /// Opens <see cref="TreeFlowEditorWindow"/> with the given asset
-        /// </summary>
-        private static void OpenWindow(BehaviorTreeAsset asset)
-        {
-            var window = EditorWindow.GetWindow<TreeFlowEditorWindow>();
-            window.SetTree(asset);
-            window.ShowTab();
-        }
-        
         [MenuItem("Window/TreeFlow/Designer")]
-        private static void ShowWindow() => OpenWindow(null);
+        private static void ShowWindow() => TreeFlowEditorWindow.Open();
 
         [OnOpenAsset]
         private static bool OpenTree(int instanceID)
@@ -32,7 +22,7 @@ namespace TreeFlow.Editor
 
             var path = AssetDatabase.GetAssetPath(instanceID);
 
-            if (path == null)
+            if (string.IsNullOrEmpty(path))
                 return false;
 
             var asset = AssetDatabase.LoadAssetAtPath<BehaviorTreeAsset>(path);
@@ -40,7 +30,7 @@ namespace TreeFlow.Editor
             if (asset is null)
                 return false;
 
-            OpenWindow(asset);
+            TreeFlowEditorWindow.Open(asset);
             return true;
         }
         
@@ -48,9 +38,7 @@ namespace TreeFlow.Editor
         public override void OnInspectorGUI()
         {
             if (GUILayout.Button("Open"))
-                OpenWindow(target as BehaviorTreeAsset);
-            
-            //base.OnInspectorGUI();
+                TreeFlowEditorWindow.Open(target as BehaviorTreeAsset);
         }
     }
 }
