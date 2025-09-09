@@ -1,3 +1,4 @@
+using TreeFlow.Editor.UIElements;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -17,6 +18,9 @@ namespace TreeFlow.Editor
         public void SetTree(BehaviorTreeAsset tree)
         {
             SetTitle(tree?.name);
+
+            var obj = new SerializedObject(tree);
+            treeGraphView?.AssignTree(obj);
         }
 
         #region Window
@@ -34,10 +38,13 @@ namespace TreeFlow.Editor
         #region UI
 
         [SerializeField] private VisualTreeAsset editorWindowUXML;
+        private TreeGraphView treeGraphView;
 
         private void CreateUI()
         {
             editorWindowUXML.CloneTree(rootVisualElement);
+
+            treeGraphView = rootVisualElement.Q<TreeGraphView>();
         }
 
         #endregion

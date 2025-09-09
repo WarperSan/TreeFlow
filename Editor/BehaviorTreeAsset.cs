@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace TreeFlow.Editor
@@ -8,6 +9,9 @@ namespace TreeFlow.Editor
     [CreateAssetMenu(menuName = "TreeFlow/Behavior Tree")]
     public class BehaviorTreeAsset : ScriptableObject
     {
-        
+        /// <summary>
+        /// List of every node present in the tree
+        /// </summary>
+        public List<GraphNode> Nodes;
     }
 }
