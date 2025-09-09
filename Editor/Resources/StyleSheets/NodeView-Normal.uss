@@ -63,6 +63,7 @@
     border-radius: 5px;
 }
 
-.node:hover > #selection-border {
+.node:hover > #selection-border,
+.node:selected > #selection-border {
     border-width: 1px;
 }
