@@ -1,8 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <TreeFlow.Editor.UIElements.SplitView>
+    <ui:TwoPaneSplitView>
         <ui:VisualElement name="LeftPanel" style="min-width: 10px;" />
         <ui:VisualElement name="RightPanel" style="min-width: 10px;">
             <TreeFlow.Editor.UIElements.TreeGraphView focusable="true" style="flex-grow: 1;" />
         </ui:VisualElement>
-    </TreeFlow.Editor.UIElements.SplitView>
+    </ui:TwoPaneSplitView>
 </ui:UXML>
