@@ -9,6 +9,12 @@ namespace TreeFlow.Editor.Helpers
     /// </summary>
     internal static class Resources
     {
+        public const string NODE_VIEW_USS = "StyleSheets/NodeView.uss";
+        public const string TREE_GRAPH_VIEW_USS = "StyleSheets/TreeGraphView.uss";
+
+        public const string NODE_VIEW_UXML = "UXML/NodeView.uxml";
+        public const string EDITOR_WINDOW_UXML = "UXML/TreeFlowEditorWindow.uxml";
+        
         /// <summary>
         /// Converts the given relative path to the absolute path
         /// </summary>

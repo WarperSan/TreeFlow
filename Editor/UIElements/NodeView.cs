@@ -17,9 +17,9 @@ namespace TreeFlow.Editor.UIElements
         
         private readonly TreeGraphView graphView;
         
-        internal NodeView(NodeAsset node, TreeGraphView graphView) : base(Helpers.Resources.RelativeToAbsolute("UXML/NodeView.uxml"))
+        internal NodeView(NodeAsset node, TreeGraphView graphView) : base(Helpers.Resources.RelativeToAbsolute(Helpers.Resources.NODE_VIEW_UXML))
         {
-            styleSheets.Add(Helpers.Resources.Load<StyleSheet>("StyleSheets/NodeView.uss"));
+            styleSheets.Add(Helpers.Resources.Load<StyleSheet>(Helpers.Resources.NODE_VIEW_USS));
             
             CreateHeader();
             

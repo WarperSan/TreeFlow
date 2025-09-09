@@ -19,11 +19,11 @@ namespace TreeFlow.Editor
 
         #region UI
 
-        [SerializeField] private VisualTreeAsset editorWindowUXML;
         private TreeGraphView treeGraphView;
 
         private void CreateGUI()
         {
+            var editorWindowUXML = Helpers.Resources.Load<VisualTreeAsset>(Helpers.Resources.EDITOR_WINDOW_UXML);
             editorWindowUXML.CloneTree(rootVisualElement);
 
             treeGraphView = rootVisualElement.Q<TreeGraphView>();

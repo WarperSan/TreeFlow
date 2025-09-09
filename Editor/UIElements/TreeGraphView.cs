@@ -32,7 +32,7 @@ namespace TreeFlow.Editor.UIElements
 
         private void CreateUI()
         {
-            styleSheets.Add(Helpers.Resources.Load<StyleSheet>("StyleSheets/TreeGraphView.uss"));
+            styleSheets.Add(Helpers.Resources.Load<StyleSheet>(Helpers.Resources.TREE_GRAPH_VIEW_USS));
             
             var background = new GridBackground();
             background.AddToClassList("grid");
