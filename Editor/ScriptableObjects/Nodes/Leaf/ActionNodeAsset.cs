@@ -12,7 +12,7 @@ namespace TreeFlow.Editor.ScriptableObjects.Nodes.Leaf
             base.Customize(view);
             
             view.SetDefaultTitle("Action");
-            view.SetColor(142, 50, 172);
+            view.SetColor(182, 59, 47);
         }
     }
 }
