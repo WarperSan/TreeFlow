@@ -174,12 +174,21 @@ namespace TreeFlow.Editor.UIElements
         /// </summary>
         private void AddNodeToGraph(GraphNode graphNode)
         {
-            var node = new NodeView();
-            node.AssignNode(graphNode);
+            var node = new NodeView(graphNode, this);
             
             nodeViewsByGuid.Add(graphNode.GUID, node);
 
             AddElement(node);
+        }
+
+        /// <summary>
+        /// Renames the given node to the given name
+        /// </summary>
+        public void RenameNode(GraphNode graphNode, string newName)
+        {
+            Undo.RecordObject(serializedTree.targetObject, "Renamed Node");
+            graphNode.Name = newName;
+            serializedTree.Update();
         }
 
         #endregion

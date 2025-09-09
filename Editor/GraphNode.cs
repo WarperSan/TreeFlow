@@ -18,5 +18,10 @@ namespace TreeFlow.Editor
         /// 2D position of this node in the graph
         /// </summary>
         public Vector2 Position;
+        
+        /// <summary>
+        /// Name to display for this instance
+        /// </summary>
+        public string Name;
     }
 }

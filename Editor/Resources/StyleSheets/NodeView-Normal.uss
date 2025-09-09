@@ -1,0 +1,38 @@
+#parent {
+    background-color: #424242;
+    
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: #252525;
+
+    flex-grow: 1;
+    overflow: hidden;
+
+    min-width: 150px;
+    margin: 0;
+}
+
+#parent #header {
+    flex-direction: row;
+}
+
+#parent #header #background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#parent #header #title,
+#parent #header #inputTitle {
+    flex-grow: 1;
+    
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+#parent #header #inputTitle #unity-text-input {
+    background-color: transparent;
+    border-width: 0;
+}
