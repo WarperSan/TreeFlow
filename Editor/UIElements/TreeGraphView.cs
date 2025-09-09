@@ -43,9 +43,11 @@ namespace TreeFlow.Editor.UIElements
         /// <inheritdoc/>
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
-            evt.menu.AppendAction("Test", action =>
+            var mousePos = this.ChangeCoordinatesTo(contentViewContainer, evt.localMousePosition);
+            
+            evt.menu.AppendAction("Test", _ =>
             {
-                CreateNode(action.eventInfo.mousePosition);
+                CreateNode(mousePos);
             });
         }
         
