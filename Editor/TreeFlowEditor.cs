@@ -9,7 +9,7 @@ namespace TreeFlow.Editor
     /// Editor that handles the link with the base client
     /// </summary>
     [CustomEditor(typeof(BehaviorTreeAsset))]
-    public class TreeFlowEditor : UnityEditor.Editor
+    internal class TreeFlowEditor : UnityEditor.Editor
     {
         /// <summary>
         /// Opens <see cref="TreeFlowEditorWindow"/> with the given asset
