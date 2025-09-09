@@ -10,20 +10,13 @@ namespace TreeFlow.Editor
     /// </summary>
     public class TreeFlowEditorWindow : EditorWindow
     {
+        #region Window
+        
         private void CreateGUI() => CreateUI();
 
         private void OnGUI() => CheckDirty();
 
-
-        #region Window
-
-        /// <summary>
-        /// Sets the title of this window to the given title
-        /// </summary>
-        private void SetTitle(string newTitle)
-        {
-            titleContent.text = newTitle ?? "Behavior Tree";
-        }
+        private void OnEnable() => SetTree(treeAsset);
 
         #endregion
 
@@ -39,6 +32,12 @@ namespace TreeFlow.Editor
             treeGraphView = rootVisualElement.Q<TreeGraphView>();
 
             treeGraphView.OnTreeChanged += OnTreeChanged;
+            
+            if (treeAsset is null)
+                return;
+
+            var obj = new SerializedObject(treeAsset);
+            treeGraphView.AssignTree(obj);
         }
 
         #endregion
@@ -72,12 +71,21 @@ namespace TreeFlow.Editor
                     DiscardChanges();
             }
             
-            SetTitle(tree?.name);
+            if (tree is null)
+            {
+                titleContent.text = "Behavior Tree";
+                treeAsset = null;
+                return;
+            }
+
+            titleContent.text = tree.name;
+            treeAsset = tree;
+
+            if (treeGraphView is null)
+                return;
 
             var obj = new SerializedObject(tree);
-            treeGraphView?.AssignTree(obj);
-            
-            treeAsset = tree;
+            treeGraphView.AssignTree(obj);
         }
 
         #endregion
