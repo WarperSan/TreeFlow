@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TreeFlow.Editor.ScriptableObjects;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -72,14 +73,14 @@ namespace TreeFlow.Editor.UIElements
             // Nodes removed
             if (graphViewChange.elementsToRemove != null)
             {
-                var nodesToRemove = new List<GraphNode>();
+                var nodesToRemove = new List<string>();
 
                 foreach (var element in graphViewChange.elementsToRemove)
                 {
                     if (element is not NodeView nodeView)
                         continue;
                     
-                    nodesToRemove.Add(nodeView.Node);
+                    nodesToRemove.Add(nodeView.Node.GUID);
                 }
                 
                 RemoveNodes(nodesToRemove);
@@ -122,38 +123,35 @@ namespace TreeFlow.Editor.UIElements
         }
 
         /// <summary>
-        /// Creates a brand new <see cref="GraphNode"/> from the given information
+        /// Creates a brand new <see cref="NodeAsset"/> from the given information
         /// </summary>
         private void CreateNode(Vector2 position)
         {
-            var newNode = new GraphNode
-            {
-                GUID = GUID.Generate().ToString(),
-                Position = position
-            };
-            
             Undo.RecordObject(serializedTree.targetObject, "Created new Node");
-            treeAsset.Nodes.Add(newNode);
+            
+            var newNode = treeAsset.AddNode<SequenceNodeAsset>();
+            newNode.Position = position;
+            
             serializedTree.Update();
             OnTreeChanged.Invoke();
-            
+
             AddNodeToGraph(newNode);
         }
 
         /// <summary>
         /// Removes the given nodes from the graph
         /// </summary>
-        private void RemoveNodes(List<GraphNode> graphNodes)
+        private void RemoveNodes(List<string> guids)
         {
-            if (graphNodes.Count == 0)
+            if (guids.Count == 0)
                 return;
             
             Undo.RecordObject(serializedTree.targetObject, "Removed Nodes");
-            foreach (var graphNode in graphNodes)
-            {
-                treeAsset.Nodes.Remove(graphNode);
-                nodeViewsByGuid.Remove(graphNode.GUID);
-            }
+            treeAsset.RemoveNodes(guids);
+
+            foreach (var guid in guids)
+                nodeViewsByGuid.Remove(guid);
+            
             serializedTree.Update();
             OnTreeChanged.Invoke();
         }
@@ -167,21 +165,15 @@ namespace TreeFlow.Editor.UIElements
                 return;
             
             Undo.RecordObject(serializedTree.targetObject, "Moved Nodes");
-            foreach (var (guid, position) in positions)
-            {
-                if (!nodeViewsByGuid.TryGetValue(guid, out var nodeView))
-                    continue;
-
-                nodeView.Node.Position = position;
-            }
+            treeAsset.SetPositions(positions);
             serializedTree.Update();
             OnTreeChanged.Invoke();
         }
 
         /// <summary>
-        /// Adds the given <see cref="GraphNode"/> to the graph
+        /// Adds the given <see cref="NodeAsset"/> to the graph
         /// </summary>
-        private void AddNodeToGraph(GraphNode graphNode)
+        private void AddNodeToGraph(NodeAsset graphNode)
         {
             var node = new NodeView(graphNode, this);
             
@@ -193,7 +185,7 @@ namespace TreeFlow.Editor.UIElements
         /// <summary>
         /// Renames the given node to the given name
         /// </summary>
-        public void RenameNode(GraphNode graphNode, string newName)
+        public void RenameNode(NodeAsset graphNode, string newName)
         {
             Undo.RecordObject(serializedTree.targetObject, "Renamed Node");
             graphNode.Name = newName;

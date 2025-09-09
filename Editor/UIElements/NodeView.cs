@@ -1,3 +1,4 @@
+using TreeFlow.Editor.ScriptableObjects;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -5,18 +6,18 @@ using UnityEngine.UIElements;
 namespace TreeFlow.Editor.UIElements
 {
     /// <summary>
-    /// Element used to display and modify <see cref="GraphNode"/>
+    /// Element used to display and modify <see cref="NodeAsset"/>
     /// </summary>
     internal sealed class NodeView : Node
     {
         /// <summary>
         /// Current node displayed
         /// </summary>
-        public readonly GraphNode Node;
+        public readonly NodeAsset Node;
         
         private readonly TreeGraphView graphView;
         
-        public NodeView(GraphNode node, TreeGraphView graphView) : base(Helpers.Resources.RelativeToAbsolute("UXML/NodeView-Normal.uxml"))
+        public NodeView(NodeAsset node, TreeGraphView graphView) : base(Helpers.Resources.RelativeToAbsolute("UXML/NodeView-Normal.uxml"))
         {
             styleSheets.Add(Helpers.Resources.Load<StyleSheet>("StyleSheets/NodeView-Normal.uss"));
             

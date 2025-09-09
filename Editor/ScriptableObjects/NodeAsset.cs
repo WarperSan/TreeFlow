@@ -1,13 +1,11 @@
-using TreeFlow.Runtime.Core;
 using UnityEngine;
 
-namespace TreeFlow.Editor
+namespace TreeFlow.Editor.ScriptableObjects
 {
     /// <summary>
-    /// Data used to represent a <see cref="Node"/>
+    /// Asset that represents a node inside <see cref="BehaviorTreeAsset"/>
     /// </summary>
-    [System.Serializable]
-    public class GraphNode
+    public abstract class NodeAsset : ScriptableObject
     {
         /// <summary>
         /// Identifier that is unique to this instance
@@ -24,4 +22,10 @@ namespace TreeFlow.Editor
         /// </summary>
         public string Name;
     }
+
+    public abstract class CompositeNodeAsset : NodeAsset
+    {
+    }
+    
+    public sealed class SequenceNodeAsset : CompositeNodeAsset { }
 }
