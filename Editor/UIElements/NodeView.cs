@@ -17,11 +17,12 @@ namespace TreeFlow.Editor.UIElements
         
         private readonly TreeGraphView graphView;
         
-        internal NodeView(NodeAsset node, TreeGraphView graphView) : base(Helpers.Resources.RelativeToAbsolute("UXML/NodeView-Normal.uxml"))
+        internal NodeView(NodeAsset node, TreeGraphView graphView) : base(Helpers.Resources.RelativeToAbsolute("UXML/NodeView.uxml"))
         {
-            styleSheets.Add(Helpers.Resources.Load<StyleSheet>("StyleSheets/NodeView-Normal.uss"));
+            styleSheets.Add(Helpers.Resources.Load<StyleSheet>("StyleSheets/NodeView.uss"));
             
             CreateHeader();
+            CreatePorts();
             
             // Assign node
             Node = node;
@@ -109,6 +110,22 @@ namespace TreeFlow.Editor.UIElements
             g / 255,
             b / 255
         );
+
+        #endregion
+
+        #region Ports
+        
+        private void CreatePorts()
+        {
+            Temp();
+        }
+
+        public void Temp()
+        {
+            inputContainer.Add(InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool)));
+            
+            outputContainer.Add(InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(bool)));
+        }
 
         #endregion
     }
