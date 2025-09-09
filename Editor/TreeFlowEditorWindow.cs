@@ -1,5 +1,6 @@
 using TreeFlow.Editor.UIElements;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,16 +13,8 @@ namespace TreeFlow.Editor
     {
         private void CreateGUI() => CreateUI();
 
-        /// <summary>
-        /// Sets the tree in used to the given tree
-        /// </summary>
-        public void SetTree(BehaviorTreeAsset tree)
-        {
-            SetTitle(tree?.name);
+        private void OnGUI() => CheckDirty();
 
-            var obj = new SerializedObject(tree);
-            treeGraphView?.AssignTree(obj);
-        }
 
         #region Window
 
@@ -45,8 +38,75 @@ namespace TreeFlow.Editor
             editorWindowUXML.CloneTree(rootVisualElement);
 
             treeGraphView = rootVisualElement.Q<TreeGraphView>();
+            treeGraphView.graphViewChanged += OnGraphChanged;
         }
 
+        #endregion
+
+        #region Tree
+
+        private BehaviorTreeAsset treeAsset;
+
+        /// <summary>
+        /// Sets the tree in used to the given tree
+        /// </summary>
+        public void SetTree(BehaviorTreeAsset tree)
+        {
+            // TODO: Discard changes of the previous tree
+
+            SetTitle(tree?.name);
+
+            var obj = new SerializedObject(tree);
+            treeGraphView?.AssignTree(obj);
+            
+            treeAsset = tree;
+        }
+
+        #endregion
+
+        #region Dirty
+
+        /// <summary>
+        /// Called when <see cref="treeGraphView"/> is changed
+        /// </summary>
+        private GraphViewChange OnGraphChanged(GraphViewChange graphViewChange)
+        {
+            hasUnsavedChanges = true;
+            EditorUtility.SetDirty(treeAsset);
+            return graphViewChange;
+        }
+
+        /// <summary>
+        /// Checks if <see cref="treeAsset"/> is dirty, and saves it if necessary
+        /// </summary>
+        private void CheckDirty()
+        {
+            if (treeAsset == null)
+                return;
+            
+            hasUnsavedChanges = EditorUtility.IsDirty(treeAsset);
+        }
+
+        /// <inheritdoc/>
+        public override void DiscardChanges()
+        {
+            // TODO: Discard changes of the tree
+            
+            base.DiscardChanges();
+        }
+
+        /// <inheritdoc/>
+        public override void SaveChanges()
+        {
+            if (treeAsset != null && EditorUtility.IsDirty(treeAsset))
+            {
+                AssetDatabase.SaveAssetIfDirty(treeAsset);
+                AssetDatabase.Refresh();
+            }
+            
+            base.SaveChanges();
+        }
+        
         #endregion
     }
 }
