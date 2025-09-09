@@ -8,7 +8,7 @@ namespace TreeFlow.Editor.UIElements
     /// <summary>
     /// Element used to display and modify <see cref="NodeAsset"/>
     /// </summary>
-    internal sealed class NodeView : Node
+    public sealed class NodeView : Node
     {
         /// <summary>
         /// Current node displayed
@@ -17,11 +17,11 @@ namespace TreeFlow.Editor.UIElements
         
         private readonly TreeGraphView graphView;
         
-        public NodeView(NodeAsset node, TreeGraphView graphView) : base(Helpers.Resources.RelativeToAbsolute("UXML/NodeView-Normal.uxml"))
+        internal NodeView(NodeAsset node, TreeGraphView graphView) : base(Helpers.Resources.RelativeToAbsolute("UXML/NodeView-Normal.uxml"))
         {
             styleSheets.Add(Helpers.Resources.Load<StyleSheet>("StyleSheets/NodeView-Normal.uss"));
             
-            CreateTitle();
+            CreateHeader();
             
             // Assign node
             Node = node;
@@ -31,22 +31,22 @@ namespace TreeFlow.Editor.UIElements
             rect.position = node.Position;
             SetPosition(rect);
 
-            var _name = node.Name;
-
-            if (string.IsNullOrEmpty(_name))
-                _name = "Node";
-
-            title = TitleInput.value = _name;
+            node.Customize(this);
         }
         
         #region UI
 
         private TextField TitleInput;
+        private VisualElement HeaderBackground;
 
-        private void CreateTitle()
+        private void CreateHeader()
         {
-            var titleLabel = this.Q<Label>("title-label");
-            TitleInput = this.Q<TextField>("title-input");
+            var header = this.Q("header");
+            
+            HeaderBackground = header.Q<VisualElement>("background");
+
+            var titleLabel = header.Q<Label>("title-label");
+            TitleInput = header.Q<TextField>("title-input");
 
             titleLabel.RegisterCallback<MouseDownEvent>(evt =>
             {
@@ -82,6 +82,33 @@ namespace TreeFlow.Editor.UIElements
                 graphView.RenameNode(Node, newName);
             });
         }
+
+        /// <summary>
+        /// Sets the title of this node
+        /// </summary>
+        public void SetTitle(string newTitle) => title = TitleInput.value = newTitle;
+
+        /// <summary>
+        /// Sets the title to <see cref="defaultTitle"/> if this node has no name defined
+        /// </summary>
+        public void SetDefaultTitle(string defaultTitle)
+        {
+            var _title = Node.Name;
+
+            if (string.IsNullOrEmpty(_title))
+                _title = defaultTitle;
+
+            SetTitle(_title);
+        }
+
+        /// <summary>
+        /// Sets the color of the header of this node
+        /// </summary>
+        public void SetColor(float r, float g, float b) => HeaderBackground.style.backgroundColor = new Color(
+            r / 255,
+            g / 255,
+            b / 255
+        );
 
         #endregion
     }

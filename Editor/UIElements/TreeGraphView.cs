@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using TreeFlow.Editor.ScriptableObjects;
+using TreeFlow.Editor.ScriptableObjects.Nodes.Composite;
+//using TreeFlow.Editor.ScriptableObjects.Nodes.Decorator;
+//using TreeFlow.Editor.ScriptableObjects.Nodes.Leaf;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -46,10 +49,15 @@ namespace TreeFlow.Editor.UIElements
         {
             var mousePos = this.ChangeCoordinatesTo(contentViewContainer, evt.localMousePosition);
             
-            evt.menu.AppendAction("Test", _ =>
-            {
-                CreateNode(mousePos);
-            });
+            evt.menu.AppendAction("Composite/Sequence", _ => CreateNode<SequenceNodeAsset>(mousePos));
+            //evt.menu.AppendAction("Composite/Selector", _ => CreateNode<SelectorNodeAsset>(mousePos));
+            //evt.menu.AppendAction("Composite/Parallel", _ => CreateNode<ParallelNodeAsset>(mousePos));
+            //
+            //evt.menu.AppendAction("Decorator/Inverter", _ => CreateNode<InverterNodeAsset>(mousePos));
+            //evt.menu.AppendAction("Decorator/Repeat", _ => CreateNode<RepeatNodeAsset>(mousePos));
+            //
+            //evt.menu.AppendAction("Leaf/Action", _ => CreateNode<ActionNodeAsset>(mousePos));
+            //evt.menu.AppendAction("Leaf/Condition", _ => CreateNode<ConditionNodeAsset>(mousePos));
         }
         
         private GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
@@ -122,14 +130,18 @@ namespace TreeFlow.Editor.UIElements
             graphViewChanged += OnGraphViewChanged;
         }
 
+        #endregion
+
+        #region Nodes
+
         /// <summary>
         /// Creates a brand new <see cref="NodeAsset"/> from the given information
         /// </summary>
-        private void CreateNode(Vector2 position)
+        private void CreateNode<T>(Vector2 position) where T : NodeAsset, new()
         {
             Undo.RecordObject(serializedTree.targetObject, "Created new Node");
             
-            var newNode = treeAsset.AddNode<SequenceNodeAsset>();
+            var newNode = treeAsset.AddNode<T>();
             newNode.Position = position;
             
             serializedTree.Update();

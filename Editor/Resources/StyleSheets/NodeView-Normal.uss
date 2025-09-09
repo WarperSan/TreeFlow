@@ -6,7 +6,7 @@
 #node-border {
     background-color: #424242;
     
-    border-radius: 5px;
+    border-radius: 10px;
     border-width: 1px;
     border-color: #252525;
 
@@ -25,6 +25,9 @@
     left: 0;
     right: 0;
     bottom: 0;
+
+    background-color: rgb(18, 152, 87);
+    background-color: #5e5e5e;
 }
 
 #title-label,
@@ -47,7 +50,7 @@
 /* CONTENT */
 #contents {
     flex-grow: 1;
-    padding: 5px;
+    padding: 15px;
 }
 
 /* SELECTION */

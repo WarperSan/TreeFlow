@@ -11,11 +11,7 @@ namespace TreeFlow.Editor
     /// </summary>
     public class TreeFlowEditorWindow : EditorWindow
     {
-        #region Window
-        
-        private void CreateGUI() => CreateUI();
-
-        private void OnGUI() => CheckDirty();
+        #region EditorWindow
 
         private void OnEnable() => SetTree(treeAsset);
 
@@ -26,7 +22,7 @@ namespace TreeFlow.Editor
         [SerializeField] private VisualTreeAsset editorWindowUXML;
         private TreeGraphView treeGraphView;
 
-        private void CreateUI()
+        private void CreateGUI()
         {
             editorWindowUXML.CloneTree(rootVisualElement);
 
@@ -34,11 +30,12 @@ namespace TreeFlow.Editor
 
             treeGraphView.OnTreeChanged += OnTreeChanged;
             
-            if (treeAsset is null)
-                return;
-
-            var obj = new SerializedObject(treeAsset);
-            treeGraphView.AssignTree(obj);
+            SetTree(treeAsset);
+        }
+        
+        private void OnGUI()
+        {
+            hasUnsavedChanges = EditorUtility.IsDirty(treeAsset);
         }
 
         #endregion
@@ -52,25 +49,8 @@ namespace TreeFlow.Editor
         /// </summary>
         public void SetTree(BehaviorTreeAsset tree)
         {
-            if (treeAsset is not null && hasUnsavedChanges)
-            {
-                var optionIndex = EditorUtility.DisplayDialogComplex(
-                    "Tree Has Been Modified",
-                    "Do you want to save the changes you made to the tree? Your changes will be lost if you don't save them.",
-                    "Save",
-                    "Cancel",
-                    "Discard Changes"
-                );
-                
-                // ReSharper disable once ConvertIfStatementToSwitchStatement
-                if (optionIndex == 1)
-                    return;
-
-                if (optionIndex == 0)
-                    SaveChanges();
-                else
-                    DiscardChanges();
-            }
+            if (treeAsset is not null && hasUnsavedChanges && PromptChanges())
+                return;
             
             if (tree is null)
             {
@@ -91,7 +71,7 @@ namespace TreeFlow.Editor
 
         #endregion
 
-        #region Dirty
+        #region Changes
 
         /// <summary>
         /// Called when <see cref="treeGraphView"/> is changed
@@ -100,17 +80,6 @@ namespace TreeFlow.Editor
         {
             hasUnsavedChanges = true;
             EditorUtility.SetDirty(treeAsset);
-        }
-
-        /// <summary>
-        /// Checks if <see cref="treeAsset"/> is dirty, and saves it if necessary
-        /// </summary>
-        private void CheckDirty()
-        {
-            if (treeAsset is null)
-                return;
-            
-            hasUnsavedChanges = EditorUtility.IsDirty(treeAsset);
         }
 
         /// <inheritdoc/>
@@ -125,13 +94,38 @@ namespace TreeFlow.Editor
         /// <inheritdoc/>
         public override void SaveChanges()
         {
-            if (treeAsset != null && EditorUtility.IsDirty(treeAsset))
+            if (EditorUtility.IsDirty(treeAsset))
             {
                 AssetDatabase.SaveAssetIfDirty(treeAsset);
                 AssetDatabase.Refresh();
             }
             
             base.SaveChanges();
+        }
+
+        /// <summary>
+        /// Prompts the user to react to the changes
+        /// </summary>
+        /// <returns>Prompt cancelled</returns>
+        private bool PromptChanges()
+        {
+            var optionIndex = EditorUtility.DisplayDialogComplex(
+                "Tree Has Been Modified",
+                "Do you want to save the changes you made to the tree? Your changes will be lost if you don't save them.",
+                "Save",
+                "Cancel",
+                "Discard Changes"
+            );
+                
+            // ReSharper disable once ConvertIfStatementToSwitchStatement
+            if (optionIndex == 1)
+                return true;
+
+            if (optionIndex == 0)
+                SaveChanges();
+            else
+                DiscardChanges();
+            return false;
         }
         
         #endregion

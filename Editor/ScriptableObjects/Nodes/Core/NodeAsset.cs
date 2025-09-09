@@ -1,3 +1,5 @@
+using System;
+using TreeFlow.Editor.UIElements;
 using UnityEngine;
 
 namespace TreeFlow.Editor.ScriptableObjects
@@ -5,6 +7,7 @@ namespace TreeFlow.Editor.ScriptableObjects
     /// <summary>
     /// Asset that represents a node inside <see cref="BehaviorTreeAsset"/>
     /// </summary>
+    [Serializable]
     public abstract class NodeAsset : ScriptableObject
     {
         /// <summary>
@@ -21,11 +24,13 @@ namespace TreeFlow.Editor.ScriptableObjects
         /// Name to display for this instance
         /// </summary>
         public string Name;
-    }
 
-    public abstract class CompositeNodeAsset : NodeAsset
-    {
+        /// <summary>
+        /// Called when <see cref="NodeView"/> needs to display this node
+        /// </summary>
+        public virtual void Customize(NodeView view)
+        {
+            view.SetDefaultTitle("Node");
+        }
     }
-    
-    public sealed class SequenceNodeAsset : CompositeNodeAsset { }
 }
