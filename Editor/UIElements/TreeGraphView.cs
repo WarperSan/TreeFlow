@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using TreeFlow.Editor.ScriptableObjects;
 using TreeFlow.Editor.ScriptableObjects.Nodes.Composite;
-//using TreeFlow.Editor.ScriptableObjects.Nodes.Decorator;
+using TreeFlow.Editor.ScriptableObjects.Nodes.Decorator;
 //using TreeFlow.Editor.ScriptableObjects.Nodes.Leaf;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -53,9 +53,9 @@ namespace TreeFlow.Editor.UIElements
             evt.menu.AppendAction("Composite/Selector", _ => CreateNode<SelectorNodeAsset>(mousePos));
             evt.menu.AppendAction("Composite/Parallel", _ => CreateNode<ParallelNodeAsset>(mousePos));
 
-            //evt.menu.AppendAction("Decorator/Inverter", _ => CreateNode<InverterNodeAsset>(mousePos));
+            evt.menu.AppendAction("Decorator/Inverter", _ => CreateNode<InverterNodeAsset>(mousePos));
             //evt.menu.AppendAction("Decorator/Repeat", _ => CreateNode<RepeatNodeAsset>(mousePos));
-            //
+
             //evt.menu.AppendAction("Leaf/Action", _ => CreateNode<ActionNodeAsset>(mousePos));
             //evt.menu.AppendAction("Leaf/Condition", _ => CreateNode<ConditionNodeAsset>(mousePos));
         }
