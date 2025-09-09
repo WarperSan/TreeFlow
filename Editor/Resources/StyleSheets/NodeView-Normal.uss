@@ -1,4 +1,9 @@
-#parent {
+.node {
+    min-width: 150px;
+    margin: 0;
+}
+
+#node-border {
     background-color: #424242;
     
     border-radius: 5px;
@@ -7,16 +12,13 @@
 
     flex-grow: 1;
     overflow: hidden;
-
-    min-width: 150px;
-    margin: 0;
 }
 
-#parent #header {
+#node-border #header {
     flex-direction: row;
 }
 
-#parent #header #background {
+#node-border #header #background {
     position: absolute;
     top: 0;
     left: 0;
@@ -24,15 +26,34 @@
     bottom: 0;
 }
 
-#parent #header #title,
-#parent #header #inputTitle {
+#node-border #header #title-label,
+#node-border #header #title-input {
     flex-grow: 1;
     
     -unity-font-style: bold;
     -unity-text-align: middle-center;
 }
 
-#parent #header #inputTitle #unity-text-input {
+#node-border #header #title-input #unity-text-input {
     background-color: transparent;
     border-width: 0;
+}
+
+#selection-border {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    
+    border-color: rgb(8, 128, 255);
+    border-width: 0;
+    border-radius: 5px;
+}
+
+:hover > #selection-border {
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
 }
