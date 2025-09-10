@@ -86,7 +86,7 @@ namespace TreeFlow.Editor.ScriptableObjects
         /// <summary>
         /// Moves the given nodes to the given positions
         /// </summary>
-        public void MoveNodes(Dictionary<NodeAsset, Vector2> positions)
+        public void MoveNodes(IDictionary<NodeAsset, Vector2> positions)
         {
             foreach (var (node, position) in positions)
                 node.Position = position;
@@ -99,7 +99,7 @@ namespace TreeFlow.Editor.ScriptableObjects
         /// <summary>
         /// Adds the given links to this tree
         /// </summary>
-        public void AddLinks(Dictionary<NodeAsset, HashSet<NodeAsset>> newLinks)
+        public void AddLinks(IDictionary<NodeAsset, ISet<NodeAsset>> newLinks)
         {
             foreach (var (startNode, endNodes) in newLinks)
             {
