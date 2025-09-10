@@ -19,6 +19,12 @@ namespace TreeFlow.Runtime.Nodes.Leaf
         }
 
         /// <inheritdoc/>
-        public override NodeStatus Process() => Proposition.Invoke(this) ? NodeStatus.SUCCESS : NodeStatus.FAILURE;
+        public override NodeStatus Process()
+        {
+            if (Proposition == null)
+                return NodeStatus.FAILURE;
+            
+            return Proposition.Invoke(this) ? NodeStatus.SUCCESS : NodeStatus.FAILURE;
+        }
     }
 }

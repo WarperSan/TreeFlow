@@ -84,10 +84,6 @@ namespace TreeFlow.Editor.Helpers
                     view.SetDefaultTitle("Inverter");
                     view.SetColor(155, 89, 182);
                     break;
-                case RepeatNodeAsset:
-                    view.SetDefaultTitle("Repeat");
-                    view.SetColor(22, 160, 133);
-                    break;
                 case ActionNodeAsset:
                     view.SetDefaultTitle("Action");
                     view.SetColor(182, 59, 47);
