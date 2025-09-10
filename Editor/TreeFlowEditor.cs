@@ -1,7 +1,9 @@
+using TreeFlow.Editor.Helpers;
 using TreeFlow.Editor.ScriptableObjects;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
+using Resources = TreeFlow.Editor.Helpers.Resources;
 
 namespace TreeFlow.Editor
 {
@@ -37,8 +39,29 @@ namespace TreeFlow.Editor
         /// <inheritdoc/>
         public override void OnInspectorGUI()
         {
+            var targetTree = target as BehaviorTreeAsset;
+
+            if (targetTree == null)
+            {
+                base.OnInspectorGUI();
+                return;
+            }
+            
             if (GUILayout.Button("Open"))
-                TreeFlowEditorWindow.Open(target as BehaviorTreeAsset);
+                TreeFlowEditorWindow.Open(targetTree);
+            
+            GUILayout.Space(10);
+            GUILayout.Label("Tools");
+
+            if (GUILayout.Button("Remove Unused Nodes") && EditorUtility.DisplayDialog(
+                    "Remove Unused Nodes",
+                    "Are you sure you want to remove every unused nodes? This will remove any node that is not attached to the root.",
+                    "Yes",
+                    "No")
+            ) {
+                TreeJanitor.RemoveUnusedNodes(targetTree);
+                Resources.SaveChanges(targetTree);
+            }
         }
     }
 }

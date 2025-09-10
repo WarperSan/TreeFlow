@@ -18,6 +18,9 @@ namespace TreeFlow.Editor.ScriptableObjects
         /// </summary>
         [SerializeField] private string rootGUID;
         
+        /// <inheritdoc cref="rootGUID"/>
+        public string Root => rootGUID;
+        
         /// <summary>
         /// Checks if the given node is the root of the tree
         /// </summary>
