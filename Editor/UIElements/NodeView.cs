@@ -44,6 +44,8 @@ namespace TreeFlow.Editor.UIElements
         private VisualElement Header;
         private TextField TitleInput;
         private VisualElement HeaderBackground;
+        private Port _inputPort;
+        private Port _outputPort;
 
         private void CreateHeader()
         {
@@ -115,18 +117,24 @@ namespace TreeFlow.Editor.UIElements
         );
 
         /// <inheritdoc/>
+        Port INodeView.InputPort => _inputPort;
+
+        /// <inheritdoc/>
+        Port INodeView.OutputPort => _outputPort;
+
+        /// <inheritdoc/>
         public void AddInputPort()
         {
             if (inputContainer is null)
                 return;
 
-            var input = InstantiatePort(
+            _inputPort = InstantiatePort(
                 Orientation.Vertical,
                 Direction.Input,
                 Port.Capacity.Single,
                 typeof(bool)
             );
-            inputContainer.Add(input);
+            inputContainer.Add(_inputPort);
         }
 
         /// <inheritdoc/>
@@ -135,13 +143,13 @@ namespace TreeFlow.Editor.UIElements
             if (outputContainer is null)
                 return;
 
-            var output = InstantiatePort(
+            _outputPort = InstantiatePort(
                 Orientation.Vertical,
                 Direction.Output,
                 allowMultiple ? Port.Capacity.Multi : Port.Capacity.Single,
                 typeof(bool)
             );
-            outputContainer.Add(output);
+            outputContainer.Add(_outputPort);
         }
 
         #endregion

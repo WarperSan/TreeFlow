@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TreeFlow.Editor.Interfaces;
 using TreeFlow.Editor.Nodes.Composite;
 using TreeFlow.Editor.Nodes.Core;
 using TreeFlow.Editor.Nodes.Decorator;
@@ -159,8 +160,32 @@ namespace TreeFlow.Editor.UIElements
             
             treeAsset = tree;
 
+            var viewsByGuid = new Dictionary<string, INodeView>();
+
             foreach (var node in treeAsset.Nodes)
-                AddNodeToGraph(node);
+                viewsByGuid.TryAdd(node.GUID, AddNodeToGraph(node));
+
+            foreach (var node in treeAsset.Nodes)
+            {
+                if (!viewsByGuid.TryGetValue(node.GUID, out var parentView))
+                    continue;
+                
+                if (node is not IParentNode parentNode)
+                    continue;
+                
+                foreach (var childNode in parentNode.Children)
+                {
+                    if (!viewsByGuid.TryGetValue(childNode, out var childView))
+                        continue;
+                    
+                    var edge = childView.ConnectTo(parentView);
+                    
+                    if (edge == null)
+                        continue;
+                    
+                    AddElement(edge);
+                }
+            }
             
             graphViewChanged += OnGraphViewChanged;
         }
@@ -168,7 +193,13 @@ namespace TreeFlow.Editor.UIElements
         /// <summary>
         /// Adds the given <see cref="NodeAsset"/> to the graph
         /// </summary>
-        private void AddNodeToGraph(NodeAsset graphNode) => AddElement(new NodeView(graphNode, this));
+        private INodeView AddNodeToGraph(NodeAsset graphNode)
+        {
+            var view = new NodeView(graphNode, this);
+
+            AddElement(view);
+            return view;
+        }
 
         #endregion
 

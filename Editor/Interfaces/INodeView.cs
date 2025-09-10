@@ -22,6 +22,18 @@ namespace TreeFlow.Editor.Interfaces
         /// </summary>
         public void SetColor(byte r, byte g, byte b);
 
+        #region Ports
+        
+        /// <summary>
+        /// <see cref="Direction.Input"/> port of this node
+        /// </summary>
+        protected Port InputPort { get; }
+        
+        /// <summary>
+        /// <see cref="Direction.Output"/> port of this node
+        /// </summary>
+        protected Port OutputPort { get; }
+
         /// <summary>
         /// Adds an <see cref="Direction.Input"/> to this node
         /// </summary>
@@ -31,5 +43,12 @@ namespace TreeFlow.Editor.Interfaces
         /// Adds an <see cref="Direction.Output"/> to this node
         /// </summary>
         public void AddOutputPort(bool allowMultiple = false);
+
+        /// <summary>
+        /// Connects the output port of the given parent to the input port of this node
+        /// </summary>
+        public Edge ConnectTo(INodeView parent) => parent.OutputPort?.ConnectTo(InputPort);
+
+        #endregion
     }
 }
