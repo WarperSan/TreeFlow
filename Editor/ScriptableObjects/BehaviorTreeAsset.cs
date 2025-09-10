@@ -71,6 +71,36 @@ namespace TreeFlow.Editor.ScriptableObjects
             }
         }
 
+        #region Links
+
+        /// <summary>
+        /// Adds the given links to this tree
+        /// </summary>
+        public void AddLinks(Dictionary<string, HashSet<string>> newLinks)
+        {
+            foreach (var (guid, links) in newLinks)
+            {
+                if (!nodeByGUID.TryGetValue(guid, out var node))
+                    continue;
+
+                if (node is CompositeNodeAsset composite)
+                {
+                    foreach (var link in links)
+                        composite.Link(link);
+                }
+                else if (node is DecoratorNodeAsset decorator && links.Count > 0)
+                {
+                    var enumerator = links.GetEnumerator();
+                    enumerator.MoveNext();
+
+                    decorator.Child = enumerator.Current;
+                    enumerator.Dispose();
+                }
+            }
+        }
+
+        #endregion
+        
         #region Utils
         
         [NonSerialized] private readonly Dictionary<string, NodeAsset> nodeByGUID = new();
@@ -89,7 +119,7 @@ namespace TreeFlow.Editor.ScriptableObjects
                     continue;
 
                 nodeByGUID.TryAdd(node.GUID, node);
-                node.IsRoot = node.GUID == RootGUID;
+                node.Compute(this);
             }
         }
 

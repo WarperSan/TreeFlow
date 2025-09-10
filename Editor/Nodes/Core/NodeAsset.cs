@@ -30,7 +30,15 @@ namespace TreeFlow.Editor.Nodes.Core
         /// <summary>
         /// Defines if this node is the root of the tree
         /// </summary>
-        [NonSerialized] public bool IsRoot;
+        public bool IsRoot { get; private set; }
+
+        /// <summary>
+        /// Computes important information for later use
+        /// </summary>
+        public virtual void Compute(BehaviorTreeAsset tree)
+        {
+            IsRoot = tree.RootGUID == GUID;
+        }
 
         #endregion
     }

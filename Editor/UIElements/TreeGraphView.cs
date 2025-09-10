@@ -84,6 +84,23 @@ namespace TreeFlow.Editor.UIElements
                 if (newPositions.Count > 0)
                     MoveNodes(newPositions);
             }
+            
+            // Links added
+            if (graphViewChange.edgesToCreate != null)
+            {
+                var newLinks = new List<KeyValuePair<string, string>>();
+
+                foreach (var edge in graphViewChange.edgesToCreate)
+                {
+                    if (edge.input.node is not NodeView input || edge.output.node is not NodeView output)
+                        continue;
+                    
+                    newLinks.Add(new KeyValuePair<string, string>(output.Node.GUID, input.Node.GUID));
+                }
+
+                if (newLinks.Count > 0)
+                    CreateLinks(newLinks);
+            }
 
             // Nodes removed
             // ReSharper disable once InvertIf
@@ -203,6 +220,25 @@ namespace TreeFlow.Editor.UIElements
         public void RenameNode(NodeAsset graphNode, string newName)
         {
             graphNode.Name = newName;
+            
+            EditorUtility.SetDirty(treeAsset);
+            OnTreeChanged?.Invoke();
+        }
+
+        /// <summary>
+        /// Creates brand-new links between the given nodes
+        /// </summary>
+        private void CreateLinks(List<KeyValuePair<string, string>> links)
+        {
+            var linksPerNode = new Dictionary<string, HashSet<string>>();
+
+            foreach (var (start, end) in links)
+            {
+                linksPerNode.TryAdd(start, new HashSet<string>());
+                linksPerNode[start].Add(end);
+            }
+            
+            treeAsset?.AddLinks(linksPerNode);
             
             EditorUtility.SetDirty(treeAsset);
             OnTreeChanged?.Invoke();
