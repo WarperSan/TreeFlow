@@ -11,16 +11,38 @@ namespace TreeFlow.Editor.ScriptableObjects
     /// </summary>
     public class BehaviorTreeAsset : ScriptableObject
     {
+        #region Root
+
         /// <summary>
         /// <see cref="GUID"/> of the root node
         /// </summary>
-        public string RootGUID;
+        [SerializeField] private string rootGUID;
         
+        /// <summary>
+        /// Checks if the given node is the root of the tree
+        /// </summary>
+        public bool IsRoot(NodeAsset node) => node?.GUID == rootGUID;
+
+        /// <summary>
+        /// Promotes the given node to the tree's root
+        /// </summary>
+        internal void PromotesToRoot(NodeAsset node)
+        {
+            rootGUID = node.GUID;
+            node.Compute(this);
+        }
+
+        #endregion
+        
+        #region Nodes
+
         /// <summary>
         /// List of every node present in the tree
         /// </summary>
-        [SerializeReference]
-        public List<NodeAsset> Nodes = new();
+        [SerializeReference] private List<NodeAsset> nodes = new();
+        
+        /// <inheritdoc cref="nodes"/>
+        public IReadOnlyList<NodeAsset> Nodes => nodes;
 
         /// <summary>
         /// Adds a brand-new node with the given type to this tree 
@@ -32,7 +54,7 @@ namespace TreeFlow.Editor.ScriptableObjects
                 GUID = GUID.Generate().ToString()
             };
 
-            Nodes.Add(node);
+            nodes.Add(node);
             nodeByGUID.TryAdd(node.GUID, node);
             
             return node;
@@ -45,22 +67,22 @@ namespace TreeFlow.Editor.ScriptableObjects
         {
             var uniqueGUIDs = new HashSet<string>(guids);
 
-            for (var i = Nodes.Count - 1; i >= 0; i--)
+            for (var i = nodes.Count - 1; i >= 0; i--)
             {
-                var node = Nodes[i];
+                var node = nodes[i];
 
                 if (!uniqueGUIDs.Contains(node.GUID))
                     continue;
 
-                Nodes.RemoveAt(i);
+                nodes.RemoveAt(i);
                 nodeByGUID.Remove(node.GUID);
             }
         }
 
         /// <summary>
-        /// Sets the position of the given nodes to the given position
+        /// Moves the given nodes to the given positions
         /// </summary>
-        public void SetPositions(Dictionary<string, Vector2> positions)
+        public void MoveNodes(Dictionary<string, Vector2> positions)
         {
             foreach (var (guid, position) in positions)
             {
@@ -70,6 +92,8 @@ namespace TreeFlow.Editor.ScriptableObjects
                 node.Position = position;
             }
         }
+
+        #endregion
 
         #region Links
 
@@ -93,7 +117,9 @@ namespace TreeFlow.Editor.ScriptableObjects
                     var enumerator = links.GetEnumerator();
                     enumerator.MoveNext();
 
-                    decorator.Child = enumerator.Current;
+                    if (enumerator.Current != null && nodeByGUID.TryGetValue(enumerator.Current, out var child))
+                        decorator.ReplaceChild(child);
+
                     enumerator.Dispose();
                 }
             }
@@ -104,16 +130,15 @@ namespace TreeFlow.Editor.ScriptableObjects
         #region Utils
         
         [NonSerialized] private readonly Dictionary<string, NodeAsset> nodeByGUID = new();
-        [NonSerialized] private readonly Dictionary<string, HashSet<string>> linksByGUID = new();
 
         /// <summary>
         /// Computes important information for later use
         /// </summary>
-        public void Compute()
+        internal void Compute()
         {
             nodeByGUID.Clear();
 
-            foreach (var node in Nodes)
+            foreach (var node in nodes)
             {
                 if (node is null)
                     continue;

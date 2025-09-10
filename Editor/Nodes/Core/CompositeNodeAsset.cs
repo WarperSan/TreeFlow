@@ -10,7 +10,7 @@ namespace TreeFlow.Editor.Nodes.Core
         /// <summary>
         /// List of children of this node
         /// </summary>
-        public List<string> Children;
+        public List<string> Children = new();
 
         /// <summary>
         /// Links the given node to this node

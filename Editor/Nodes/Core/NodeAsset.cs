@@ -33,11 +33,17 @@ namespace TreeFlow.Editor.Nodes.Core
         public bool IsRoot { get; private set; }
 
         /// <summary>
+        /// Reference to the <see cref="BehaviorTreeAsset"/> owning this node
+        /// </summary>
+        [NonSerialized] protected BehaviorTreeAsset Tree;
+
+        /// <summary>
         /// Computes important information for later use
         /// </summary>
         public virtual void Compute(BehaviorTreeAsset tree)
         {
-            IsRoot = tree.RootGUID == GUID;
+            IsRoot = tree.IsRoot(this);
+            Tree = tree;
         }
 
         #endregion

@@ -164,7 +164,7 @@ namespace TreeFlow.Editor.UIElements
             
             graphViewChanged += OnGraphViewChanged;
         }
-        
+
         /// <summary>
         /// Adds the given <see cref="NodeAsset"/> to the graph
         /// </summary>
@@ -208,7 +208,7 @@ namespace TreeFlow.Editor.UIElements
         /// </summary>
         private void MoveNodes(Dictionary<string, Vector2> positions)
         {
-            treeAsset?.SetPositions(positions);
+            treeAsset?.MoveNodes(positions);
             
             EditorUtility.SetDirty(treeAsset);
             OnTreeChanged?.Invoke();

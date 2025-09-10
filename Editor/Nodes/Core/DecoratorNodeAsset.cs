@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace TreeFlow.Editor.Nodes.Core
 {
@@ -8,6 +9,14 @@ namespace TreeFlow.Editor.Nodes.Core
         /// <summary>
         /// <see cref="NodeAsset.GUID"/> of the child of this node
         /// </summary>
-        public string Child;
+        [SerializeField] private string Child;
+
+        /// <summary>
+        /// Replaces the current child with the given one
+        /// </summary>
+        public void ReplaceChild(NodeAsset child)
+        {
+            Child = child.GUID;
+        }
     }
 }

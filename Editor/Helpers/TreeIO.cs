@@ -50,7 +50,7 @@ namespace TreeFlow.Editor.Helpers
                 return null;
 
             var root = asset.AddNode<SelectorNodeAsset>();
-            asset.RootGUID = root.GUID;
+            asset.PromotesToRoot(root);
 
             Resources.SaveChanges(asset);
             return asset;

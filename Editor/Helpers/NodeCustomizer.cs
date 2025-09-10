@@ -16,16 +16,35 @@ namespace TreeFlow.Editor.Helpers
         /// </summary>
         public static void Customize(INodeView view, NodeAsset node)
         {
-            // Root Style
-            if (node.IsRoot)
-            {
-                view.SetDefaultTitle("Root");
-                view.SetColor(50, 50, 50);
-                view.AddOutputPort(true);
+            if (ApplyUnique(view, node))
                 return;
-            }
 
-            // General Styles
+            ApplyGeneric(view, node);
+            ApplySpecific(view, node);
+        }
+
+        /// <summary>
+        /// Applies a unique style to the given <see cref="INodeView"/>
+        /// </summary>
+        /// <remarks>
+        /// This overrides any other style
+        /// </remarks>
+        private static bool ApplyUnique(INodeView view, NodeAsset node)
+        {
+            if (!node.IsRoot)
+                return false;
+
+            view.SetDefaultTitle("Root");
+            view.SetColor(50, 50, 50);
+            view.AddOutputPort(true);
+            return true;
+        }
+
+        /// <summary>
+        /// Applies a generic style to the given <see cref="INodeView"/>
+        /// </summary>
+        private static void ApplyGeneric(INodeView view, NodeAsset node)
+        {
             switch (node)
             {
                 case CompositeNodeAsset:
@@ -40,8 +59,13 @@ namespace TreeFlow.Editor.Helpers
                     view.AddInputPort();
                     break;
             }
+        }
 
-            // Specific styles
+        /// <summary>
+        /// Applies a specific style to the given <see cref="INodeView"/>
+        /// </summary>
+        private static void ApplySpecific(INodeView view, NodeAsset node)
+        {
             switch (node)
             {
                 case SelectorNodeAsset:
