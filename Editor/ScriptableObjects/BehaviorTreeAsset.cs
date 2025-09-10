@@ -64,9 +64,12 @@ namespace TreeFlow.Editor.ScriptableObjects
         /// <summary>
         /// Removes the given nodes from this tree
         /// </summary>
-        public void RemoveNodes(IEnumerable<string> guids)
+        public void RemoveNodes(IEnumerable<NodeAsset> nodesToRemove)
         {
-            var uniqueGUIDs = new HashSet<string>(guids);
+            var uniqueGUIDs = new HashSet<string>();
+            
+            foreach (var node in nodesToRemove)
+                uniqueGUIDs.Add(node.GUID);
 
             for (var i = nodes.Count - 1; i >= 0; i--)
             {
@@ -83,15 +86,10 @@ namespace TreeFlow.Editor.ScriptableObjects
         /// <summary>
         /// Moves the given nodes to the given positions
         /// </summary>
-        public void MoveNodes(Dictionary<string, Vector2> positions)
+        public void MoveNodes(Dictionary<NodeAsset, Vector2> positions)
         {
-            foreach (var (guid, position) in positions)
-            {
-                if (!nodeByGUID.TryGetValue(guid, out var node))
-                    continue;
-                
+            foreach (var (node, position) in positions)
                 node.Position = position;
-            }
         }
 
         #endregion

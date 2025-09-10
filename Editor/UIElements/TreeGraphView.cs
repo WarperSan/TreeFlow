@@ -71,14 +71,14 @@ namespace TreeFlow.Editor.UIElements
             // Nodes moved
             if (graphViewChange.movedElements != null)
             {
-                var newPositions = new Dictionary<string, Vector2>();
+                var newPositions = new Dictionary<NodeAsset, Vector2>();
 
                 foreach (var element in graphViewChange.movedElements)
                 {
                     if (element is not NodeView nodeView)
                         continue;
 
-                    newPositions.TryAdd(nodeView.Node.GUID, nodeView.GetPosition().position);
+                    newPositions.TryAdd(nodeView.Node, nodeView.GetPosition().position);
                 }
                 
                 if (newPositions.Count > 0)
@@ -106,14 +106,14 @@ namespace TreeFlow.Editor.UIElements
             // ReSharper disable once InvertIf
             if (graphViewChange.elementsToRemove != null)
             {
-                var nodesToRemove = new List<NodeView>();
+                var nodesToRemove = new List<NodeAsset>();
 
                 foreach (var element in graphViewChange.elementsToRemove)
                 {
                     if (element is not NodeView nodeView)
                         continue;
                     
-                    nodesToRemove.Add(nodeView);
+                    nodesToRemove.Add(nodeView.Node);
                 }
                 
                 if (nodesToRemove.Count > 0)
@@ -191,13 +191,9 @@ namespace TreeFlow.Editor.UIElements
         /// <summary>
         /// Removes the given nodes from the graph
         /// </summary>
-        private void RemoveNodes(List<NodeView> nodeViews)
+        private void RemoveNodes(List<NodeAsset> nodesToRemove)
         {
-            var guids = new HashSet<string>();
-
-            foreach (var nodeView in nodeViews)
-                guids.Add(nodeView.Node.GUID);
-            treeAsset?.RemoveNodes(guids);
+            treeAsset?.RemoveNodes(nodesToRemove);
             
             EditorUtility.SetDirty(treeAsset);
             OnTreeChanged?.Invoke();
@@ -206,9 +202,9 @@ namespace TreeFlow.Editor.UIElements
         /// <summary>
         /// Moves the given nodes at the given positions
         /// </summary>
-        private void MoveNodes(Dictionary<string, Vector2> positions)
+        private void MoveNodes(Dictionary<NodeAsset, Vector2> positionsByNode)
         {
-            treeAsset?.MoveNodes(positions);
+            treeAsset?.MoveNodes(positionsByNode);
             
             EditorUtility.SetDirty(treeAsset);
             OnTreeChanged?.Invoke();
