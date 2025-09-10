@@ -51,22 +51,16 @@ namespace TreeFlow.Editor
             treeGraphView.OnTreeChanged += OnTreeChanged;
             
             var fileMenu = rootVisualElement.Q<ToolbarMenu>("file-menu");
-            fileMenu.menu.AppendAction("New Tree", _ =>
-            {
-                var asset = Helpers.Resources.PromptCreateFile<BehaviorTreeAsset>(
-                    "Create a Tree",
-                    "NewBehaviorTree",
-                    "asset"
-                );
+            fileMenu.menu.AppendAction("New Tree", _ => {
+                var asset = Helpers.TreeIO.PromptCreateTree();
                 
                 if (asset is null)
                     return;
 
-                Open(asset);
+                Helpers.TreeIO.PromptLoadTree(asset);
             });
-            fileMenu.menu.AppendAction("Open Tree", _ =>
-            {
-                var asset = Helpers.Resources.PromptOpenFile<BehaviorTreeAsset>("Open a Tree", "asset");
+            fileMenu.menu.AppendAction("Open Tree", _ => {
+                var asset = Helpers.TreeIO.PromptOpenTree();
 
                 if (asset is null)
                     return;
@@ -74,14 +68,8 @@ namespace TreeFlow.Editor
                 Open(asset);
             });
             fileMenu.menu.AppendAction("Save", _ => SaveChanges());
-            fileMenu.menu.AppendAction("Save As...", _ =>
-            {
-                var path = Helpers.Resources.PromptSaveFile(
-                    treeAsset,
-                    "Save Tree As...",
-                    "NewBehaviourTree",
-                    "asset"
-                );
+            fileMenu.menu.AppendAction("Save As...", _ => {
+                var path = Helpers.TreeIO.PromptSaveTree(treeAsset);
                 
                 if (path == null)
                     return;
@@ -91,7 +79,7 @@ namespace TreeFlow.Editor
                 if (asset is null)
                     return;
 
-                Open(asset);
+                Helpers.TreeIO.PromptLoadTree(asset);
             });
             //fileMenu.menu.AppendSeparator();
             //fileMenu.menu.AppendAction("Export", _ => { });

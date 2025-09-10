@@ -31,64 +31,14 @@ namespace TreeFlow.Editor.Helpers
         public static T Load<T>(string path) where T : Object => AssetDatabase.LoadAssetAtPath<T>(RelativeToAbsolute(path));
 
         /// <summary>
-        /// Prompts the user to create an asset file
+        /// Creates a new instance of the asset at the given path
         /// </summary>
-        public static T PromptCreateFile<T>(string title, string defaultName, string extension) where T : ScriptableObject
+        public static T Create<T>(string path) where T : ScriptableObject
         {
-            var newPath = EditorUtility.SaveFilePanelInProject(title, defaultName, extension, "");
-            
-            if (string.IsNullOrEmpty(newPath))
-                return null;
-            
             var asset = ScriptableObject.CreateInstance<T>();
-            AssetDatabase.CreateAsset(asset, newPath);
+            AssetDatabase.CreateAsset(asset, path);
             AssetDatabase.Refresh();
             return asset;
-        }
-        
-        /// <summary>
-        /// Prompts the user to open an asset file
-        /// </summary>
-        public static T PromptOpenFile<T>(string title, string extension) where T : Object
-        {
-            var path = EditorUtility.OpenFilePanel(title, "Assets/", extension);
-                
-            if (string.IsNullOrEmpty(path))
-                return null;
-
-            if (Path.IsPathRooted(path))
-            {
-                var targetPath = Path.GetDirectoryName(Application.dataPath);
-                path = Path.GetRelativePath(targetPath, path);
-            }
-
-            var asset = AssetDatabase.LoadAssetAtPath<T>(path);
-
-            if (asset is not null)
-                return asset;
-
-            Debug.LogWarningFormat("Failed to load a '{0}' from '{1}'.", typeof(T).Name, path);
-            return null;
-        }
-
-        /// <summary>
-        /// Prompts the user to save the asset to a file
-        /// </summary>
-        public static string PromptSaveFile<T>(T asset, string title, string defaultName, string extension) where T : ScriptableObject
-        {
-            var path = AssetDatabase.GetAssetPath(asset);
-
-            if (string.IsNullOrEmpty(path))
-                return null;
-            
-            var newPath = EditorUtility.SaveFilePanelInProject(title, defaultName, extension, "");
-            
-            if (string.IsNullOrEmpty(newPath))
-                return null;
-
-            AssetDatabase.CopyAsset(path, newPath);
-            AssetDatabase.Refresh();
-            return newPath;
         }
         
         /// <summary>
