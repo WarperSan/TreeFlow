@@ -129,9 +129,6 @@ namespace TreeFlow.Editor
         /// <inheritdoc/>
         public override void DiscardChanges()
         {
-            foreach (var node in treeAsset.Nodes)
-                Helpers.Resources.DiscardChanges(node);
-
             Helpers.Resources.DiscardChanges(treeAsset);
             base.DiscardChanges();
         }

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using TreeFlow.Editor.Nodes.Core;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,13 +12,14 @@ namespace TreeFlow.Editor.ScriptableObjects
     public class BehaviorTreeAsset : ScriptableObject
     {
         /// <summary>
-        /// <see cref="NodeAsset.GUID"/> of the root node
+        /// <see cref="GUID"/> of the root node
         /// </summary>
         public string RootGUID;
         
         /// <summary>
         /// List of every node present in the tree
         /// </summary>
+        [SerializeReference]
         public List<NodeAsset> Nodes = new();
 
         /// <summary>
@@ -24,9 +27,13 @@ namespace TreeFlow.Editor.ScriptableObjects
         /// </summary>
         public T AddNode<T>() where T : NodeAsset, new()
         {
-            var node = CreateInstance<T>();
-            node.GUID = GUID.Generate().ToString();
+            var node = new T
+            {
+                GUID = GUID.Generate().ToString()
+            };
+
             Nodes.Add(node);
+            nodeByGUID.TryAdd(node.GUID, node);
             
             return node;
         }
@@ -46,6 +53,7 @@ namespace TreeFlow.Editor.ScriptableObjects
                     continue;
 
                 Nodes.RemoveAt(i);
+                nodeByGUID.Remove(node.GUID);
             }
         }
 
@@ -54,13 +62,37 @@ namespace TreeFlow.Editor.ScriptableObjects
         /// </summary>
         public void SetPositions(Dictionary<string, Vector2> positions)
         {
-            foreach (var node in Nodes)
+            foreach (var (guid, position) in positions)
             {
-                if (!positions.TryGetValue(node.GUID, out var position))
+                if (!nodeByGUID.TryGetValue(guid, out var node))
                     continue;
-
+                
                 node.Position = position;
             }
         }
+
+        #region Utils
+        
+        [NonSerialized] private readonly Dictionary<string, NodeAsset> nodeByGUID = new();
+        [NonSerialized] private readonly Dictionary<string, HashSet<string>> linksByGUID = new();
+
+        /// <summary>
+        /// Computes important information for later use
+        /// </summary>
+        public void Compute()
+        {
+            nodeByGUID.Clear();
+
+            foreach (var node in Nodes)
+            {
+                if (node is null)
+                    continue;
+
+                nodeByGUID.TryAdd(node.GUID, node);
+                node.IsRoot = node.GUID == RootGUID;
+            }
+        }
+
+        #endregion
     }
 }

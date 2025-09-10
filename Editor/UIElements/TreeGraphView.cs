@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using TreeFlow.Editor.Nodes.Composite;
+using TreeFlow.Editor.Nodes.Core;
+using TreeFlow.Editor.Nodes.Decorator;
+using TreeFlow.Editor.Nodes.Leaf;
 using TreeFlow.Editor.ScriptableObjects;
-using TreeFlow.Editor.ScriptableObjects.Nodes.Composite;
-using TreeFlow.Editor.ScriptableObjects.Nodes.Decorator;
-using TreeFlow.Editor.ScriptableObjects.Nodes.Leaf;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -88,14 +89,14 @@ namespace TreeFlow.Editor.UIElements
             // ReSharper disable once InvertIf
             if (graphViewChange.elementsToRemove != null)
             {
-                var nodesToRemove = new List<string>();
+                var nodesToRemove = new List<NodeView>();
 
                 foreach (var element in graphViewChange.elementsToRemove)
                 {
                     if (element is not NodeView nodeView)
                         continue;
                     
-                    nodesToRemove.Add(nodeView.Node.GUID);
+                    nodesToRemove.Add(nodeView);
                 }
                 
                 if (nodesToRemove.Count > 0)
@@ -133,6 +134,8 @@ namespace TreeFlow.Editor.UIElements
         /// </summary>
         public void PopulateView(BehaviorTreeAsset tree)
         {
+            tree.Compute();
+            
             graphViewChanged -= OnGraphViewChanged;
 
             DeleteElements(graphElements);
@@ -164,7 +167,6 @@ namespace TreeFlow.Editor.UIElements
 
             AddNodeToGraph(newNode);
             
-            AssetDatabase.AddObjectToAsset(newNode, treeAsset);
             EditorUtility.SetDirty(treeAsset);
             OnTreeChanged?.Invoke();
         }
@@ -172,8 +174,12 @@ namespace TreeFlow.Editor.UIElements
         /// <summary>
         /// Removes the given nodes from the graph
         /// </summary>
-        private void RemoveNodes(List<string> guids)
+        private void RemoveNodes(List<NodeView> nodeViews)
         {
+            var guids = new HashSet<string>();
+
+            foreach (var nodeView in nodeViews)
+                guids.Add(nodeView.Node.GUID);
             treeAsset?.RemoveNodes(guids);
             
             EditorUtility.SetDirty(treeAsset);

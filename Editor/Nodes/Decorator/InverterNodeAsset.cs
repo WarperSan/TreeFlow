@@ -1,18 +1,19 @@
 using System;
 using TreeFlow.Editor.Interfaces;
+using TreeFlow.Editor.Nodes.Core;
 
-namespace TreeFlow.Editor.ScriptableObjects.Nodes.Leaf
+namespace TreeFlow.Editor.Nodes.Decorator
 {
     [Serializable]
-    public class ConditionNodeAsset : LeafNodeAsset
+    public class InverterNodeAsset : DecoratorNodeAsset
     {
         /// <inheritdoc/>
         public override void Customize(INodeView view)
         {
             base.Customize(view);
             
-            view.SetDefaultTitle("Condition");
-            view.SetColor(44, 62, 80);
+            view.SetDefaultTitle("Inverter");
+            view.SetColor(155, 89, 182);
         }
     }
 }

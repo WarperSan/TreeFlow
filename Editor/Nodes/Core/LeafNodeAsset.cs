@@ -1,18 +1,17 @@
 using System;
 using TreeFlow.Editor.Interfaces;
 
-namespace TreeFlow.Editor.ScriptableObjects.Nodes.Decorator
+namespace TreeFlow.Editor.Nodes.Core
 {
     [Serializable]
-    public class RepeatNodeAsset : DecoratorNodeAsset
+    public abstract class LeafNodeAsset : NodeAsset
     {
         /// <inheritdoc/>
         public override void Customize(INodeView view)
         {
             base.Customize(view);
             
-            view.SetDefaultTitle("Repeat");
-            view.SetColor(22, 160, 133);
+            view.AddInputPort();
         }
     }
 }

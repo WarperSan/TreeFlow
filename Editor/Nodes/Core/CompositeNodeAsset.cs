@@ -1,7 +1,7 @@
 using System;
 using TreeFlow.Editor.Interfaces;
 
-namespace TreeFlow.Editor.ScriptableObjects
+namespace TreeFlow.Editor.Nodes.Core
 {
     [Serializable]
     public abstract class CompositeNodeAsset : NodeAsset

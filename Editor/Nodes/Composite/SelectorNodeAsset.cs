@@ -1,17 +1,19 @@
 using System;
 using TreeFlow.Editor.Interfaces;
+using TreeFlow.Editor.Nodes.Core;
 
-namespace TreeFlow.Editor.ScriptableObjects
+namespace TreeFlow.Editor.Nodes.Composite
 {
     [Serializable]
-    public abstract class LeafNodeAsset : NodeAsset
+    public sealed class SelectorNodeAsset : CompositeNodeAsset
     {
         /// <inheritdoc/>
         public override void Customize(INodeView view)
         {
             base.Customize(view);
             
-            view.AddInputPort();
+            view.SetDefaultTitle("Selector");
+            view.SetColor(17, 93, 168);
         }
     }
 }

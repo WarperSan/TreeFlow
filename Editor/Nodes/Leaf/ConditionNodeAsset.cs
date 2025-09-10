@@ -1,18 +1,19 @@
 using System;
 using TreeFlow.Editor.Interfaces;
+using TreeFlow.Editor.Nodes.Core;
 
-namespace TreeFlow.Editor.ScriptableObjects.Nodes.Composite
+namespace TreeFlow.Editor.Nodes.Leaf
 {
     [Serializable]
-    public sealed class ParallelNodeAsset : CompositeNodeAsset
+    public class ConditionNodeAsset : LeafNodeAsset
     {
         /// <inheritdoc/>
         public override void Customize(INodeView view)
         {
             base.Customize(view);
             
-            view.SetDefaultTitle("Parallel");
-            view.SetColor(156, 162, 71);
+            view.SetDefaultTitle("Condition");
+            view.SetColor(44, 62, 80);
         }
     }
 }

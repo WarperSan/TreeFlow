@@ -1,15 +1,16 @@
 using System;
 using TreeFlow.Editor.Interfaces;
+using TreeFlow.Editor.ScriptableObjects;
 using TreeFlow.Editor.UIElements;
 using UnityEngine;
 
-namespace TreeFlow.Editor.ScriptableObjects
+namespace TreeFlow.Editor.Nodes.Core
 {
     /// <summary>
     /// Asset that represents a node inside <see cref="BehaviorTreeAsset"/>
     /// </summary>
     [Serializable]
-    public abstract class NodeAsset : ScriptableObject
+    public abstract class NodeAsset
     {
         /// <summary>
         /// Identifier that is unique to this instance
@@ -33,5 +34,14 @@ namespace TreeFlow.Editor.ScriptableObjects
         {
             view.SetDefaultTitle("Node");
         }
+
+        #region Utils
+
+        /// <summary>
+        /// Defines if this node is the root of the tree
+        /// </summary>
+        [NonSerialized] public bool IsRoot;
+
+        #endregion
     }
 }

@@ -1,18 +1,18 @@
 using System;
 using TreeFlow.Editor.Interfaces;
 
-namespace TreeFlow.Editor.ScriptableObjects.Nodes.Composite
+namespace TreeFlow.Editor.Nodes.Core
 {
     [Serializable]
-    public sealed class SequenceNodeAsset : CompositeNodeAsset
+    public abstract class DecoratorNodeAsset : NodeAsset
     {
         /// <inheritdoc/>
         public override void Customize(INodeView view)
         {
             base.Customize(view);
-
-            view.SetDefaultTitle("Sequence");
-            view.SetColor(18, 152, 87);
+            
+            view.AddInputPort();
+            view.AddOutputPort();
         }
     }
 }
