@@ -74,8 +74,6 @@ namespace TreeFlow.Editor.ScriptableObjects
                 {
                     nodes.RemoveAt(i);
                     continue;
-
-                nodes.RemoveAt(i);
                 }
                 
                 if (node is not IParentNode parentNode)
