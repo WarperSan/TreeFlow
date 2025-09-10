@@ -15,7 +15,6 @@ namespace TreeFlow.Editor.UIElements
     /// </summary>
     internal class TreeGraphView : GraphView
     {
-        private SerializedObject serializedTree;
         private BehaviorTreeAsset treeAsset;
 
         public delegate void TreeChanged();
@@ -130,34 +129,20 @@ namespace TreeFlow.Editor.UIElements
         #region Tree
 
         /// <summary>
-        /// Assigns the tree to display to the given <see cref="BehaviorTreeAsset"/>
+        /// Populates this view with the given <see cref="BehaviorTreeAsset"/>
         /// </summary>
-        public void AssignTree(SerializedObject obj)
+        public void PopulateView(BehaviorTreeAsset tree)
         {
             graphViewChanged -= OnGraphViewChanged;
 
             DeleteElements(graphElements);
             
-            serializedTree = obj;
-            treeAsset = (BehaviorTreeAsset)serializedTree.targetObject;
+            treeAsset = tree;
 
             foreach (var node in treeAsset.Nodes)
                 AddNodeToGraph(node);
             
             graphViewChanged += OnGraphViewChanged;
-        }
-        
-        /// <summary>
-        /// Updates the tree using <see cref="action"/>, with the given title
-        /// </summary>
-        private void UpdateTree(System.Action action, string actionName)
-        {
-            Undo.RecordObject(serializedTree.targetObject, actionName);
-
-            action?.Invoke();
-
-            serializedTree.Update();
-            OnTreeChanged?.Invoke();
         }
         
         /// <summary>
@@ -172,38 +157,51 @@ namespace TreeFlow.Editor.UIElements
         /// <summary>
         /// Creates a brand new <see cref="NodeAsset"/> from the given information
         /// </summary>
-        private void CreateNode<T>(Vector2 position) where T : NodeAsset, new() => UpdateTree(() =>
+        private void CreateNode<T>(Vector2 position) where T : NodeAsset, new()
         {
             var newNode = treeAsset.AddNode<T>();
             newNode.Position = position;
 
             AddNodeToGraph(newNode);
-        }, "Created new Node");
+            
+            AssetDatabase.AddObjectToAsset(newNode, treeAsset);
+            EditorUtility.SetDirty(treeAsset);
+            OnTreeChanged?.Invoke();
+        }
 
         /// <summary>
         /// Removes the given nodes from the graph
         /// </summary>
-        private void RemoveNodes(List<string> guids) => UpdateTree(
-            () => treeAsset?.RemoveNodes(guids),
-            "Removed Nodes"
-        );
+        private void RemoveNodes(List<string> guids)
+        {
+            treeAsset?.RemoveNodes(guids);
+            
+            EditorUtility.SetDirty(treeAsset);
+            OnTreeChanged?.Invoke();
+        }
 
         /// <summary>
         /// Moves the given nodes at the given positions
         /// </summary>
-        private void MoveNodes(Dictionary<string, Vector2> positions) => UpdateTree(
-            () => treeAsset?.SetPositions(positions),
-            "Moved Nodes"
-        );
+        private void MoveNodes(Dictionary<string, Vector2> positions)
+        {
+            treeAsset?.SetPositions(positions);
+            
+            EditorUtility.SetDirty(treeAsset);
+            OnTreeChanged?.Invoke();
+        }
 
         /// <summary>
         /// Renames the given node to the given name
         /// </summary>
-        public void RenameNode(NodeAsset graphNode, string newName) => UpdateTree(
-            () => graphNode.Name = newName,
-            "Renamed Node"
-        );
-        
+        public void RenameNode(NodeAsset graphNode, string newName)
+        {
+            graphNode.Name = newName;
+            
+            EditorUtility.SetDirty(treeAsset);
+            OnTreeChanged?.Invoke();
+        }
+
         #endregion
     }
 }

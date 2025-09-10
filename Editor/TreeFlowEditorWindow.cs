@@ -75,11 +75,7 @@ namespace TreeFlow.Editor
             titleContent.text = tree.name;
             treeAsset = tree;
 
-            if (treeGraphView is null)
-                return;
-
-            var obj = new SerializedObject(tree);
-            treeGraphView.AssignTree(obj);
+            treeGraphView?.PopulateView(tree);
         }
 
         #endregion
@@ -98,21 +94,17 @@ namespace TreeFlow.Editor
         /// <inheritdoc/>
         public override void DiscardChanges()
         {
-            if (treeAsset is not null)
-                Resources.UnloadAsset(treeAsset);
-            
+            foreach (var node in treeAsset.Nodes)
+                Helpers.Resources.DiscardChanges(node);
+
+            Helpers.Resources.DiscardChanges(treeAsset);
             base.DiscardChanges();
         }
 
         /// <inheritdoc/>
         public override void SaveChanges()
         {
-            if (EditorUtility.IsDirty(treeAsset))
-            {
-                AssetDatabase.SaveAssetIfDirty(treeAsset);
-                AssetDatabase.Refresh();
-            }
-            
+            Helpers.Resources.SaveChanges(treeAsset);
             base.SaveChanges();
         }
 

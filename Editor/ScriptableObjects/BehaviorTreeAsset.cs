@@ -7,11 +7,10 @@ namespace TreeFlow.Editor.ScriptableObjects
     /// <summary>
     /// Asset that represents a behavior tree usable by the editor
     /// </summary>
-    [CreateAssetMenu(menuName = "TreeFlow/Behavior Tree")]
     public class BehaviorTreeAsset : ScriptableObject
     {
         /// <summary>
-        /// <see cref="GraphNode.GUID"/> of the root node
+        /// <see cref="NodeAsset.GUID"/> of the root node
         /// </summary>
         public string RootGUID;
         
@@ -28,7 +27,7 @@ namespace TreeFlow.Editor.ScriptableObjects
             var node = CreateInstance<T>();
             node.GUID = GUID.Generate().ToString();
             Nodes.Add(node);
-            AssetDatabase.AddObjectToAsset(node, this);
+            
             return node;
         }
 
@@ -47,7 +46,6 @@ namespace TreeFlow.Editor.ScriptableObjects
                     continue;
 
                 Nodes.RemoveAt(i);
-                AssetDatabase.RemoveObjectFromAsset(node);
             }
         }
 
@@ -60,7 +58,7 @@ namespace TreeFlow.Editor.ScriptableObjects
             {
                 if (!positions.TryGetValue(node.GUID, out var position))
                     continue;
-                
+
                 node.Position = position;
             }
         }

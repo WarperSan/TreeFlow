@@ -29,5 +29,56 @@ namespace TreeFlow.Editor.Helpers
         /// Loads the resource at the given path from the root 
         /// </summary>
         public static T Load<T>(string path) where T : Object => AssetDatabase.LoadAssetAtPath<T>(RelativeToAbsolute(path));
+
+        /// <summary>
+        /// Prompts the user to open a file
+        /// </summary>
+        public static T PromptFile<T>(string title, string extension) where T : Object
+        {
+            var path = EditorUtility.OpenFilePanel(title, "Assets/", extension);
+                
+            if (string.IsNullOrEmpty(path))
+                return null;
+
+            if (Path.IsPathRooted(path))
+            {
+                var targetPath = Path.GetDirectoryName(Application.dataPath);
+                path = Path.GetRelativePath(targetPath, path);
+            }
+
+            var asset = AssetDatabase.LoadAssetAtPath<T>(path);
+
+            if (asset is not null)
+                return asset;
+
+            Debug.LogWarningFormat("Failed to load a '{0}' from '{1}'.", typeof(T).Name, path);
+            return null;
+        }
+
+        /// <summary>
+        /// Saves the changes done to the given asset
+        /// </summary>
+        public static void SaveChanges(Object asset)
+        {
+            if (asset is null)
+                return;
+
+            if (!EditorUtility.IsDirty(asset))
+                return;
+            
+            AssetDatabase.SaveAssetIfDirty(asset);
+            AssetDatabase.Refresh();
+        }
+
+        /// <summary>
+        /// Discards the changes done to the given asset
+        /// </summary>
+        public static void DiscardChanges(Object asset)
+        {
+            if (asset is null)
+                return;
+            
+            UnityEngine.Resources.UnloadAsset(asset);
+        }
     }
 }
