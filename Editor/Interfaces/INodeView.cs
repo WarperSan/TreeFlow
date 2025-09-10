@@ -1,4 +1,3 @@
-using TreeFlow.Editor.ScriptableObjects;
 using UnityEditor.Experimental.GraphView;
 
 namespace TreeFlow.Editor.Interfaces

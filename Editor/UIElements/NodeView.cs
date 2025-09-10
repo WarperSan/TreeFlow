@@ -1,6 +1,6 @@
+using TreeFlow.Editor.Helpers;
 using TreeFlow.Editor.Interfaces;
 using TreeFlow.Editor.Nodes.Core;
-using TreeFlow.Editor.ScriptableObjects;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -34,14 +34,9 @@ namespace TreeFlow.Editor.UIElements
             SetPosition(rect);
 
             if (node.IsRoot)
-            {
                 capabilities &= ~(Capabilities.Deletable | Capabilities.Copiable);
-                SetDefaultTitle("Root");
-                SetColor(50, 50, 50);
-                AddOutputPort(true);
-            }
-            else
-                node.Customize(this);
+
+            NodeCustomizer.Customize(this, node);
         }
         
         #region Header
