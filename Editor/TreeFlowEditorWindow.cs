@@ -1,7 +1,7 @@
 using TreeFlow.Editor.ScriptableObjects;
 using TreeFlow.Editor.UIElements;
 using UnityEditor;
-using UnityEngine;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 namespace TreeFlow.Editor
@@ -49,6 +49,53 @@ namespace TreeFlow.Editor
 
             treeGraphView = rootVisualElement.Q<TreeGraphView>();
             treeGraphView.OnTreeChanged += OnTreeChanged;
+            
+            var fileMenu = rootVisualElement.Q<ToolbarMenu>("file-menu");
+            fileMenu.menu.AppendAction("New Tree", _ =>
+            {
+                var asset = Helpers.Resources.PromptCreateFile<BehaviorTreeAsset>(
+                    "Create a Tree",
+                    "NewBehaviorTree",
+                    "asset"
+                );
+                
+                if (asset is null)
+                    return;
+
+                Open(asset);
+            });
+            fileMenu.menu.AppendAction("Open Tree", _ =>
+            {
+                var asset = Helpers.Resources.PromptOpenFile<BehaviorTreeAsset>("Open a Tree", "asset");
+
+                if (asset is null)
+                    return;
+
+                Open(asset);
+            });
+            fileMenu.menu.AppendAction("Save", _ => SaveChanges());
+            fileMenu.menu.AppendAction("Save As...", _ =>
+            {
+                var path = Helpers.Resources.PromptSaveFile(
+                    treeAsset,
+                    "Save Tree As...",
+                    "NewBehaviourTree",
+                    "asset"
+                );
+                
+                if (path == null)
+                    return;
+
+                var asset = AssetDatabase.LoadAssetAtPath<BehaviorTreeAsset>(path);
+
+                if (asset is null)
+                    return;
+
+                Open(asset);
+            });
+            //fileMenu.menu.AppendSeparator();
+            //fileMenu.menu.AppendAction("Export", _ => { });
+            //fileMenu.menu.AppendAction("Import", _ => { });
             
             SetTree(treeAsset);
         }

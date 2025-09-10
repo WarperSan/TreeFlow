@@ -31,9 +31,25 @@ namespace TreeFlow.Editor.Helpers
         public static T Load<T>(string path) where T : Object => AssetDatabase.LoadAssetAtPath<T>(RelativeToAbsolute(path));
 
         /// <summary>
-        /// Prompts the user to open a file
+        /// Prompts the user to create an asset file
         /// </summary>
-        public static T PromptFile<T>(string title, string extension) where T : Object
+        public static T PromptCreateFile<T>(string title, string defaultName, string extension) where T : ScriptableObject
+        {
+            var newPath = EditorUtility.SaveFilePanelInProject(title, defaultName, extension, "");
+            
+            if (string.IsNullOrEmpty(newPath))
+                return null;
+            
+            var asset = ScriptableObject.CreateInstance<T>();
+            AssetDatabase.CreateAsset(asset, newPath);
+            AssetDatabase.Refresh();
+            return asset;
+        }
+        
+        /// <summary>
+        /// Prompts the user to open an asset file
+        /// </summary>
+        public static T PromptOpenFile<T>(string title, string extension) where T : Object
         {
             var path = EditorUtility.OpenFilePanel(title, "Assets/", extension);
                 
@@ -55,6 +71,26 @@ namespace TreeFlow.Editor.Helpers
             return null;
         }
 
+        /// <summary>
+        /// Prompts the user to save the asset to a file
+        /// </summary>
+        public static string PromptSaveFile<T>(T asset, string title, string defaultName, string extension) where T : ScriptableObject
+        {
+            var path = AssetDatabase.GetAssetPath(asset);
+
+            if (string.IsNullOrEmpty(path))
+                return null;
+            
+            var newPath = EditorUtility.SaveFilePanelInProject(title, defaultName, extension, "");
+            
+            if (string.IsNullOrEmpty(newPath))
+                return null;
+
+            AssetDatabase.CopyAsset(path, newPath);
+            AssetDatabase.Refresh();
+            return newPath;
+        }
+        
         /// <summary>
         /// Saves the changes done to the given asset
         /// </summary>
