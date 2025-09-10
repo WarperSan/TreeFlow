@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using TreeFlow.Editor.Interfaces;
 using TreeFlow.Editor.Nodes.Core;
@@ -56,7 +55,6 @@ namespace TreeFlow.Editor.ScriptableObjects
             };
 
             nodes.Add(node);
-            nodeByGUID.TryAdd(node.GUID, node);
             
             return node;
         }
@@ -79,7 +77,6 @@ namespace TreeFlow.Editor.ScriptableObjects
                     continue;
 
                 nodes.RemoveAt(i);
-                nodeByGUID.Remove(node.GUID);
             }
         }
 
@@ -115,23 +112,13 @@ namespace TreeFlow.Editor.ScriptableObjects
         
         #region Utils
         
-        [NonSerialized] private readonly Dictionary<string, NodeAsset> nodeByGUID = new();
-
         /// <summary>
         /// Computes important information for later use
         /// </summary>
         internal void Compute()
         {
-            nodeByGUID.Clear();
-
             foreach (var node in nodes)
-            {
-                if (node is null)
-                    continue;
-
-                nodeByGUID.TryAdd(node.GUID, node);
-                node.Compute(this);
-            }
+                node?.Compute(this);
         }
 
         #endregion

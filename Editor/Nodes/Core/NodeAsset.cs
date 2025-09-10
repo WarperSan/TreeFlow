@@ -30,7 +30,7 @@ namespace TreeFlow.Editor.Nodes.Core
         /// <summary>
         /// Defines if this node is the root of the tree
         /// </summary>
-        public bool IsRoot { get; private set; }
+        public bool IsRoot => Tree?.IsRoot(this) ?? false;
 
         /// <summary>
         /// Reference to the <see cref="BehaviorTreeAsset"/> owning this node
@@ -42,7 +42,6 @@ namespace TreeFlow.Editor.Nodes.Core
         /// </summary>
         public virtual void Compute(BehaviorTreeAsset tree)
         {
-            IsRoot = tree.IsRoot(this);
             Tree = tree;
         }
 

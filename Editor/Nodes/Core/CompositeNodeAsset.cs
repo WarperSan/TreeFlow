@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using TreeFlow.Editor.Interfaces;
-using TreeFlow.Editor.ScriptableObjects;
 using UnityEngine;
 
 namespace TreeFlow.Editor.Nodes.Core
