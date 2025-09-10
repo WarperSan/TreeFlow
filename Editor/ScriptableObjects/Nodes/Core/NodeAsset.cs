@@ -1,4 +1,5 @@
 using System;
+using TreeFlow.Editor.Interfaces;
 using TreeFlow.Editor.UIElements;
 using UnityEngine;
 
@@ -28,7 +29,7 @@ namespace TreeFlow.Editor.ScriptableObjects
         /// <summary>
         /// Called when <see cref="NodeView"/> needs to display this node
         /// </summary>
-        public virtual void Customize(NodeView view)
+        public virtual void Customize(INodeView view)
         {
             view.SetDefaultTitle("Node");
         }

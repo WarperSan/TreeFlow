@@ -1,5 +1,5 @@
 using System;
-using TreeFlow.Editor.UIElements;
+using TreeFlow.Editor.Interfaces;
 
 namespace TreeFlow.Editor.ScriptableObjects.Nodes.Composite
 {
@@ -7,7 +7,7 @@ namespace TreeFlow.Editor.ScriptableObjects.Nodes.Composite
     public sealed class SequenceNodeAsset : CompositeNodeAsset
     {
         /// <inheritdoc/>
-        public override void Customize(NodeView view)
+        public override void Customize(INodeView view)
         {
             base.Customize(view);
 

@@ -1,6 +1,5 @@
 using System;
-using TreeFlow.Editor.UIElements;
-using UnityEditor.Experimental.GraphView;
+using TreeFlow.Editor.Interfaces;
 
 namespace TreeFlow.Editor.ScriptableObjects
 {
@@ -8,12 +7,12 @@ namespace TreeFlow.Editor.ScriptableObjects
     public abstract class DecoratorNodeAsset : NodeAsset
     {
         /// <inheritdoc/>
-        public override void Customize(NodeView view)
+        public override void Customize(INodeView view)
         {
             base.Customize(view);
             
-            view.inputContainer.Add(view.InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool)));
-            view.outputContainer.Add(view.InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(bool)));
+            view.AddInputPort();
+            view.AddOutputPort();
         }
     }
 }

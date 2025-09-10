@@ -1,5 +1,5 @@
 using System;
-using TreeFlow.Editor.UIElements;
+using TreeFlow.Editor.Interfaces;
 
 namespace TreeFlow.Editor.ScriptableObjects.Nodes.Decorator
 {
@@ -7,7 +7,7 @@ namespace TreeFlow.Editor.ScriptableObjects.Nodes.Decorator
     public class InverterNodeAsset : DecoratorNodeAsset
     {
         /// <inheritdoc/>
-        public override void Customize(NodeView view)
+        public override void Customize(INodeView view)
         {
             base.Customize(view);
             

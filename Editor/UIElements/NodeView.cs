@@ -1,3 +1,4 @@
+using TreeFlow.Editor.Interfaces;
 using TreeFlow.Editor.ScriptableObjects;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace TreeFlow.Editor.UIElements
     /// <summary>
     /// Element used to display and modify <see cref="NodeAsset"/>
     /// </summary>
-    public sealed class NodeView : Node
+    public sealed class NodeView : Node, INodeView
     {
         /// <summary>
         /// Current node displayed
@@ -84,14 +85,14 @@ namespace TreeFlow.Editor.UIElements
             });
         }
 
-        /// <summary>
-        /// Sets the title of this node
-        /// </summary>
+        #endregion
+
+        #region INodeView
+        
+        /// <inheritdoc/>
         public void SetTitle(string newTitle) => title = TitleInput.value = newTitle;
 
-        /// <summary>
-        /// Sets the title to <see cref="defaultTitle"/> if this node has no name defined
-        /// </summary>
+        /// <inheritdoc/>
         public void SetDefaultTitle(string defaultTitle)
         {
             var _title = Node.Name;
@@ -102,19 +103,42 @@ namespace TreeFlow.Editor.UIElements
             SetTitle(_title);
         }
 
-        /// <summary>
-        /// Sets the color of the header of this node
-        /// </summary>
-        public void SetColor(float r, float g, float b) => HeaderBackground.style.backgroundColor = new Color(
-            r / 255,
-            g / 255,
-            b / 255
+        /// <inheritdoc/>
+        public void SetColor(byte r, byte g, byte b) => HeaderBackground.style.backgroundColor = new Color(
+            r / 255f,
+            g / 255f,
+            b / 255f
         );
 
-        /// <summary>
-        /// Sets the tooltip of the header section
-        /// </summary>
-        public void SetTooltip(string newTooltip) => Header.tooltip = newTooltip ?? "";
+        /// <inheritdoc/>
+        public void AddInputPort()
+        {
+            if (inputContainer is null)
+                return;
+
+            var input = InstantiatePort(
+                Orientation.Vertical,
+                Direction.Input,
+                Port.Capacity.Single,
+                typeof(bool)
+            );
+            inputContainer.Add(input);
+        }
+
+        /// <inheritdoc/>
+        public void AddOutputPort(bool allowMultiple = false)
+        {
+            if (outputContainer is null)
+                return;
+
+            var output = InstantiatePort(
+                Orientation.Vertical,
+                Direction.Output,
+                allowMultiple ? Port.Capacity.Multi : Port.Capacity.Single,
+                typeof(bool)
+            );
+            outputContainer.Add(output);
+        }
 
         #endregion
     }
