@@ -20,29 +20,5 @@ namespace TreeFlow.Tests.Tests.Utils
             /// <inheritdoc/>
             public override NodeStatus Process() => status;
         }
-
-        private class StatusSequenceNode : Node
-        {
-            private readonly NodeStatus[] statuses;
-            private int index = 0;
-            
-            public StatusSequenceNode(NodeStatus[] statuses)
-            {
-                this.statuses = statuses;
-            }
-            
-            /// <inheritdoc/>
-            public override NodeStatus Process()
-            {
-                var status = statuses[index];
-
-                index++;
-                
-                if (index >= statuses.Length)
-                    index = 0;
-
-                return status;
-            }
-        }
     }
 }
