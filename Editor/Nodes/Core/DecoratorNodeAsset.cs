@@ -15,16 +15,16 @@ namespace TreeFlow.Editor.Nodes.Core
         /// <inheritdoc/>
         public void Link(NodeAsset child)
         {
-            this.m_child = child.GUID;
+            m_child = child.GUID;
         }
 
         /// <inheritdoc/>
         public void Unlink(NodeAsset child)
         {
-            if (this.m_child != child.GUID)
+            if (m_child != child.GUID)
                 return;
 
-            this.m_child = null;
+            m_child = null;
         }
     }
 }
