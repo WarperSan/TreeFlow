@@ -41,7 +41,7 @@ namespace TreeFlow.Tests.Nodes.Leaves
                 condition.Process();
                 Assert.Fail();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Assert.Pass();
             }
