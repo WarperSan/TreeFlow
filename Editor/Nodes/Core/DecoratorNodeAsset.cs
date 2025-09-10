@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TreeFlow.Editor.Interfaces;
 using UnityEngine;
 
@@ -26,5 +27,8 @@ namespace TreeFlow.Editor.Nodes.Core
 
             m_child = null;
         }
+
+        /// <inheritdoc/>
+        public IEnumerable<string> Children => new[] { m_child };
     }
 }

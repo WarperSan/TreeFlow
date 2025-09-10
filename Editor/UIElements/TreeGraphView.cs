@@ -226,7 +226,7 @@ namespace TreeFlow.Editor.UIElements
         /// </summary>
         private void CreateLinks(List<KeyValuePair<NodeAsset, NodeAsset>> links)
         {
-            var linksPerNode = new Dictionary<NodeAsset, HashSet<NodeAsset>>();
+            var linksPerNode = new Dictionary<NodeAsset, ISet<NodeAsset>>();
 
             foreach (var (start, end) in links)
             {

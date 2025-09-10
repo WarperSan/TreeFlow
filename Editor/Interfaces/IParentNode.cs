@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TreeFlow.Editor.Nodes.Core;
 
 namespace TreeFlow.Editor.Interfaces
@@ -16,5 +17,26 @@ namespace TreeFlow.Editor.Interfaces
         /// Unlinks the given node from this node
         /// </summary>
         public void Unlink(NodeAsset child);
+
+        /// <summary>
+        /// Unlinks every given node from this node
+        /// </summary>
+        public void Unlink(IEnumerable<NodeAsset> children)
+        {
+            var uniqueChildren = new HashSet<string>(Children);
+
+            foreach (var child in children)
+            {
+                if (!uniqueChildren.Contains(child.GUID))
+                    continue;
+                
+                Unlink(child);
+            }
+        }
+        
+        /// <summary>
+        /// List of every child node of this node
+        /// </summary>
+        public IEnumerable<string> Children { get; }
     }
 }

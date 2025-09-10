@@ -18,5 +18,8 @@ namespace TreeFlow.Editor.Nodes.Core
 
         /// <inheritdoc/>
         public void Unlink(NodeAsset child) => m_children.Remove(child.GUID);
+
+        /// <inheritdoc/>
+        public IEnumerable<string> Children => m_children;
     }
 }

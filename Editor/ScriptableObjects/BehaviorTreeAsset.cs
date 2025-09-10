@@ -62,21 +62,26 @@ namespace TreeFlow.Editor.ScriptableObjects
         /// <summary>
         /// Removes the given nodes from this tree
         /// </summary>
-        public void RemoveNodes(IEnumerable<NodeAsset> nodesToRemove)
+        public void RemoveNodes(ICollection<NodeAsset> nodesToRemove)
         {
-            var uniqueGUIDs = new HashSet<string>();
+            var uniqueNodesToRemove = new HashSet<NodeAsset>(nodesToRemove);
             
-            foreach (var node in nodesToRemove)
-                uniqueGUIDs.Add(node.GUID);
-
             for (var i = nodes.Count - 1; i >= 0; i--)
             {
                 var node = nodes[i];
 
-                if (!uniqueGUIDs.Contains(node.GUID))
+                if (uniqueNodesToRemove.Contains(node))
+                {
+                    nodes.RemoveAt(i);
                     continue;
 
                 nodes.RemoveAt(i);
+                }
+                
+                if (node is not IParentNode parentNode)
+                    continue;
+
+                parentNode.Unlink(nodesToRemove);
             }
         }
 
