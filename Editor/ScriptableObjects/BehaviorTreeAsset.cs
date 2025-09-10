@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TreeFlow.Editor.Interfaces;
 using TreeFlow.Editor.Nodes.Core;
 using UnityEditor;
 using UnityEngine;
@@ -100,28 +101,15 @@ namespace TreeFlow.Editor.ScriptableObjects
         /// <summary>
         /// Adds the given links to this tree
         /// </summary>
-        public void AddLinks(Dictionary<string, HashSet<string>> newLinks)
+        public void AddLinks(Dictionary<NodeAsset, HashSet<NodeAsset>> newLinks)
         {
-            foreach (var (guid, links) in newLinks)
+            foreach (var (startNode, endNodes) in newLinks)
             {
-                if (!nodeByGUID.TryGetValue(guid, out var node))
+                if (startNode is not IParentNode parentNode)
                     continue;
 
-                if (node is CompositeNodeAsset composite)
-                {
-                    foreach (var link in links)
-                        composite.Link(link);
-                }
-                else if (node is DecoratorNodeAsset decorator && links.Count > 0)
-                {
-                    var enumerator = links.GetEnumerator();
-                    enumerator.MoveNext();
-
-                    if (enumerator.Current != null && nodeByGUID.TryGetValue(enumerator.Current, out var child))
-                        decorator.ReplaceChild(child);
-
-                    enumerator.Dispose();
-                }
+                foreach (var endNode in endNodes)
+                    parentNode.Link(endNode);
             }
         }
 

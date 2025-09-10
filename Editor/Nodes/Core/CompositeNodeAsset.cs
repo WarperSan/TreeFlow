@@ -1,33 +1,31 @@
 using System;
 using System.Collections.Generic;
+using TreeFlow.Editor.Interfaces;
 using TreeFlow.Editor.ScriptableObjects;
+using UnityEngine;
 
 namespace TreeFlow.Editor.Nodes.Core
 {
     [Serializable]
-    public abstract class CompositeNodeAsset : NodeAsset
+    public abstract class CompositeNodeAsset : NodeAsset, IParentNode
     {
         /// <summary>
         /// List of children of this node
         /// </summary>
-        public List<string> Children = new();
-
-        /// <summary>
-        /// Links the given node to this node
-        /// </summary>
-        public void Link(string guid)
+        [SerializeField] private List<string> m_children = new();
+        
+        /// <inheritdoc/>
+        public void Link(NodeAsset child)
         {
-            Children.Add(guid);
-            uniqueChildren.Add(guid);
+            m_children.Add(child.GUID);
+            uniqueChildren.Add(child.GUID);
         }
 
-        /// <summary>
-        /// Unlinks the given node from this node
-        /// </summary>
-        public void Unlink(string guid)
+        /// <inheritdoc/>
+        public void Unlink(NodeAsset child)
         {
-            Children.Remove(guid);
-            uniqueChildren.Remove(guid);
+            m_children.Remove(child.GUID);
+            uniqueChildren.Remove(child.GUID);
         }
 
         #region Utils
@@ -41,7 +39,7 @@ namespace TreeFlow.Editor.Nodes.Core
             
             uniqueChildren.Clear();
             
-            foreach (var child in Children)
+            foreach (var child in m_children)
                 uniqueChildren.Add(child);
         }
 

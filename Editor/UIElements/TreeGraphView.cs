@@ -88,14 +88,14 @@ namespace TreeFlow.Editor.UIElements
             // Links added
             if (graphViewChange.edgesToCreate != null)
             {
-                var newLinks = new List<KeyValuePair<string, string>>();
+                var newLinks = new List<KeyValuePair<NodeAsset, NodeAsset>>();
 
                 foreach (var edge in graphViewChange.edgesToCreate)
                 {
                     if (edge.input.node is not NodeView input || edge.output.node is not NodeView output)
                         continue;
                     
-                    newLinks.Add(new KeyValuePair<string, string>(output.Node.GUID, input.Node.GUID));
+                    newLinks.Add(new KeyValuePair<NodeAsset, NodeAsset>(output.Node, input.Node));
                 }
 
                 if (newLinks.Count > 0)
@@ -228,13 +228,13 @@ namespace TreeFlow.Editor.UIElements
         /// <summary>
         /// Creates brand-new links between the given nodes
         /// </summary>
-        private void CreateLinks(List<KeyValuePair<string, string>> links)
+        private void CreateLinks(List<KeyValuePair<NodeAsset, NodeAsset>> links)
         {
-            var linksPerNode = new Dictionary<string, HashSet<string>>();
+            var linksPerNode = new Dictionary<NodeAsset, HashSet<NodeAsset>>();
 
             foreach (var (start, end) in links)
             {
-                linksPerNode.TryAdd(start, new HashSet<string>());
+                linksPerNode.TryAdd(start, new HashSet<NodeAsset>());
                 linksPerNode[start].Add(end);
             }
             
