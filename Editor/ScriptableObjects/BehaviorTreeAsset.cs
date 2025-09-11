@@ -3,6 +3,7 @@ using TreeFlow.Editor.Interfaces;
 using TreeFlow.Editor.Nodes.Core;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace TreeFlow.Editor.ScriptableObjects
 {
@@ -112,6 +113,31 @@ namespace TreeFlow.Editor.ScriptableObjects
                 foreach (var endNode in endNodes)
                     parentNode.Link(endNode);
             }
+        }
+
+        #endregion
+
+        #region Editor
+
+        [SerializeField] private Vector2 viewPosition = Vector2.zero;
+        [SerializeField] private Vector2 viewScale = Vector2.one;
+
+        /// <summary>
+        /// Saves the view into this tree
+        /// </summary>
+        internal void SaveViewport(ITransform transform)
+        {
+            viewPosition = transform.position;
+            viewScale = transform.scale;
+        }
+
+        /// <summary>
+        /// Aligns the given view with the saved one
+        /// </summary>
+        internal void LoadViewport(ITransform transform)
+        {
+            transform.position = viewPosition;
+            transform.scale = viewScale;
         }
 
         #endregion

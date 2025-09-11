@@ -66,6 +66,9 @@ namespace TreeFlow.Editor.UIElements
             evt.menu.AppendAction("Leaf/Condition", _ => CreateNode<ConditionNodeAsset>(mousePos));
         }
         
+        /// <summary>
+        /// Called when the graph has changed
+        /// </summary>
         private GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
         {
             // Nodes moved
@@ -123,6 +126,17 @@ namespace TreeFlow.Editor.UIElements
             return graphViewChange;
         }
 
+        /// <summary>
+        /// Called when the view has changed
+        /// </summary>
+        private void OnViewTransformChanged(GraphView graphView)
+        {
+            treeAsset?.SaveViewport(graphView.contentViewContainer.transform);
+            
+            EditorUtility.SetDirty(treeAsset);
+            OnTreeChanged?.Invoke();
+        }
+        
         /// <inheritdoc/>
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
@@ -154,6 +168,7 @@ namespace TreeFlow.Editor.UIElements
             tree.Compute();
             
             graphViewChanged -= OnGraphViewChanged;
+            viewTransformChanged -= OnViewTransformChanged;
 
             DeleteElements(graphElements);
             
@@ -185,8 +200,11 @@ namespace TreeFlow.Editor.UIElements
                     AddElement(edge);
                 }
             }
+
+            treeAsset.LoadViewport(contentViewContainer.transform);
             
             graphViewChanged += OnGraphViewChanged;
+            viewTransformChanged += OnViewTransformChanged;
         }
 
         /// <summary>
