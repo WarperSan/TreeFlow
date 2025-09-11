@@ -24,7 +24,6 @@ namespace TreeFlow.Editor.Helpers
             TreeUtils.TraverseTreeFromTop(tree, n => indexedNodes.Remove(n.GUID));
             
             tree.RemoveNodes(indexedNodes.Values);
-            Debug.Log($"Removed '{indexedNodes.Count}' nodes.");
         }
         
         /// <summary>
