@@ -103,7 +103,7 @@ namespace TreeFlow.Editor.ScriptableObjects
         /// <summary>
         /// Gets the <see cref="NodeAsset"/> with the given GUID
         /// </summary>
-        public NodeAsset GetNode(string GUID) => nodesByGUID.GetValueOrDefault(GUID);
+        public NodeAsset GetNode(string GUID) => string.IsNullOrEmpty(GUID) ? null : nodesByGUID.GetValueOrDefault(GUID);
 
         #endregion
 
