@@ -38,7 +38,7 @@ namespace TreeFlow.Tests.Editor.TreeUtils
                 output += n.Name + "/";
             });
             
-            Assert.AreEqual("ACT-3/ACT-2/ACT-1/SEQ-1/ROOT/", output);
+            Assert.AreEqual("ACT-1/ACT-2/ACT-3/SEQ-1/ROOT/", output);
         }
     }
 }
