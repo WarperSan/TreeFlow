@@ -20,6 +20,19 @@ namespace TreeFlow.Editor.Nodes.Core
         public void Unlink(NodeAsset child) => m_children.Remove(child.GUID);
 
         /// <inheritdoc/>
+        public void Replace(NodeAsset oldChild, NodeAsset newChild)
+        {
+            for (var i = 0; i < m_children.Count; i++)
+            {
+                if (m_children[i] != oldChild.GUID)
+                    continue;
+                
+                m_children[i] = newChild.GUID;
+                break;
+            }
+        }
+
+        /// <inheritdoc/>
         public IEnumerable<string> Children => m_children;
 
         /// <inheritdoc/>

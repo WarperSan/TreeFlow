@@ -29,6 +29,15 @@ namespace TreeFlow.Editor.Nodes.Core
         }
 
         /// <inheritdoc/>
+        public void Replace(NodeAsset oldChild, NodeAsset newChild)
+        {
+            if (m_child != oldChild.GUID)
+                return;
+            
+            m_child = newChild.GUID;
+        }
+
+        /// <inheritdoc/>
         public IEnumerable<string> Children => new[] { m_child };
 
         /// <inheritdoc/>

@@ -33,6 +33,11 @@ namespace TreeFlow.Editor.Interfaces
                 Unlink(child);
             }
         }
+
+        /// <summary>
+        /// Replaces <see cref="oldChild"/> with <see cref="newChild"/>
+        /// </summary>
+        public void Replace(NodeAsset oldChild, NodeAsset newChild);
         
         /// <summary>
         /// List of every child node of this node
