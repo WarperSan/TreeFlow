@@ -1,5 +1,5 @@
 {
-    "name": "treeflow.runtime",
+    "name": "TreeFlow.Runtime",
     "rootNamespace": "TreeFlow.Runtime",
     "references": [],
     "includePlatforms": [],
