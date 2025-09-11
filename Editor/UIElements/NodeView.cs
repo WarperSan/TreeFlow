@@ -86,7 +86,7 @@ namespace TreeFlow.Editor.UIElements
                 if (string.IsNullOrEmpty(newName))
                     newName = null;
                 
-                title = newName ?? "Node";
+                SetTitle(newName ?? "Node");
                 graphView.RenameNode(Node, newName);
             });
         }
@@ -96,7 +96,7 @@ namespace TreeFlow.Editor.UIElements
         #region INodeView
         
         /// <inheritdoc/>
-        public void SetTitle(string newTitle) => title = TitleInput.value = newTitle;
+        public void SetTitle(string newTitle) => title = newTitle;
 
         /// <inheritdoc/>
         public void SetDefaultTitle(string defaultTitle)
