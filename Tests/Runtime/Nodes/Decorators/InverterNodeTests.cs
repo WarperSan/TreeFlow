@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using TreeFlow.Runtime.Core;
 using TreeFlow.Runtime.Nodes.Decorator;
-using TreeFlow.Tests.Tests.Utils;
+using TreeFlow.Tests.Utils;
 
 namespace TreeFlow.Tests.Runtime.Nodes.Decorators
 {

@@ -1,6 +1,6 @@
 using TreeFlow.Runtime.Core;
 
-namespace TreeFlow.Tests.Tests.Utils
+namespace TreeFlow.Tests.Utils
 {
     public static class NodeUtils
     {

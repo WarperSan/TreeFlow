@@ -59,13 +59,16 @@ namespace TreeFlow.Editor
                 GUI.enabled = false;
 
             RemoveUnusedNodesBtn(targetTree);
-            OrderChildNodesBtn(targetTree);
+            FixChildNodesBtn(targetTree);
+            OptimizeTreeBtn(targetTree);
 
             if (EditorUtility.IsDirty(targetTree))
             {
                 GUI.enabled = true;
                 EditorGUILayout.HelpBox($"'{targetTree.name}' has some unsaved changes.", MessageType.Warning);
             }
+            
+            base.OnInspectorGUI();
         }
 
         private static void RemoveUnusedNodesBtn(BehaviorTreeAsset tree)
@@ -76,18 +79,32 @@ namespace TreeFlow.Editor
             if (!EditorUtility.DisplayDialog("Confirmation - Remove Unused Nodes", "Are you sure you want to proceed? This alters the tree itself.", "Yes", "No"))
                 return;
             
-            TreeJanitor.RemoveUnusedNodes(tree);
+            TreeSanitizer.RemoveDetachedNodes(tree);
             Resources.SaveChanges(tree);
         }
-        private static void OrderChildNodesBtn(BehaviorTreeAsset tree)
+
+        private static void FixChildNodesBtn(BehaviorTreeAsset tree)
         {
-            if (!GUILayout.Button(new GUIContent("Order Child Nodes", "Orders the child references in the tree")))
+            if (!GUILayout.Button(new GUIContent("Fix Child Nodes", "Fixes the child references in the tree")))
                 return;
             
-            if (!EditorUtility.DisplayDialog("Confirmation - Order Child Nodes", "Are you sure you want to proceed? This alters the tree itself.", "Yes", "No"))
+            if (!EditorUtility.DisplayDialog("Confirmation - Fix Child Nodes", "Are you sure you want to proceed? This alters the tree itself.", "Yes", "No"))
                 return;
             
-            TreeJanitor.OrderChildNodes(tree);
+            TreeSanitizer.FixChildNodes(tree);
+            Resources.SaveChanges(tree);
+        }
+
+        private static void OptimizeTreeBtn(BehaviorTreeAsset tree)
+        {
+            if (!GUILayout.Button(new GUIContent("Optimize Tree", "Optimizes the tree based of known rules")))
+                return;
+            
+            if (!EditorUtility.DisplayDialog("Confirmation - Optimize Tree", "Are you sure you want to proceed? This alters the tree itself.", "Yes", "No"))
+                return;
+            
+            TreeJanitor.OptimizeTree(tree);
+            TreeSanitizer.RemoveDetachedNodes(tree);
             Resources.SaveChanges(tree);
         }
 
