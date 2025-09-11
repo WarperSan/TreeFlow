@@ -79,7 +79,7 @@ namespace TreeFlow.Editor.Helpers
                 if (current is not IParentNode parent)
                     continue;
                 
-                if (parent.Count <= 1)
+                if (parent.Count < 1)
                     continue;
 
                 var children = new List<NodeAsset>();
@@ -92,17 +92,10 @@ namespace TreeFlow.Editor.Helpers
                         continue;
                     
                     children.Add(child);
+                    navigationStack.Push(child);
                 }
                 
-                children.Sort((a, b) =>
-                {
-                    var order = a.Position.x.CompareTo(b.Position.x);
-
-                    if (order != 0)
-                        return order;
-
-                    return -1;
-                });
+                children.Sort((a, b) => a.Position.x.CompareTo(b.Position.x));
 
                 foreach (var child in children)
                 {
