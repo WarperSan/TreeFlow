@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using TreeFlow.Editor.Interfaces;
+using TreeFlow.Editor.Nodes.Composite;
 using TreeFlow.Editor.Nodes.Core;
 using TreeFlow.Editor.ScriptableObjects;
+using UnityEngine;
 
 namespace TreeFlow.Editor.Helpers
 {
@@ -11,6 +13,29 @@ namespace TreeFlow.Editor.Helpers
     /// </summary>
     internal static class TreeUtils
     {
+        /// <summary>
+        /// Creates a new <see cref="BehaviorTreeAsset"/> to the given file
+        /// </summary>
+        /// <remarks>
+        /// If <see cref="path"/> is omitted, the asset will be created in-memory only
+        /// </remarks>
+        internal static BehaviorTreeAsset CreateTree(string path = null)
+        {
+            var asset = ScriptableObject.CreateInstance<BehaviorTreeAsset>();
+
+            var root = asset.AddNode<SelectorNodeAsset>();
+            asset.PromotesToRoot(root);
+
+            // ReSharper disable once InvertIf
+            if (path != null)
+            {
+                Resources.SaveChanges(asset);
+                Resources.Save(asset, path);
+            }
+            
+            return asset;
+        }
+        
         /// <summary>
         /// Traverses the given tree from the top to the bottom
         /// </summary>

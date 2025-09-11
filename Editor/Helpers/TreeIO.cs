@@ -1,6 +1,5 @@
 using System.IO;
 using TreeFlow.Editor.ScriptableObjects;
-using TreeFlow.Editor.Nodes.Composite;
 using UnityEditor;
 using UnityEngine;
 
@@ -41,19 +40,7 @@ namespace TreeFlow.Editor.Helpers
                 ""
             );
 
-            if (string.IsNullOrEmpty(newPath))
-                return null;
-            
-            var asset = Resources.Create<BehaviorTreeAsset>(newPath);
-            
-            if (asset is null)
-                return null;
-
-            var root = asset.AddNode<SelectorNodeAsset>();
-            asset.PromotesToRoot(root);
-
-            Resources.SaveChanges(asset);
-            return asset;
+            return string.IsNullOrEmpty(newPath) ? null : TreeUtils.CreateTree(newPath);
         }
         
         /// <summary>

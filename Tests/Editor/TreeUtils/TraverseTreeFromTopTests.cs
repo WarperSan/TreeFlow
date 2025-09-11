@@ -11,7 +11,7 @@ namespace TreeFlow.Tests.Editor.TreeUtils
         [Test]
         public void Test()
         {
-            var tree = Utils.TreeUtils.Tree();
+            var tree = Utils.TreeUtils.CreateTree();
             var seq1 = tree.AddNode<SequenceNodeAsset>();
             var act1 = tree.AddNode<ActionNodeAsset>();
             var act2 = tree.AddNode<ActionNodeAsset>();

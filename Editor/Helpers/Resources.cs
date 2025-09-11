@@ -31,14 +31,12 @@ namespace TreeFlow.Editor.Helpers
         public static T Load<T>(string path) where T : Object => AssetDatabase.LoadAssetAtPath<T>(RelativeToAbsolute(path));
 
         /// <summary>
-        /// Creates a new instance of the asset at the given path
+        /// Saves the given asset to the given path
         /// </summary>
-        public static T Create<T>(string path) where T : ScriptableObject
+        public static void Save(Object asset, string path)
         {
-            var asset = ScriptableObject.CreateInstance<T>();
             AssetDatabase.CreateAsset(asset, path);
             AssetDatabase.Refresh();
-            return asset;
         }
         
         /// <summary>
