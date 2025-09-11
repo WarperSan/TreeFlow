@@ -15,28 +15,17 @@ namespace TreeFlow.Editor.UIElements
         /// <summary>
         /// Current node displayed
         /// </summary>
-        public readonly NodeAsset Node;
+        public NodeAsset Node { get; private set; }
         
         private readonly TreeGraphView graphView;
         
-        internal NodeView(NodeAsset node, TreeGraphView graphView) : base(Helpers.Resources.RelativeToAbsolute(Helpers.Resources.NODE_VIEW_UXML))
+        internal NodeView(TreeGraphView graphView) : base(Helpers.Resources.RelativeToAbsolute(Helpers.Resources.NODE_VIEW_UXML))
         {
             styleSheets.Add(Helpers.Resources.Load<StyleSheet>(Helpers.Resources.NODE_VIEW_USS));
             
             CreateHeader();
             
-            // Assign node
-            Node = node;
             this.graphView = graphView;
-            
-            var rect = GetPosition();
-            rect.position = node.Position;
-            SetPosition(rect);
-
-            if (node.IsRoot)
-                capabilities &= ~(Capabilities.Deletable | Capabilities.Copiable);
-
-            NodeCustomizer.Customize(this, node);
         }
         
         #region Header
@@ -65,6 +54,8 @@ namespace TreeFlow.Editor.UIElements
 
                 titleLabel.style.display = DisplayStyle.None;
                 TitleInput.style.display = DisplayStyle.Flex;
+                
+                TitleInput.SetValueWithoutNotify(titleLabel.text);
                 TitleInput.Focus();
             });
             
@@ -72,8 +63,6 @@ namespace TreeFlow.Editor.UIElements
             {
                 titleLabel.style.display = DisplayStyle.Flex;
                 TitleInput.style.display = DisplayStyle.None;
-                
-                TitleInput.value = titleLabel.text;
             });
             
             TitleInput.RegisterCallback<KeyDownEvent>(evt =>
@@ -94,7 +83,26 @@ namespace TreeFlow.Editor.UIElements
         #endregion
 
         #region INodeView
-        
+
+        /// <inheritdoc/>
+        public void Assign(NodeAsset node)
+        {
+            Node = node;
+            
+            var rect = GetPosition();
+            rect.position = node.Position;
+            SetPosition(rect);
+
+            capabilities = Capabilities.Selectable | Capabilities.Movable | Capabilities.Deletable |
+                           Capabilities.Droppable | Capabilities.Ascendable | Capabilities.Copiable |
+                           Capabilities.Snappable | Capabilities.Groupable;
+            
+            if (node.IsRoot)
+                capabilities &= ~(Capabilities.Deletable | Capabilities.Copiable);
+
+            NodeCustomizer.Customize(this, node);
+        }
+
         /// <inheritdoc/>
         public void SetTitle(string newTitle) => title = newTitle;
 

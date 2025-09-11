@@ -215,7 +215,8 @@ namespace TreeFlow.Editor.UIElements
         /// </summary>
         private INodeView AddNodeToGraph(NodeAsset graphNode)
         {
-            var view = new NodeView(graphNode, this);
+            var view = new NodeView(this);
+            view.Assign(graphNode);
 
             AddElement(view);
             return view;

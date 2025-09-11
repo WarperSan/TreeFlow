@@ -1,3 +1,4 @@
+using TreeFlow.Editor.Nodes.Core;
 using UnityEditor.Experimental.GraphView;
 
 namespace TreeFlow.Editor.Interfaces
@@ -7,6 +8,11 @@ namespace TreeFlow.Editor.Interfaces
     /// </summary>
     public interface INodeView
     {
+        /// <summary>
+        /// Assigns the given node to this view
+        /// </summary>
+        public void Assign(NodeAsset node);
+
         /// <summary>
         /// Sets the title of this node
         /// </summary>
