@@ -189,6 +189,9 @@ namespace TreeFlow.Editor.UIElements
                 
                 foreach (var childNode in parentNode.Children)
                 {
+                    if (childNode == null)
+                        continue;
+                    
                     if (!viewsByGuid.TryGetValue(childNode, out var childView))
                         continue;
                     
