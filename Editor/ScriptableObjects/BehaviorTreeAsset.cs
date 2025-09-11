@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TreeFlow.Editor.Interfaces;
 using TreeFlow.Editor.Nodes.Core;
@@ -59,6 +60,7 @@ namespace TreeFlow.Editor.ScriptableObjects
             };
 
             nodes.Add(node);
+            nodesByGUID.TryAdd(node.GUID, node);
             
             return node;
         }
@@ -95,6 +97,11 @@ namespace TreeFlow.Editor.ScriptableObjects
             foreach (var (node, position) in positions)
                 node.Position = position;
         }
+
+        /// <summary>
+        /// Gets the <see cref="NodeAsset"/> with the given GUID
+        /// </summary>
+        public NodeAsset GetNode(string GUID) => nodesByGUID.GetValueOrDefault(GUID);
 
         #endregion
 
@@ -144,13 +151,23 @@ namespace TreeFlow.Editor.ScriptableObjects
         
         #region Utils
         
+        [NonSerialized] private readonly Dictionary<string, NodeAsset> nodesByGUID = new();
+        
         /// <summary>
         /// Computes important information for later use
         /// </summary>
         internal void Compute()
         {
+            nodesByGUID.Clear();
+
             foreach (var node in nodes)
-                node?.Compute(this);
+            {
+                if (node == null)
+                    continue;
+
+                node.Compute(this);
+                nodesByGUID.TryAdd(node.GUID, node);
+            }
         }
 
         #endregion
