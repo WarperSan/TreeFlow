@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TreeFlow.Editor.Interfaces;
+using TreeFlow.Editor.ScriptableObjects;
 using UnityEngine;
 
 namespace TreeFlow.Editor.Nodes.Core
@@ -39,6 +40,11 @@ namespace TreeFlow.Editor.Nodes.Core
 
         /// <inheritdoc/>
         public IEnumerable<string> Children => new[] { m_child };
+        
+        /// <summary>
+        /// Gets the child of this node
+        /// </summary>
+        public NodeAsset GetChild(BehaviorTreeAsset tree) => tree.GetNode(m_child);
 
         /// <inheritdoc/>
         public int Count => m_child != null ? 1 : 0;
