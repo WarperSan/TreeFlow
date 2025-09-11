@@ -97,8 +97,19 @@ namespace TreeFlow.Editor
         /// </summary>
         private void SetTree(BehaviorTreeAsset tree)
         {
-            if (treeAsset is not null && hasUnsavedChanges && PromptChanges())
-                return;
+            if (treeAsset is not null && hasUnsavedChanges)
+            {
+                string treePath = null;
+
+                if (treeAsset == tree)
+                    treePath = AssetDatabase.GetAssetPath(treeAsset);
+
+                if (PromptChanges())
+                    return;
+
+                if (!string.IsNullOrEmpty(treePath))
+                    tree = AssetDatabase.LoadAssetAtPath<BehaviorTreeAsset>(treePath);
+            }
             
             if (tree == null)
             {
