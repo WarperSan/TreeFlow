@@ -86,7 +86,8 @@ namespace TreeFlow.Editor.ScriptableObjects
                 if (node is not IParentNode parentNode)
                     continue;
 
-                parentNode.Unlink(nodesToRemove);
+                foreach (var child in nodesToRemove)
+                    parentNode.Unlink(child);
             }
         }
 

@@ -20,15 +20,6 @@ namespace TreeFlow.Editor.Interfaces
         public void Unlink(NodeAsset child);
 
         /// <summary>
-        /// Unlinks every given node from this node
-        /// </summary>
-        public void Unlink(IEnumerable<NodeAsset> children)
-        {
-            foreach (var child in children)
-                Unlink(child);
-        }
-
-        /// <summary>
         /// Replaces <see cref="oldChild"/> with <see cref="newChild"/>
         /// </summary>
         public void Replace(NodeAsset oldChild, NodeAsset newChild);
