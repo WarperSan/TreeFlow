@@ -9,7 +9,7 @@ namespace TreeFlow.Tests.Editor.TreeSanitizer
         [Test]
         public void RootAndNode()
         {
-            var tree = Tests.Utils.TreeUtils.CreateTree();
+            var tree = Utils.TreeUtils.CreateTree();
             var node = tree.AddNode<SelectorNodeAsset>().GUID;
             
             tree.Compute();
@@ -21,7 +21,7 @@ namespace TreeFlow.Tests.Editor.TreeSanitizer
         [Test]
         public void RootWithChild()
         {
-            var tree = Tests.Utils.TreeUtils.CreateTree();
+            var tree = Utils.TreeUtils.CreateTree();
             var node1 = tree.AddNode<SelectorNodeAsset>();
             var node2 = tree.AddNode<SelectorNodeAsset>();
 
