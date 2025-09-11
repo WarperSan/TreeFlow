@@ -3,7 +3,7 @@ using TreeFlow.Runtime.Core;
 using TreeFlow.Runtime.Nodes.Decorator;
 using TreeFlow.Tests.Tests.Utils;
 
-namespace TreeFlow.Tests.Nodes.Decorators
+namespace TreeFlow.Tests.Runtime.Nodes.Decorators
 {
     public class InverterNodeTests
     {

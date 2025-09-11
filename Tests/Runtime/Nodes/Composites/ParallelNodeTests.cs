@@ -3,7 +3,7 @@ using TreeFlow.Runtime.Core;
 using TreeFlow.Runtime.Nodes.Composite;
 using TreeFlow.Tests.Tests.Utils;
 
-namespace TreeFlow.Tests.Nodes.Composites
+namespace TreeFlow.Tests.Runtime.Nodes.Composites
 {
     public class ParallelNodeTests
     {

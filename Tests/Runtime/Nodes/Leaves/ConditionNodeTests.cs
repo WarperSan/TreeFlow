@@ -3,7 +3,7 @@ using NUnit.Framework;
 using TreeFlow.Runtime.Core;
 using TreeFlow.Runtime.Nodes.Leaf;
 
-namespace TreeFlow.Tests.Nodes.Leaves
+namespace TreeFlow.Tests.Runtime.Nodes.Leaves
 {
     public class ConditionNodeTests
     {

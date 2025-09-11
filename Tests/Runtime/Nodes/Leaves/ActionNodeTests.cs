@@ -3,7 +3,7 @@ using NUnit.Framework;
 using TreeFlow.Runtime.Core;
 using Action = TreeFlow.Runtime.Nodes.Leaf.Action;
 
-namespace TreeFlow.Tests.Nodes.Leaves
+namespace TreeFlow.Tests.Runtime.Nodes.Leaves
 {
     public class ActionNodeTests
     {
