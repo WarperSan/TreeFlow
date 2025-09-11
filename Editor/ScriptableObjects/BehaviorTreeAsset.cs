@@ -79,6 +79,7 @@ namespace TreeFlow.Editor.ScriptableObjects
                 if (uniqueNodesToRemove.Contains(node))
                 {
                     nodes.RemoveAt(i);
+                    nodesByGUID.Remove(node.GUID);
                     continue;
                 }
                 
