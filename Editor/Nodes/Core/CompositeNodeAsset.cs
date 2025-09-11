@@ -21,5 +21,8 @@ namespace TreeFlow.Editor.Nodes.Core
 
         /// <inheritdoc/>
         public IEnumerable<string> Children => m_children;
+
+        /// <inheritdoc/>
+        public int Count => m_children.Count;
     }
 }

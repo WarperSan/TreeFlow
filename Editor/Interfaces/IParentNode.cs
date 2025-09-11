@@ -38,5 +38,10 @@ namespace TreeFlow.Editor.Interfaces
         /// List of every child node of this node
         /// </summary>
         public IEnumerable<string> Children { get; }
+        
+        /// <summary>
+        /// Amount of children this node has
+        /// </summary>
+        public int Count { get; }
     }
 }

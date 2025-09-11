@@ -30,5 +30,8 @@ namespace TreeFlow.Editor.Nodes.Core
 
         /// <inheritdoc/>
         public IEnumerable<string> Children => new[] { m_child };
+
+        /// <inheritdoc/>
+        public int Count => m_child != null ? 1 : 0;
     }
 }
