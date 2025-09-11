@@ -55,10 +55,8 @@ namespace TreeFlow.Editor.Helpers
 
                 var children = new List<NodeAsset>();
 
-                foreach (var childGUID in parent.Children)
+                foreach (var child in parent.GetChildren(tree))
                 {
-                    var child = tree.GetNode(childGUID);
-                    
                     if (child == null)
                         continue;
                     

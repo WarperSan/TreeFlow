@@ -37,8 +37,8 @@ namespace TreeFlow.Editor.Helpers
                 if (current is not IParentNode parentNode)
                     continue;
 
-                foreach (var child in parentNode.Children)
-                    queue.Enqueue(tree.GetNode(child));
+                foreach (var child in parentNode.GetChildren(tree))
+                    queue.Enqueue(child);
             }
         }
 

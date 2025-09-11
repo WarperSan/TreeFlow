@@ -43,6 +43,23 @@ namespace TreeFlow.Editor.Interfaces
         /// List of every child node of this node
         /// </summary>
         public IEnumerable<string> Children { get; }
+
+        /// <summary>
+        /// List of every node of this node
+        /// </summary>
+        public IEnumerable<NodeAsset> GetChildren(BehaviorTreeAsset tree)
+        {
+            var assets = new NodeAsset[Count];
+            var index = 0;
+
+            foreach (var child in Children)
+            {
+                assets[index] = tree.GetNode(child);
+                index++;
+            }
+
+            return assets;
+        }
         
         /// <summary>
         /// Amount of children this node has
