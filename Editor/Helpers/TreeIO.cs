@@ -33,11 +33,11 @@ namespace TreeFlow.Editor.Helpers
         /// </summary>
         public static BehaviorTreeAsset PromptCreateTree()
         {
-            var newPath = EditorUtility.SaveFilePanelInProject(
+            var newPath = EditorUtility.SaveFilePanel(
                 "Create a Tree",
+                Application.dataPath,
                 "NewBehaviorTree",
-                "asset",
-                ""
+                "asset"
             );
 
             return string.IsNullOrEmpty(newPath) ? null : TreeUtils.CreateTree(newPath);
@@ -78,11 +78,11 @@ namespace TreeFlow.Editor.Helpers
             if (string.IsNullOrEmpty(path))
                 return null;
             
-            var newPath = EditorUtility.SaveFilePanelInProject(
+            var newPath = EditorUtility.SaveFilePanel(
                 "Save Tree As...",
+                Application.dataPath,
                 "NewBehaviourTree",
-                "asset",
-                ""
+                "asset"
             );
             
             if (string.IsNullOrEmpty(newPath))
