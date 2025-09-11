@@ -60,8 +60,10 @@ namespace TreeFlow.Editor.Helpers
             
             var stack = new Stack<NodeAsset>();
             var visited = new HashSet<NodeAsset>();
+            var parentByNode = new Dictionary<NodeAsset, IParentNode>();
 
             stack.Push(root);
+            parentByNode.TryAdd(root, null);
 
             while (stack.Count > 0)
             {
@@ -70,20 +72,23 @@ namespace TreeFlow.Editor.Helpers
                 if (!visited.Add(current) || current is not IParentNode parentNode)
                 {
                     stack.Pop();
-                    stack.TryPeek(out var parent);
-                    callback.Invoke(parent as IParentNode, current);
+                    callback.Invoke(parentByNode.GetValueOrDefault(current), current);
                     continue;
                 }
 
-                foreach (var child in parentNode.Children)
+                var cachedChildren = new Stack<NodeAsset>();
+                
+                foreach (var child in parentNode.GetChildren(tree))
                 {
-                    var childNode = tree.GetNode(child);
-                    
-                    if (childNode == null)
+                    if (child == null)
                         continue;
-                    
-                    stack.Push(childNode);
+
+                    cachedChildren.Push(child);
+                    parentByNode.TryAdd(child, parentNode);
                 }
+
+                while (cachedChildren.Count > 0)
+                    stack.Push(cachedChildren.Pop());
             }
         }
     }
