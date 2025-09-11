@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TreeFlow.Editor.Interfaces;
 using TreeFlow.Editor.Nodes.Core;
 using TreeFlow.Editor.ScriptableObjects;
+using UnityEngine;
 
 namespace TreeFlow.Editor.Helpers
 {
@@ -15,36 +16,100 @@ namespace TreeFlow.Editor.Helpers
         /// </summary>
         public static void RemoveUnusedNodes(BehaviorTreeAsset tree)
         {
-            var nodesByGuid = new Dictionary<string, NodeAsset>();
+            var root = tree.GetNode(tree.Root);
+            var nodes = new List<NodeAsset>(tree.Nodes);
 
-            foreach (var node in tree.Nodes)
-                nodesByGuid.TryAdd(node.GUID, node);
-
-            if (nodesByGuid.ContainsKey(tree.Root))
+            if (root == null)
             {
-                var navigationStack = new Stack<NodeAsset>();
-                navigationStack.Push(nodesByGuid[tree.Root]);
+                Debug.LogWarning("No root was found in the tree.");
+                tree.RemoveNodes(nodes);
+                return;
+            }
+            
+            var navigationStack = new Stack<NodeAsset>();
+            navigationStack.Push(root);
 
-                while (navigationStack.Count > 0)
+            while (navigationStack.Count > 0)
+            {
+                var current = navigationStack.Pop();
+
+                nodes.Remove(current);
+            
+                if (current is not IParentNode parent)
+                    continue;
+
+                foreach (var child in parent.Children)
                 {
-                    var current = navigationStack.Pop();
-
-                    nodesByGuid.Remove(current.GUID);
-                
-                    if (current is not IParentNode parent)
+                    var childNode = tree.GetNode(child);
+                    
+                    if (childNode == null)
+                        continue;
+                    
+                    if (!nodes.Contains(childNode))
                         continue;
 
-                    foreach (var child in parent.Children)
-                    {
-                        if (!nodesByGuid.Remove(child, out var nodeAsset))
-                            continue;
-
-                        navigationStack.Push(nodeAsset);
-                    }
+                    nodes.Remove(childNode);
+                    navigationStack.Push(childNode);
                 }
             }
 
-            tree.RemoveNodes(nodesByGuid.Values);
+            tree.RemoveNodes(nodes);
+        }
+
+        /// <summary>
+        /// Orders every node reference based on their position in the graph
+        /// </summary>
+        public static void OrderChildNodes(BehaviorTreeAsset tree)
+        {
+            var root = tree.GetNode(tree.Root);
+
+            if (root == null)
+            {
+                Debug.LogWarning("No root was found in the tree.");
+                return;
+            }
+            
+            var navigationStack = new Stack<NodeAsset>();
+            navigationStack.Push(root);
+
+            while (navigationStack.Count > 0)
+            {
+                var current = navigationStack.Pop();
+
+                if (current is not IParentNode parent)
+                    continue;
+                
+                if (parent.Count <= 1)
+                    continue;
+
+                var children = new List<NodeAsset>();
+
+                foreach (var childGUID in parent.Children)
+                {
+                    var child = tree.GetNode(childGUID);
+                    
+                    if (child == null)
+                        continue;
+                    
+                    children.Add(child);
+                }
+                
+                children.Sort((a, b) =>
+                {
+                    var order = a.Position.x.CompareTo(b.Position.x);
+
+                    if (order != 0)
+                        return order;
+
+                    return -1;
+                });
+
+                foreach (var child in children)
+                {
+                    parent.Unlink(child);
+                    parent.Link(child);
+                }
+            }
         }
     }
 }

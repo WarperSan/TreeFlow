@@ -36,6 +36,8 @@ namespace TreeFlow.Editor
             return true;
         }
         
+        #region Inspector
+        
         /// <inheritdoc/>
         public override void OnInspectorGUI()
         {
@@ -53,15 +55,42 @@ namespace TreeFlow.Editor
             GUILayout.Space(10);
             GUILayout.Label("Tools");
 
-            if (GUILayout.Button("Remove Unused Nodes") && EditorUtility.DisplayDialog(
-                    "Remove Unused Nodes",
-                    "Are you sure you want to remove every unused nodes? This will remove any node that is not attached to the root.",
-                    "Yes",
-                    "No")
-            ) {
-                TreeJanitor.RemoveUnusedNodes(targetTree);
-                Resources.SaveChanges(targetTree);
+            if (EditorUtility.IsDirty(targetTree))
+                GUI.enabled = false;
+
+            RemoveUnusedNodesBtn(targetTree);
+            OrderChildNodesBtn(targetTree);
+
+            if (EditorUtility.IsDirty(targetTree))
+            {
+                GUI.enabled = true;
+                EditorGUILayout.HelpBox($"'{targetTree.name}' has some unsaved changes.", MessageType.Warning);
             }
         }
+
+        private static void RemoveUnusedNodesBtn(BehaviorTreeAsset tree)
+        {
+            if (!GUILayout.Button(new GUIContent("Remove Unused Nodes", "Removes any node that isn't connected to the tree")))
+                return;
+            
+            if (!EditorUtility.DisplayDialog("Confirmation - Remove Unused Nodes", "Are you sure you want to proceed? This alters the tree itself.", "Yes", "No"))
+                return;
+            
+            TreeJanitor.RemoveUnusedNodes(tree);
+            Resources.SaveChanges(tree);
+        }
+        private static void OrderChildNodesBtn(BehaviorTreeAsset tree)
+        {
+            if (!GUILayout.Button(new GUIContent("Order Child Nodes", "Orders the child references in the tree")))
+                return;
+            
+            if (!EditorUtility.DisplayDialog("Confirmation - Order Child Nodes", "Are you sure you want to proceed? This alters the tree itself.", "Yes", "No"))
+                return;
+            
+            TreeJanitor.OrderChildNodes(tree);
+            Resources.SaveChanges(tree);
+        }
+
+        #endregion
     }
 }
