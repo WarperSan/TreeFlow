@@ -65,9 +65,15 @@ namespace TreeFlow.Editor.Helpers
                 
                 children.Sort((a, b) => a.Position.x.CompareTo(b.Position.x));
 
+                var uniqueChildren = new HashSet<string>();
+                
                 foreach (var child in children)
                 {
                     parent.Unlink(child);
+                 
+                    if (!uniqueChildren.Add(child.GUID))
+                        continue;
+                    
                     parent.Link(child);
                 }
             }
