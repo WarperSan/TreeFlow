@@ -87,6 +87,8 @@ namespace TreeFlow.Editor.Helpers
             
             if (string.IsNullOrEmpty(newPath))
                 return null;
+            
+            newPath = Path.GetRelativePath(Path.GetDirectoryName(Application.dataPath), newPath);
 
             AssetDatabase.CopyAsset(path, newPath);
             AssetDatabase.Refresh();

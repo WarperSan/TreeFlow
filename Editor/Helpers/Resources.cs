@@ -9,39 +9,48 @@ namespace TreeFlow.Editor.Helpers
     /// </summary>
     internal static class Resources
     {
-        public const string NODE_VIEW_USS = "StyleSheets/NodeView.uss";
-        public const string TREE_GRAPH_VIEW_USS = "StyleSheets/TreeGraphView.uss";
-
-        public const string NODE_VIEW_UXML = "UXML/NodeView.uxml";
-        public const string EDITOR_WINDOW_UXML = "UXML/TreeFlowEditorWindow.uxml";
+        private const string EDITOR_ROOT = "dev.warpersan.treeflow/Editor/Resources/";
         
+        public static string NODE_VIEW_USS => FromPackageRoot("StyleSheets/NodeView.uss");
+        public static string TREE_GRAPH_VIEW_USS => FromPackageRoot("StyleSheets/TreeGraphView.uss");
+
+        public static string NODE_VIEW_UXML => FromPackageRoot("UXML/NodeView.uxml");
+        public static string EDITOR_WINDOW_UXML => FromPackageRoot("UXML/TreeFlowEditorWindow.uxml");
+
         /// <summary>
-        /// Converts the given relative path to the absolute path
+        /// Converts the given absolute path to a path relative to <see cref="Application.dataPath"/>
         /// </summary>
-        public static string RelativeToAbsolute(string relativePath)
+        public static string AbsoluteToRelative(string absolutePath)
         {
-            const string ROOT_PATH = "Assets/dev.warpersan.treeflow/Editor/Resources/";
+            var projectPath = Path.GetDirectoryName(Application.dataPath);
             
-            return Path.Combine(ROOT_PATH, relativePath);
+            return Path.GetRelativePath(projectPath, absolutePath);
         }
         
         /// <summary>
-        /// Loads the resource at the given path from the root 
+        /// Converts the given relative path of an editor resource to an absolute path
         /// </summary>
-        /// <remarks>
-        /// The given path must be absolute
-        /// </remarks>
-        public static T Load<T>(string path) where T : Object => AssetDatabase.LoadAssetAtPath<T>(RelativeToAbsolute(path));
+        private static string FromPackageRoot(string relativePath) => Path.Combine(
+            Application.dataPath,
+            EDITOR_ROOT,
+            relativePath
+        );
 
         /// <summary>
-        /// Saves the given asset to the given path
+        /// Loads the resource at the given absolute path
         /// </summary>
-        /// <remarks>
-        /// The given path must be relative
-        /// </remarks>
+        public static T Load<T>(string path) where T : Object
+        {
+            AssetDatabase.Refresh();
+            return AssetDatabase.LoadAssetAtPath<T>(AbsoluteToRelative(path));
+        }
+
+        /// <summary>
+        /// Saves the given asset to the given absolute path
+        /// </summary>
         public static void Save(Object asset, string path)
         {
-            AssetDatabase.CreateAsset(asset, path);
+            AssetDatabase.CreateAsset(asset, AbsoluteToRelative(path));
             AssetDatabase.Refresh();
         }
         
