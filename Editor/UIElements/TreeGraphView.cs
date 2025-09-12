@@ -84,8 +84,7 @@ namespace TreeFlow.Editor.UIElements
                     newPositions.TryAdd(nodeView.Node, nodeView.GetPosition().position);
                 }
                 
-                if (newPositions.Count > 0)
-                    MoveNodes(newPositions);
+                MoveNodes(newPositions);
             }
             
             // Links added
@@ -101,8 +100,7 @@ namespace TreeFlow.Editor.UIElements
                     newLinks.Add(new KeyValuePair<NodeAsset, NodeAsset>(output.Node, input.Node));
                 }
 
-                if (newLinks.Count > 0)
-                    CreateLinks(newLinks);
+                CreateLinks(newLinks);
             }
 
             // Nodes removed
@@ -125,11 +123,8 @@ namespace TreeFlow.Editor.UIElements
                     }
                 }
                 
-                if (nodesToRemove.Count > 0)
-                    RemoveNodes(nodesToRemove);
-                
-                if (edgesToRemove.Count > 0)
-                    RemoveLinks(edgesToRemove);
+                RemoveNodes(nodesToRemove);
+                RemoveLinks(edgesToRemove);
             }
             
             return graphViewChange;
@@ -230,7 +225,7 @@ namespace TreeFlow.Editor.UIElements
             AddElement(view);
             return view;
         }
-
+        
         #endregion
 
         #region Nodes
@@ -254,6 +249,9 @@ namespace TreeFlow.Editor.UIElements
         /// </summary>
         private void RemoveNodes(List<NodeAsset> nodesToRemove)
         {
+            if (nodesToRemove.Count == 0)
+                return;
+            
             treeAsset?.RemoveNodes(nodesToRemove);
             
             EditorUtility.SetDirty(treeAsset);
@@ -265,6 +263,9 @@ namespace TreeFlow.Editor.UIElements
         /// </summary>
         private void MoveNodes(Dictionary<NodeAsset, Vector2> positionsByNode)
         {
+            if (positionsByNode.Count == 0)
+                return;
+            
             treeAsset?.MoveNodes(positionsByNode);
             
             EditorUtility.SetDirty(treeAsset);
@@ -287,6 +288,9 @@ namespace TreeFlow.Editor.UIElements
         /// </summary>
         private void CreateLinks(List<KeyValuePair<NodeAsset, NodeAsset>> links)
         {
+            if (links.Count == 0)
+                return;
+            
             var linksPerNode = new Dictionary<NodeAsset, ISet<NodeAsset>>();
 
             foreach (var (start, end) in links)
@@ -306,6 +310,9 @@ namespace TreeFlow.Editor.UIElements
         /// </summary>
         private void RemoveLinks(List<KeyValuePair<NodeAsset, NodeAsset>> links)
         {
+            if (links.Count == 0)
+                return;
+            
             var linksPerNode = new Dictionary<NodeAsset, ISet<NodeAsset>>();
 
             foreach (var (start, end) in links)
