@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TreeFlow.Editor.Interfaces;
 using TreeFlow.Editor.Nodes.Core;
 using TreeFlow.Editor.ScriptableObjects;
+using UnityEditor;
 using UnityEngine;
 
 namespace TreeFlow.Editor.Helpers
@@ -24,6 +25,8 @@ namespace TreeFlow.Editor.Helpers
             TreeUtils.TraverseTreeFromTop(tree, n => indexedNodes.Remove(n.GUID));
             
             tree.RemoveNodes(indexedNodes.Values);
+
+            EditorUtility.SetDirty(tree);
         }
         
         /// <summary>
@@ -77,6 +80,8 @@ namespace TreeFlow.Editor.Helpers
                     parent.Link(child);
                 }
             }
+
+            EditorUtility.SetDirty(tree);
         }
     }
 }
