@@ -67,6 +67,7 @@ namespace TreeFlow.Editor
 
                 Open(asset);
             });
+            fileMenu.menu.AppendSeparator();
             fileMenu.menu.AppendAction("Save", _ => SaveChanges());
             fileMenu.menu.AppendAction("Save As...", _ => {
                 var path = Helpers.TreeIO.PromptSaveTree(treeAsset);
