@@ -79,8 +79,10 @@ namespace TreeFlow.Editor
             if (!EditorUtility.DisplayDialog("Confirmation - Remove Unused Nodes", "Are you sure you want to proceed? This alters the tree itself.", "Yes", "No"))
                 return;
             
+            tree.Compute();
             TreeSanitizer.RemoveDetachedNodes(tree);
             Resources.SaveChanges(tree);
+            TreeFlowEditorWindow.Open(tree);
         }
 
         private static void FixChildNodesBtn(BehaviorTreeAsset tree)
@@ -91,8 +93,10 @@ namespace TreeFlow.Editor
             if (!EditorUtility.DisplayDialog("Confirmation - Fix Child Nodes", "Are you sure you want to proceed? This alters the tree itself.", "Yes", "No"))
                 return;
             
+            tree.Compute();
             TreeSanitizer.FixChildNodes(tree);
             Resources.SaveChanges(tree);
+            TreeFlowEditorWindow.Open(tree);
         }
 
         private static void OptimizeTreeBtn(BehaviorTreeAsset tree)
@@ -103,9 +107,12 @@ namespace TreeFlow.Editor
             if (!EditorUtility.DisplayDialog("Confirmation - Optimize Tree", "Are you sure you want to proceed? This alters the tree itself.", "Yes", "No"))
                 return;
             
-            TreeJanitor.OptimizeTree(tree);
+            tree.Compute();
+            TreeSanitizer.FixChildNodes(tree);
             TreeSanitizer.RemoveDetachedNodes(tree);
+            TreeOptimizer.Optimize(tree);
             Resources.SaveChanges(tree);
+            TreeFlowEditorWindow.Open(tree);
         }
 
         #endregion
