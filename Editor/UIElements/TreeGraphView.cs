@@ -110,17 +110,26 @@ namespace TreeFlow.Editor.UIElements
             if (graphViewChange.elementsToRemove != null)
             {
                 var nodesToRemove = new List<NodeAsset>();
+                var edgesToRemove = new List<KeyValuePair<NodeAsset, NodeAsset>>();
 
                 foreach (var element in graphViewChange.elementsToRemove)
                 {
-                    if (element is not NodeView nodeView)
-                        continue;
+                    if (element is NodeView nodeView)
+                        nodesToRemove.Add(nodeView.Node);
+                    else if (element is Edge edge)
+                    {
+                        if (edge.input.node is not NodeView input || edge.output.node is not NodeView output)
+                            continue;
                     
-                    nodesToRemove.Add(nodeView.Node);
+                        edgesToRemove.Add(new KeyValuePair<NodeAsset, NodeAsset>(output.Node, input.Node));
+                    }
                 }
                 
                 if (nodesToRemove.Count > 0)
                     RemoveNodes(nodesToRemove);
+                
+                if (edgesToRemove.Count > 0)
+                    RemoveLinks(edgesToRemove);
             }
             
             return graphViewChange;
@@ -287,6 +296,25 @@ namespace TreeFlow.Editor.UIElements
             }
             
             treeAsset?.AddLinks(linksPerNode);
+            
+            EditorUtility.SetDirty(treeAsset);
+            OnTreeChanged?.Invoke();
+        }
+
+        /// <summary>
+        /// Removes the links between the given nodes
+        /// </summary>
+        private void RemoveLinks(List<KeyValuePair<NodeAsset, NodeAsset>> links)
+        {
+            var linksPerNode = new Dictionary<NodeAsset, ISet<NodeAsset>>();
+
+            foreach (var (start, end) in links)
+            {
+                linksPerNode.TryAdd(start, new HashSet<NodeAsset>());
+                linksPerNode[start].Add(end);
+            }
+            
+            treeAsset?.RemoveLinks(linksPerNode);
             
             EditorUtility.SetDirty(treeAsset);
             OnTreeChanged?.Invoke();

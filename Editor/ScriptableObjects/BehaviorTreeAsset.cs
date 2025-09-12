@@ -124,6 +124,21 @@ namespace TreeFlow.Editor.ScriptableObjects
             }
         }
 
+        /// <summary>
+        /// Removes the given links from this tree
+        /// </summary>
+        public void RemoveLinks(IDictionary<NodeAsset, ISet<NodeAsset>> linksToRemove)
+        {
+            foreach (var (startNode, endNodes) in linksToRemove)
+            {
+                if (startNode is not IParentNode parentNode)
+                    continue;
+
+                foreach (var endNode in endNodes)
+                    parentNode.Unlink(endNode);
+            }
+        }
+
         #endregion
 
         #region Editor
