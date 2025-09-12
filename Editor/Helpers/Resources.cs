@@ -28,11 +28,17 @@ namespace TreeFlow.Editor.Helpers
         /// <summary>
         /// Loads the resource at the given path from the root 
         /// </summary>
+        /// <remarks>
+        /// The given path must be absolute
+        /// </remarks>
         public static T Load<T>(string path) where T : Object => AssetDatabase.LoadAssetAtPath<T>(RelativeToAbsolute(path));
 
         /// <summary>
         /// Saves the given asset to the given path
         /// </summary>
+        /// <remarks>
+        /// The given path must be relative
+        /// </remarks>
         public static void Save(Object asset, string path)
         {
             AssetDatabase.CreateAsset(asset, path);

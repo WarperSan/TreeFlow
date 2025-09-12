@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using TreeFlow.Editor.Interfaces;
 using TreeFlow.Editor.Nodes.Composite;
 using TreeFlow.Editor.Nodes.Core;
@@ -29,6 +30,7 @@ namespace TreeFlow.Editor.Helpers
             // ReSharper disable once InvertIf
             if (path != null)
             {
+                path = Path.GetRelativePath(Path.GetDirectoryName(Application.dataPath), path);
                 Resources.SaveChanges(asset);
                 Resources.Save(asset, path);
             }
