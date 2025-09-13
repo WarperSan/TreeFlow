@@ -1,10 +1,7 @@
 namespace TreeFlow.Runtime.Core
 {
     /// <summary>
-    /// Class that represents any node defining the flow of the tree
+    ///     Class that represents any node defining the flow of the tree
     /// </summary>
-    public abstract class Leaf : Node
-    {
-        
-    }
+    public abstract class Leaf : Node { }
 }

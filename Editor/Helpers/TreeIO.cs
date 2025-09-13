@@ -6,12 +6,12 @@ using UnityEngine;
 namespace TreeFlow.Editor.Helpers
 {
     /// <summary>
-    /// Class that simplifies the IO for <see cref="BehaviorTreeAsset"/> 
+    ///     Class that simplifies the IO for <see cref="BehaviorTreeAsset" />
     /// </summary>
     internal static class TreeIO
     {
         /// <summary>
-        /// Prompts the user if they want to load the given tree or not
+        ///     Prompts the user if they want to load the given tree or not
         /// </summary>
         public static void PromptLoadTree(BehaviorTreeAsset asset)
         {
@@ -21,15 +21,15 @@ namespace TreeFlow.Editor.Helpers
                 "Yes",
                 "No"
             );
-            
+
             if (!isOkay)
                 return;
-            
+
             TreeFlowEditorWindow.Open(asset);
         }
-        
+
         /// <summary>
-        /// Prompts the user to create a new <see cref="BehaviorTreeAsset"/>
+        ///     Prompts the user to create a new <see cref="BehaviorTreeAsset" />
         /// </summary>
         public static BehaviorTreeAsset PromptCreateTree()
         {
@@ -42,14 +42,14 @@ namespace TreeFlow.Editor.Helpers
 
             return string.IsNullOrEmpty(newPath) ? null : TreeUtils.CreateTree(newPath);
         }
-        
+
         /// <summary>
-        /// Prompts the user to open a <see cref="BehaviorTreeAsset"/>
+        ///     Prompts the user to open a <see cref="BehaviorTreeAsset" />
         /// </summary>
         public static BehaviorTreeAsset PromptOpenTree()
         {
             var path = EditorUtility.OpenFilePanel("Open a Tree", "Assets/", "asset");
-                
+
             if (string.IsNullOrEmpty(path))
                 return null;
 
@@ -69,7 +69,7 @@ namespace TreeFlow.Editor.Helpers
         }
 
         /// <summary>
-        /// Prompts the user to save the given <see cref="BehaviorTreeAsset"/>
+        ///     Prompts the user to save the given <see cref="BehaviorTreeAsset" />
         /// </summary>
         public static string PromptSaveTree(BehaviorTreeAsset asset)
         {
@@ -77,17 +77,17 @@ namespace TreeFlow.Editor.Helpers
 
             if (string.IsNullOrEmpty(path))
                 return null;
-            
+
             var newPath = EditorUtility.SaveFilePanel(
                 "Save Tree As...",
                 Application.dataPath,
                 "NewBehaviourTree",
                 "asset"
             );
-            
+
             if (string.IsNullOrEmpty(newPath))
                 return null;
-            
+
             newPath = Path.GetRelativePath(Path.GetDirectoryName(Application.dataPath), newPath);
 
             AssetDatabase.CopyAsset(path, newPath);

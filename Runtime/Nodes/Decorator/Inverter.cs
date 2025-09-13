@@ -3,13 +3,11 @@ using TreeFlow.Runtime.Core;
 namespace TreeFlow.Runtime.Nodes.Decorator
 {
     /// <summary>
-    /// Node that inverts the state of its child. (NOT)
+    ///     Node that inverts the state of its child. (NOT)
     /// </summary>
     public sealed class Inverter : Core.Decorator
     {
-        public Inverter(Node child) : base(child)
-        {
-        }
+        public Inverter(Node child) : base(child) { }
 
         public override NodeStatus Process()
         {

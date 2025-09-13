@@ -9,11 +9,12 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Resources = TreeFlow.Editor.Helpers.Resources;
 
 namespace TreeFlow.Editor.UIElements
 {
     /// <summary>
-    /// Element used to display and modify <see cref="BehaviorTreeAsset"/>
+    ///     Element used to display and modify <see cref="BehaviorTreeAsset" />
     /// </summary>
     internal class TreeGraphView : GraphView
     {
@@ -25,7 +26,7 @@ namespace TreeFlow.Editor.UIElements
         public TreeGraphView()
         {
             CreateUI();
-            
+
             SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
 
             this.AddManipulator(new ContentDragger());
@@ -39,7 +40,7 @@ namespace TreeFlow.Editor.UIElements
 
         private void CreateUI()
         {
-            styleSheets.Add(Helpers.Resources.Load<StyleSheet>(Helpers.Resources.TREE_GRAPH_VIEW_USS));
+            styleSheets.Add(Resources.Load<StyleSheet>(Resources.TREE_GRAPH_VIEW_USS));
 
             var background = new GridBackground();
             background.AddToClassList("grid");
@@ -51,11 +52,11 @@ namespace TreeFlow.Editor.UIElements
 
         #region Input
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
             var mousePos = this.ChangeCoordinatesTo(contentViewContainer, evt.localMousePosition);
-            
+
             evt.menu.AppendAction("Composite/Sequence", _ => CreateNode<SequenceNodeAsset>(mousePos));
             evt.menu.AppendAction("Composite/Selector", _ => CreateNode<SelectorNodeAsset>(mousePos));
             evt.menu.AppendAction("Composite/Parallel", _ => CreateNode<ParallelNodeAsset>(mousePos));
@@ -65,9 +66,9 @@ namespace TreeFlow.Editor.UIElements
             evt.menu.AppendAction("Leaf/Action", _ => CreateNode<ActionNodeAsset>(mousePos));
             evt.menu.AppendAction("Leaf/Condition", _ => CreateNode<ConditionNodeAsset>(mousePos));
         }
-        
+
         /// <summary>
-        /// Called when the graph has changed
+        ///     Called when the graph has changed
         /// </summary>
         private GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
         {
@@ -83,10 +84,10 @@ namespace TreeFlow.Editor.UIElements
 
                     newPositions.TryAdd(nodeView.Node, nodeView.GetPosition().position);
                 }
-                
+
                 MoveNodes(newPositions);
             }
-            
+
             // Links added
             if (graphViewChange.edgesToCreate != null)
             {
@@ -96,7 +97,7 @@ namespace TreeFlow.Editor.UIElements
                 {
                     if (edge.input.node is not NodeView input || edge.output.node is not NodeView output)
                         continue;
-                    
+
                     newLinks.Add(new KeyValuePair<NodeAsset, NodeAsset>(output.Node, input.Node));
                 }
 
@@ -118,30 +119,30 @@ namespace TreeFlow.Editor.UIElements
                     {
                         if (edge.input.node is not NodeView input || edge.output.node is not NodeView output)
                             continue;
-                    
+
                         edgesToRemove.Add(new KeyValuePair<NodeAsset, NodeAsset>(output.Node, input.Node));
                     }
                 }
-                
+
                 RemoveNodes(nodesToRemove);
                 RemoveLinks(edgesToRemove);
             }
-            
+
             return graphViewChange;
         }
 
         /// <summary>
-        /// Called when the view has changed
+        ///     Called when the view has changed
         /// </summary>
         private void OnViewTransformChanged(GraphView graphView)
         {
             treeAsset?.SaveViewport(graphView.contentViewContainer.transform);
-            
+
             EditorUtility.SetDirty(treeAsset);
             OnTreeChanged?.Invoke();
         }
-        
-        /// <inheritdoc/>
+
+        /// <inheritdoc />
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
             var validPorts = new List<Port>();
@@ -150,10 +151,10 @@ namespace TreeFlow.Editor.UIElements
             {
                 if (port.direction == startPort.direction)
                     continue;
-                
+
                 if (port.node == startPort.node)
                     continue;
-                
+
                 validPorts.Add(port);
             }
 
@@ -165,17 +166,17 @@ namespace TreeFlow.Editor.UIElements
         #region Tree
 
         /// <summary>
-        /// Populates this view with the given <see cref="BehaviorTreeAsset"/>
+        ///     Populates this view with the given <see cref="BehaviorTreeAsset" />
         /// </summary>
         public void PopulateView(BehaviorTreeAsset tree)
         {
             tree.Compute();
-            
+
             graphViewChanged -= OnGraphViewChanged;
             viewTransformChanged -= OnViewTransformChanged;
 
             DeleteElements(graphElements);
-            
+
             treeAsset = tree;
 
             var viewsByGuid = new Dictionary<string, INodeView>();
@@ -187,35 +188,35 @@ namespace TreeFlow.Editor.UIElements
             {
                 if (!viewsByGuid.TryGetValue(node.GUID, out var parentView))
                     continue;
-                
+
                 if (node is not IParentNode parentNode)
                     continue;
-                
+
                 foreach (var childNode in parentNode.Children)
                 {
                     if (childNode == null)
                         continue;
-                    
+
                     if (!viewsByGuid.TryGetValue(childNode, out var childView))
                         continue;
-                    
+
                     var edge = childView.ConnectTo(parentView);
-                    
+
                     if (edge == null)
                         continue;
-                    
+
                     AddElement(edge);
                 }
             }
 
             treeAsset.LoadViewport(contentViewContainer.transform);
-            
+
             graphViewChanged += OnGraphViewChanged;
             viewTransformChanged += OnViewTransformChanged;
         }
 
         /// <summary>
-        /// Adds the given <see cref="NodeAsset"/> to the graph
+        ///     Adds the given <see cref="NodeAsset" /> to the graph
         /// </summary>
         private INodeView AddNodeToGraph(NodeAsset graphNode)
         {
@@ -225,13 +226,13 @@ namespace TreeFlow.Editor.UIElements
             AddElement(view);
             return view;
         }
-        
+
         #endregion
 
         #region Nodes
 
         /// <summary>
-        /// Creates a brand new <see cref="NodeAsset"/> from the given information
+        ///     Creates a brand new <see cref="NodeAsset" /> from the given information
         /// </summary>
         private void CreateNode<T>(Vector2 position) where T : NodeAsset, new()
         {
@@ -239,58 +240,58 @@ namespace TreeFlow.Editor.UIElements
             newNode.Position = position;
 
             AddNodeToGraph(newNode);
-            
+
             EditorUtility.SetDirty(treeAsset);
             OnTreeChanged?.Invoke();
         }
 
         /// <summary>
-        /// Removes the given nodes from the graph
+        ///     Removes the given nodes from the graph
         /// </summary>
         private void RemoveNodes(List<NodeAsset> nodesToRemove)
         {
             if (nodesToRemove.Count == 0)
                 return;
-            
+
             treeAsset?.RemoveNodes(nodesToRemove);
-            
+
             EditorUtility.SetDirty(treeAsset);
             OnTreeChanged?.Invoke();
         }
 
         /// <summary>
-        /// Moves the given nodes at the given positions
+        ///     Moves the given nodes at the given positions
         /// </summary>
         private void MoveNodes(Dictionary<NodeAsset, Vector2> positionsByNode)
         {
             if (positionsByNode.Count == 0)
                 return;
-            
+
             treeAsset?.MoveNodes(positionsByNode);
-            
+
             EditorUtility.SetDirty(treeAsset);
             OnTreeChanged?.Invoke();
         }
 
         /// <summary>
-        /// Renames the given node to the given name
+        ///     Renames the given node to the given name
         /// </summary>
         public void RenameNode(NodeAsset graphNode, string newName)
         {
             graphNode.Name = newName;
-            
+
             EditorUtility.SetDirty(treeAsset);
             OnTreeChanged?.Invoke();
         }
 
         /// <summary>
-        /// Creates brand-new links between the given nodes
+        ///     Creates brand-new links between the given nodes
         /// </summary>
         private void CreateLinks(List<KeyValuePair<NodeAsset, NodeAsset>> links)
         {
             if (links.Count == 0)
                 return;
-            
+
             var linksPerNode = new Dictionary<NodeAsset, ISet<NodeAsset>>();
 
             foreach (var (start, end) in links)
@@ -298,21 +299,21 @@ namespace TreeFlow.Editor.UIElements
                 linksPerNode.TryAdd(start, new HashSet<NodeAsset>());
                 linksPerNode[start].Add(end);
             }
-            
+
             treeAsset?.AddLinks(linksPerNode);
-            
+
             EditorUtility.SetDirty(treeAsset);
             OnTreeChanged?.Invoke();
         }
 
         /// <summary>
-        /// Removes the links between the given nodes
+        ///     Removes the links between the given nodes
         /// </summary>
         private void RemoveLinks(List<KeyValuePair<NodeAsset, NodeAsset>> links)
         {
             if (links.Count == 0)
                 return;
-            
+
             var linksPerNode = new Dictionary<NodeAsset, ISet<NodeAsset>>();
 
             foreach (var (start, end) in links)
@@ -320,9 +321,9 @@ namespace TreeFlow.Editor.UIElements
                 linksPerNode.TryAdd(start, new HashSet<NodeAsset>());
                 linksPerNode[start].Add(end);
             }
-            
+
             treeAsset?.RemoveLinks(linksPerNode);
-            
+
             EditorUtility.SetDirty(treeAsset);
             OnTreeChanged?.Invoke();
         }

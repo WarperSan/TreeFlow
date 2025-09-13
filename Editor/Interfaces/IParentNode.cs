@@ -5,32 +5,32 @@ using TreeFlow.Editor.ScriptableObjects;
 namespace TreeFlow.Editor.Interfaces
 {
     /// <summary>
-    /// Defines any <see cref="NodeAsset"/> that can own at least one child
+    ///     Defines any <see cref="NodeAsset" /> that can own at least one child
     /// </summary>
     public interface IParentNode
     {
         /// <summary>
-        /// Links the given node to this node
+        ///     Links the given node to this node
         /// </summary>
         public void Link(NodeAsset child);
 
         /// <summary>
-        /// Unlinks the given node from this node
+        ///     Unlinks the given node from this node
         /// </summary>
         public void Unlink(NodeAsset child);
 
         /// <summary>
-        /// Replaces <see cref="oldChild"/> with <see cref="newChild"/>
+        ///     Replaces <see cref="oldChild" /> with <see cref="newChild" />
         /// </summary>
         public void Replace(NodeAsset oldChild, NodeAsset newChild);
-        
+
         /// <summary>
-        /// List of every child node of this node
+        ///     List of every child node of this node
         /// </summary>
         public IEnumerable<string> Children { get; }
 
         /// <summary>
-        /// List of every node of this node
+        ///     List of every node of this node
         /// </summary>
         public IEnumerable<NodeAsset> GetChildren(BehaviorTreeAsset tree)
         {
@@ -45,9 +45,9 @@ namespace TreeFlow.Editor.Interfaces
 
             return assets;
         }
-        
+
         /// <summary>
-        /// Amount of children this node has
+        ///     Amount of children this node has
         /// </summary>
         public int Count { get; }
     }

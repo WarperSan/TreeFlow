@@ -11,34 +11,34 @@ namespace TreeFlow.Tests.Runtime.Nodes.Leaves
         public void Empty()
         {
             var action = new Action(null);
-            
+
             Assert.AreEqual(Node.NodeStatus.FAILURE, action.Process());
         }
-        
+
         [Test]
         public void Failure()
         {
             var action = new Action(_ => Node.NodeStatus.FAILURE);
-            
+
             Assert.AreEqual(Node.NodeStatus.FAILURE, action.Process());
         }
-        
+
         [Test]
         public void Success()
         {
             var action = new Action(_ => Node.NodeStatus.SUCCESS);
-            
+
             Assert.AreEqual(Node.NodeStatus.SUCCESS, action.Process());
         }
-        
+
         [Test]
         public void Running()
         {
             var action = new Action(_ => Node.NodeStatus.RUNNING);
-            
+
             Assert.AreEqual(Node.NodeStatus.RUNNING, action.Process());
         }
-        
+
         [Test]
         public void Exception()
         {

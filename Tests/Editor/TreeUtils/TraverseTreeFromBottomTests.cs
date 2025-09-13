@@ -24,7 +24,7 @@ namespace TreeFlow.Tests.Editor.TreeUtils
             act1.Name = "ACT-1";
             act2.Name = "ACT-2";
             act3.Name = "ACT-3";
-            
+
             tree.AddLinks(new Dictionary<NodeAsset, ISet<NodeAsset>>
             {
                 { root, new HashSet<NodeAsset> { seq1 } },
@@ -32,12 +32,12 @@ namespace TreeFlow.Tests.Editor.TreeUtils
             });
 
             var output = "";
-            
+
             TreeFlow.Editor.Helpers.TreeUtils.TraverseTreeFromBottom(tree, (_, n) =>
             {
                 output += n.Name + "/";
             });
-            
+
             Assert.AreEqual("ACT-1/ACT-2/ACT-3/SEQ-1/ROOT/", output);
         }
     }

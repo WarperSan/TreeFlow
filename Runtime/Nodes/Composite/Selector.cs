@@ -3,16 +3,17 @@ using TreeFlow.Runtime.Core;
 namespace TreeFlow.Runtime.Nodes.Composite
 {
     /// <summary>
-    /// Node that succeed when any of its children succeed. (OR)
+    ///     Node that succeed when any of its children succeed. (OR)
     /// </summary>
     /// <remarks>
-    /// If a child's state is <see cref="Node.NodeStatus.RUNNING"/> or <see cref="Node.NodeStatus.SUCCESS"/>,this node exits with this state.
+    ///     If a child's state is <see cref="Node.NodeStatus.RUNNING" /> or <see cref="Node.NodeStatus.SUCCESS" />,this node
+    ///     exits with this state.
     /// </remarks>
     public sealed class Selector : Core.Composite
     {
         public Selector(params Node[] nodes) : base(nodes) { }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override NodeStatus Process()
         {
             foreach (var child in this)

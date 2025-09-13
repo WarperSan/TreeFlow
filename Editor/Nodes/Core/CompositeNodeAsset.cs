@@ -9,33 +9,33 @@ namespace TreeFlow.Editor.Nodes.Core
     public abstract class CompositeNodeAsset : NodeAsset, IParentNode
     {
         /// <summary>
-        /// List of children of this node
+        ///     List of children of this node
         /// </summary>
         [SerializeField] private List<string> m_children = new();
-        
-        /// <inheritdoc/>
+
+        /// <inheritdoc />
         public void Link(NodeAsset child) => m_children.Add(child.GUID);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Unlink(NodeAsset child) => m_children.Remove(child.GUID);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Replace(NodeAsset oldChild, NodeAsset newChild)
         {
             for (var i = 0; i < m_children.Count; i++)
             {
                 if (m_children[i] != oldChild.GUID)
                     continue;
-                
+
                 m_children[i] = newChild.GUID;
                 break;
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<string> Children => m_children;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Count => m_children.Count;
     }
 }

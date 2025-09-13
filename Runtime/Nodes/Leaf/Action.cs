@@ -9,7 +9,7 @@ namespace TreeFlow.Runtime.Nodes.Leaf
     // RUNNING => Command running
 
     /// <summary>
-    /// Node that executes the given command
+    ///     Node that executes the given command
     /// </summary>
     public sealed class Action : Core.Leaf
     {
@@ -19,8 +19,8 @@ namespace TreeFlow.Runtime.Nodes.Leaf
         {
             Command = command;
         }
-        
-        /// <inheritdoc/>
+
+        /// <inheritdoc />
         public override NodeStatus Process() => Command?.Invoke(this) ?? NodeStatus.FAILURE;
     }
 }

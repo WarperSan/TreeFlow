@@ -8,7 +8,7 @@ using Resources = TreeFlow.Editor.Helpers.Resources;
 namespace TreeFlow.Editor
 {
     /// <summary>
-    /// Editor that handles the link with the base client
+    ///     Editor that handles the link with the base client
     /// </summary>
     [CustomEditor(typeof(BehaviorTreeAsset))]
     internal class TreeFlowEditor : UnityEditor.Editor
@@ -35,10 +35,10 @@ namespace TreeFlow.Editor
             TreeFlowEditorWindow.Open(asset);
             return true;
         }
-        
+
         #region Inspector
-        
-        /// <inheritdoc/>
+
+        /// <inheritdoc />
         public override void OnInspectorGUI()
         {
             var targetTree = target as BehaviorTreeAsset;
@@ -48,10 +48,10 @@ namespace TreeFlow.Editor
                 base.OnInspectorGUI();
                 return;
             }
-            
+
             if (GUILayout.Button("Open"))
                 TreeFlowEditorWindow.Open(targetTree);
-            
+
             GUILayout.Space(10);
             GUILayout.Label("Tools");
 
@@ -67,7 +67,7 @@ namespace TreeFlow.Editor
                 GUI.enabled = true;
                 EditorGUILayout.HelpBox($"'{targetTree.name}' has some unsaved changes.", MessageType.Warning);
             }
-            
+
             base.OnInspectorGUI();
         }
 
@@ -75,10 +75,10 @@ namespace TreeFlow.Editor
         {
             if (!GUILayout.Button(new GUIContent("Remove Unused Nodes", "Removes any node that isn't connected to the tree")))
                 return;
-            
+
             if (!EditorUtility.DisplayDialog("Confirmation - Remove Unused Nodes", "Are you sure you want to proceed? This alters the tree itself.", "Yes", "No"))
                 return;
-            
+
             tree.Compute();
             TreeSanitizer.RemoveDetachedNodes(tree);
             Resources.SaveChanges(tree);
@@ -89,10 +89,10 @@ namespace TreeFlow.Editor
         {
             if (!GUILayout.Button(new GUIContent("Fix Child Nodes", "Fixes the child references in the tree")))
                 return;
-            
+
             if (!EditorUtility.DisplayDialog("Confirmation - Fix Child Nodes", "Are you sure you want to proceed? This alters the tree itself.", "Yes", "No"))
                 return;
-            
+
             tree.Compute();
             TreeSanitizer.FixChildNodes(tree);
             Resources.SaveChanges(tree);
@@ -103,10 +103,10 @@ namespace TreeFlow.Editor
         {
             if (!GUILayout.Button(new GUIContent("Optimize Tree", "Optimizes the tree based of known rules")))
                 return;
-            
+
             if (!EditorUtility.DisplayDialog("Confirmation - Optimize Tree", "Are you sure you want to proceed? This alters the tree itself.", "Yes", "No"))
                 return;
-            
+
             tree.Compute();
             TreeSanitizer.FixChildNodes(tree);
             TreeSanitizer.RemoveDetachedNodes(tree);

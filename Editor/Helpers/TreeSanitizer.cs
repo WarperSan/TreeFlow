@@ -8,12 +8,12 @@ using UnityEngine;
 namespace TreeFlow.Editor.Helpers
 {
     /// <summary>
-    /// Class that handles the sanitization of <see cref="BehaviorTreeAsset"/>
+    ///     Class that handles the sanitization of <see cref="BehaviorTreeAsset" />
     /// </summary>
     internal static class TreeSanitizer
     {
         /// <summary>
-        /// Removes every node that is not attached to <see cref="BehaviorTreeAsset.Root"/>
+        ///     Removes every node that is not attached to <see cref="BehaviorTreeAsset.Root" />
         /// </summary>
         public static void RemoveDetachedNodes(BehaviorTreeAsset tree)
         {
@@ -21,16 +21,16 @@ namespace TreeFlow.Editor.Helpers
 
             foreach (var node in tree.Nodes)
                 indexedNodes.TryAdd(node.GUID, node);
-            
+
             TreeUtils.TraverseTreeFromTop(tree, n => indexedNodes.Remove(n.GUID));
-            
+
             tree.RemoveNodes(indexedNodes.Values);
 
             EditorUtility.SetDirty(tree);
         }
-        
+
         /// <summary>
-        /// Fixes every node reference in the graph
+        ///     Fixes every node reference in the graph
         /// </summary>
         public static void FixChildNodes(BehaviorTreeAsset tree)
         {
@@ -41,7 +41,7 @@ namespace TreeFlow.Editor.Helpers
                 Debug.LogWarning("No root was found in the tree.");
                 return;
             }
-            
+
             var navigationStack = new Stack<NodeAsset>();
             navigationStack.Push(root);
 
@@ -51,7 +51,7 @@ namespace TreeFlow.Editor.Helpers
 
                 if (current is not IParentNode parent)
                     continue;
-                
+
                 if (parent.Count < 1)
                     continue;
 
@@ -61,22 +61,22 @@ namespace TreeFlow.Editor.Helpers
                 {
                     if (child == null)
                         continue;
-                    
+
                     children.Add(child);
                     navigationStack.Push(child);
                 }
-                
+
                 children.Sort((a, b) => a.Position.x.CompareTo(b.Position.x));
 
                 var uniqueChildren = new HashSet<string>();
-                
+
                 foreach (var child in children)
                 {
                     parent.Unlink(child);
-                 
+
                     if (!uniqueChildren.Add(child.GUID))
                         continue;
-                    
+
                     parent.Link(child);
                 }
             }

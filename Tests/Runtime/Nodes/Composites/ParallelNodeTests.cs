@@ -11,7 +11,7 @@ namespace TreeFlow.Tests.Runtime.Nodes.Composites
         public void Empty()
         {
             var parallel = new Parallel(0);
-            
+
             Assert.AreEqual(Node.NodeStatus.SUCCESS, parallel.Process());
         }
 
@@ -19,7 +19,7 @@ namespace TreeFlow.Tests.Runtime.Nodes.Composites
         public void EmptyWithThreshold()
         {
             var parallel = new Parallel(1);
-            
+
             Assert.AreEqual(Node.NodeStatus.FAILURE, parallel.Process());
         }
 
@@ -30,10 +30,10 @@ namespace TreeFlow.Tests.Runtime.Nodes.Composites
             parallel.Attach(NodeUtils.AlwaysSuccess());
             parallel.Attach(NodeUtils.AlwaysSuccess());
             parallel.Attach(NodeUtils.AlwaysFailure());
-            
+
             Assert.AreEqual(Node.NodeStatus.SUCCESS, parallel.Process());
         }
-        
+
         [Test]
         public void MostlyFailure()
         {
@@ -41,7 +41,7 @@ namespace TreeFlow.Tests.Runtime.Nodes.Composites
             parallel.Attach(NodeUtils.AlwaysSuccess());
             parallel.Attach(NodeUtils.AlwaysFailure());
             parallel.Attach(NodeUtils.AlwaysFailure());
-            
+
             Assert.AreEqual(Node.NodeStatus.FAILURE, parallel.Process());
         }
 
@@ -53,7 +53,7 @@ namespace TreeFlow.Tests.Runtime.Nodes.Composites
             parallel.Attach(NodeUtils.AlwaysRunning());
             parallel.Attach(NodeUtils.AlwaysRunning());
             parallel.Attach(NodeUtils.AlwaysFailure());
-            
+
             Assert.AreEqual(Node.NodeStatus.RUNNING, parallel.Process());
         }
     }

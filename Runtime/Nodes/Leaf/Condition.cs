@@ -4,10 +4,11 @@ using TreeFlow.Runtime.Core;
 namespace TreeFlow.Runtime.Nodes.Leaf
 {
     /// <summary>
-    /// Node that evaluates the given proposition
+    ///     Node that evaluates the given proposition
     /// </summary>
     /// <remarks>
-    /// If the proposition holds, <see cref="Node.NodeStatus.SUCCESS"/> is returned. Otherwise, <see cref="Node.NodeStatus.FAILURE"/>.
+    ///     If the proposition holds, <see cref="Node.NodeStatus.SUCCESS" /> is returned. Otherwise,
+    ///     <see cref="Node.NodeStatus.FAILURE" />.
     /// </remarks>
     public sealed class Condition : Core.Leaf
     {
@@ -18,12 +19,12 @@ namespace TreeFlow.Runtime.Nodes.Leaf
             Proposition = proposition;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override NodeStatus Process()
         {
             if (Proposition == null)
                 return NodeStatus.FAILURE;
-            
+
             return Proposition.Invoke(this) ? NodeStatus.SUCCESS : NodeStatus.FAILURE;
         }
     }

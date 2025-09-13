@@ -11,13 +11,13 @@ namespace TreeFlow.Tests.Editor.TreeSanitizer
         {
             var tree = Utils.TreeUtils.CreateTree();
             var node = tree.AddNode<SelectorNodeAsset>().GUID;
-            
+
             tree.Compute();
             TreeFlow.Editor.Helpers.TreeSanitizer.RemoveDetachedNodes(tree);
-            
+
             Assert.AreEqual(null, tree.GetNode(node));
         }
-        
+
         [Test]
         public void RootWithChild()
         {
@@ -26,13 +26,13 @@ namespace TreeFlow.Tests.Editor.TreeSanitizer
             var node2 = tree.AddNode<SelectorNodeAsset>();
 
             var root = tree.GetNode(tree.Root);
-            
+
             if (root is IParentNode parent)
                 parent.Link(node2);
-            
+
             tree.Compute();
             TreeFlow.Editor.Helpers.TreeSanitizer.RemoveDetachedNodes(tree);
-            
+
             Assert.AreEqual(null, tree.GetNode(node1.GUID));
             Assert.AreEqual(node2, tree.GetNode(node2.GUID));
         }

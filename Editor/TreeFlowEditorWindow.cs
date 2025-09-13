@@ -1,3 +1,4 @@
+using TreeFlow.Editor.Helpers;
 using TreeFlow.Editor.ScriptableObjects;
 using TreeFlow.Editor.UIElements;
 using UnityEditor;
@@ -7,17 +8,17 @@ using UnityEngine.UIElements;
 namespace TreeFlow.Editor
 {
     /// <summary>
-    /// Editor window that allows to see and design <see cref="BehaviorTreeAsset"/>
+    ///     Editor window that allows to see and design <see cref="BehaviorTreeAsset" />
     /// </summary>
     internal class TreeFlowEditorWindow : EditorWindow
     {
         private BehaviorTreeAsset treeAsset;
         private TreeGraphView treeGraphView;
-        
+
         #region EditorWindow
 
         /// <summary>
-        /// Opens this window with the given asset
+        ///     Opens this window with the given asset
         /// </summary>
         public static void Open(BehaviorTreeAsset asset = null)
         {
@@ -33,7 +34,7 @@ namespace TreeFlow.Editor
 
             SetTree(treeAsset);
         }
-        
+
         private void OnGUI()
         {
             if (treeAsset is null)
@@ -41,26 +42,28 @@ namespace TreeFlow.Editor
 
             hasUnsavedChanges = EditorUtility.IsDirty(treeAsset);
         }
-        
+
         private void CreateGUI()
         {
-            var editorWindowUXML = Helpers.Resources.Load<VisualTreeAsset>(Helpers.Resources.EDITOR_WINDOW_UXML);
+            var editorWindowUXML = Resources.Load<VisualTreeAsset>(Resources.EDITOR_WINDOW_UXML);
             editorWindowUXML.CloneTree(rootVisualElement);
 
             treeGraphView = rootVisualElement.Q<TreeGraphView>();
             treeGraphView.OnTreeChanged += OnTreeChanged;
-            
+
             var fileMenu = rootVisualElement.Q<ToolbarMenu>("file-menu");
-            fileMenu.menu.AppendAction("New Tree", _ => {
-                var asset = Helpers.TreeIO.PromptCreateTree();
-                
+            fileMenu.menu.AppendAction("New Tree", _ =>
+            {
+                var asset = TreeIO.PromptCreateTree();
+
                 if (asset is null)
                     return;
 
-                Helpers.TreeIO.PromptLoadTree(asset);
+                TreeIO.PromptLoadTree(asset);
             });
-            fileMenu.menu.AppendAction("Open Tree", _ => {
-                var asset = Helpers.TreeIO.PromptOpenTree();
+            fileMenu.menu.AppendAction("Open Tree", _ =>
+            {
+                var asset = TreeIO.PromptOpenTree();
 
                 if (asset is null)
                     return;
@@ -69,9 +72,10 @@ namespace TreeFlow.Editor
             });
             fileMenu.menu.AppendSeparator();
             fileMenu.menu.AppendAction("Save", _ => SaveChanges());
-            fileMenu.menu.AppendAction("Save As...", _ => {
-                var path = Helpers.TreeIO.PromptSaveTree(treeAsset);
-                
+            fileMenu.menu.AppendAction("Save As...", _ =>
+            {
+                var path = TreeIO.PromptSaveTree(treeAsset);
+
                 if (path == null)
                     return;
 
@@ -80,12 +84,12 @@ namespace TreeFlow.Editor
                 if (asset is null)
                     return;
 
-                Helpers.TreeIO.PromptLoadTree(asset);
+                TreeIO.PromptLoadTree(asset);
             });
             //fileMenu.menu.AppendSeparator();
             //fileMenu.menu.AppendAction("Export", _ => { });
             //fileMenu.menu.AppendAction("Import", _ => { });
-            
+
             SetTree(treeAsset);
         }
 
@@ -94,7 +98,7 @@ namespace TreeFlow.Editor
         #region Tree
 
         /// <summary>
-        /// Sets the tree in used to the given tree
+        ///     Sets the tree in used to the given tree
         /// </summary>
         private void SetTree(BehaviorTreeAsset tree)
         {
@@ -111,7 +115,7 @@ namespace TreeFlow.Editor
                 if (!string.IsNullOrEmpty(treePath))
                     tree = AssetDatabase.LoadAssetAtPath<BehaviorTreeAsset>(treePath);
             }
-            
+
             if (tree == null)
             {
                 titleContent.text = "Behavior Tree";
@@ -130,7 +134,7 @@ namespace TreeFlow.Editor
         #region Changes
 
         /// <summary>
-        /// Called when <see cref="treeGraphView"/> is changed
+        ///     Called when <see cref="treeGraphView" /> is changed
         /// </summary>
         private void OnTreeChanged()
         {
@@ -138,22 +142,22 @@ namespace TreeFlow.Editor
             EditorUtility.SetDirty(treeAsset);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DiscardChanges()
         {
-            Helpers.Resources.DiscardChanges(treeAsset);
+            Resources.DiscardChanges(treeAsset);
             base.DiscardChanges();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void SaveChanges()
         {
-            Helpers.Resources.SaveChanges(treeAsset);
+            Resources.SaveChanges(treeAsset);
             base.SaveChanges();
         }
 
         /// <summary>
-        /// Prompts the user to react to the changes
+        ///     Prompts the user to react to the changes
         /// </summary>
         /// <returns>Prompt cancelled</returns>
         private bool PromptChanges()
@@ -165,7 +169,7 @@ namespace TreeFlow.Editor
                 "Cancel",
                 "Discard Changes"
             );
-                
+
             // ReSharper disable once ConvertIfStatementToSwitchStatement
             if (optionIndex == 1)
                 return true;
@@ -176,7 +180,7 @@ namespace TreeFlow.Editor
                 DiscardChanges();
             return false;
         }
-        
+
         #endregion
     }
 }

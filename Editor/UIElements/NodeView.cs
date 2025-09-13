@@ -4,30 +4,31 @@ using TreeFlow.Editor.Nodes.Core;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Resources = TreeFlow.Editor.Helpers.Resources;
 
 namespace TreeFlow.Editor.UIElements
 {
     /// <summary>
-    /// Element used to display and modify <see cref="NodeAsset"/>
+    ///     Element used to display and modify <see cref="NodeAsset" />
     /// </summary>
     public sealed class NodeView : Node, INodeView
     {
         /// <summary>
-        /// Current node displayed
+        ///     Current node displayed
         /// </summary>
         public NodeAsset Node { get; private set; }
-        
+
         private readonly TreeGraphView graphView;
-        
-        internal NodeView(TreeGraphView graphView) : base(Helpers.Resources.AbsoluteToRelative(Helpers.Resources.NODE_VIEW_UXML))
+
+        internal NodeView(TreeGraphView graphView) : base(Resources.AbsoluteToRelative(Resources.NODE_VIEW_UXML))
         {
-            styleSheets.Add(Helpers.Resources.Load<StyleSheet>(Helpers.Resources.NODE_VIEW_USS));
-            
+            styleSheets.Add(Resources.Load<StyleSheet>(Resources.NODE_VIEW_USS));
+
             CreateHeader();
-            
+
             this.graphView = graphView;
         }
-        
+
         #region Header
 
         private VisualElement Header;
@@ -39,7 +40,7 @@ namespace TreeFlow.Editor.UIElements
         private void CreateHeader()
         {
             Header = this.Q("header");
-            
+
             HeaderBackground = Header.Q<VisualElement>("background");
 
             var titleLabel = Header.Q<Label>("title-label");
@@ -49,22 +50,22 @@ namespace TreeFlow.Editor.UIElements
             {
                 if (evt.clickCount < 2)
                     return;
-                
+
                 evt.StopImmediatePropagation();
 
                 titleLabel.style.display = DisplayStyle.None;
                 TitleInput.style.display = DisplayStyle.Flex;
-                
+
                 TitleInput.SetValueWithoutNotify(titleLabel.text);
                 TitleInput.Focus();
             });
-            
+
             TitleInput.RegisterCallback<FocusOutEvent>(_ =>
             {
                 titleLabel.style.display = DisplayStyle.Flex;
                 TitleInput.style.display = DisplayStyle.None;
             });
-            
+
             TitleInput.RegisterCallback<KeyDownEvent>(evt =>
             {
                 if (evt.keyCode != KeyCode.Return && evt.keyCode != KeyCode.KeypadEnter)
@@ -74,7 +75,7 @@ namespace TreeFlow.Editor.UIElements
 
                 if (string.IsNullOrEmpty(newName))
                     newName = null;
-                
+
                 SetTitle(newName ?? "Node");
                 graphView.RenameNode(Node, newName);
             });
@@ -84,11 +85,11 @@ namespace TreeFlow.Editor.UIElements
 
         #region INodeView
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Assign(NodeAsset node)
         {
             Node = node;
-            
+
             var rect = GetPosition();
             rect.position = node.Position;
             SetPosition(rect);
@@ -96,17 +97,17 @@ namespace TreeFlow.Editor.UIElements
             capabilities = Capabilities.Selectable | Capabilities.Movable | Capabilities.Deletable |
                            Capabilities.Droppable | Capabilities.Ascendable | Capabilities.Copiable |
                            Capabilities.Snappable | Capabilities.Groupable;
-            
+
             if (node.IsRoot)
                 capabilities &= ~(Capabilities.Deletable | Capabilities.Copiable);
 
             NodeCustomizer.Customize(this, node);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SetTitle(string newTitle) => title = newTitle;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SetDefaultTitle(string defaultTitle)
         {
             var _title = Node.Name;
@@ -117,20 +118,20 @@ namespace TreeFlow.Editor.UIElements
             SetTitle(_title);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SetColor(byte r, byte g, byte b) => HeaderBackground.style.backgroundColor = new Color(
             r / 255f,
             g / 255f,
             b / 255f
         );
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         Port INodeView.InputPort => _inputPort;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         Port INodeView.OutputPort => _outputPort;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddInputPort()
         {
             if (inputContainer is null)
@@ -145,7 +146,7 @@ namespace TreeFlow.Editor.UIElements
             inputContainer.Add(_inputPort);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddOutputPort(bool allowMultiple = false)
         {
             if (outputContainer is null)

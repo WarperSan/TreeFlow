@@ -7,12 +7,12 @@ using TreeFlow.Editor.Nodes.Leaf;
 namespace TreeFlow.Editor.Helpers
 {
     /// <summary>
-    /// Class that allows to customize <see cref="INodeView"/>
+    ///     Class that allows to customize <see cref="INodeView" />
     /// </summary>
     internal static class NodeCustomizer
     {
         /// <summary>
-        /// Customizes the given <see cref="INodeView"/>
+        ///     Customizes the given <see cref="INodeView" />
         /// </summary>
         public static void Customize(INodeView view, NodeAsset node)
         {
@@ -24,10 +24,10 @@ namespace TreeFlow.Editor.Helpers
         }
 
         /// <summary>
-        /// Applies a unique style to the given <see cref="INodeView"/>
+        ///     Applies a unique style to the given <see cref="INodeView" />
         /// </summary>
         /// <remarks>
-        /// This overrides any other style
+        ///     This overrides any other style
         /// </remarks>
         private static bool ApplyUnique(INodeView view, NodeAsset node)
         {
@@ -41,7 +41,7 @@ namespace TreeFlow.Editor.Helpers
         }
 
         /// <summary>
-        /// Applies a generic style to the given <see cref="INodeView"/>
+        ///     Applies a generic style to the given <see cref="INodeView" />
         /// </summary>
         private static void ApplyGeneric(INodeView view, NodeAsset node)
         {
@@ -62,7 +62,7 @@ namespace TreeFlow.Editor.Helpers
         }
 
         /// <summary>
-        /// Applies a specific style to the given <see cref="INodeView"/>
+        ///     Applies a specific style to the given <see cref="INodeView" />
         /// </summary>
         private static void ApplySpecific(INodeView view, NodeAsset node)
         {

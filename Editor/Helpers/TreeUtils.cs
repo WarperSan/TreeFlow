@@ -9,15 +9,15 @@ using UnityEngine;
 namespace TreeFlow.Editor.Helpers
 {
     /// <summary>
-    /// Class that holds useful tools to query <see cref="BehaviorTreeAsset"/>
+    ///     Class that holds useful tools to query <see cref="BehaviorTreeAsset" />
     /// </summary>
     internal static class TreeUtils
     {
         /// <summary>
-        /// Creates a new <see cref="BehaviorTreeAsset"/> to the given file
+        ///     Creates a new <see cref="BehaviorTreeAsset" /> to the given file
         /// </summary>
         /// <remarks>
-        /// If <see cref="path"/> is omitted, the asset will be created in-memory only
+        ///     If <see cref="path" /> is omitted, the asset will be created in-memory only
         /// </remarks>
         internal static BehaviorTreeAsset CreateTree(string path = null)
         {
@@ -32,31 +32,31 @@ namespace TreeFlow.Editor.Helpers
                 Resources.SaveChanges(asset);
                 Resources.Save(asset, path);
             }
-            
+
             return asset;
         }
-        
+
         /// <summary>
-        /// Traverses the given tree from the top to the bottom
+        ///     Traverses the given tree from the top to the bottom
         /// </summary>
         /// <remarks>
-        /// The parent calls the callback, then the children.
+        ///     The parent calls the callback, then the children.
         /// </remarks>
         internal static void TraverseTreeFromTop(BehaviorTreeAsset tree, Action<NodeAsset> callback)
         {
             if (callback == null)
                 return;
-            
+
             var queue = new Queue<NodeAsset>();
             queue.Enqueue(tree.GetNode(tree.Root));
 
             while (queue.Count > 0)
             {
                 var current = queue.Dequeue();
-                
+
                 if (current == null)
                     continue;
-                
+
                 callback.Invoke(current);
 
                 if (current is not IParentNode parentNode)
@@ -68,10 +68,10 @@ namespace TreeFlow.Editor.Helpers
         }
 
         /// <summary>
-        /// Traverses the given tree from the bottom to the top
+        ///     Traverses the given tree from the bottom to the top
         /// </summary>
         /// <remarks>
-        /// The children call the callback, then the parent.
+        ///     The children call the callback, then the parent.
         /// </remarks>
         internal static void TraverseTreeFromBottom(BehaviorTreeAsset tree, Action<IParentNode, NodeAsset> callback)
         {
@@ -79,10 +79,10 @@ namespace TreeFlow.Editor.Helpers
                 return;
 
             var root = tree.GetNode(tree.Root);
-            
+
             if (root == null)
                 return;
-            
+
             var stack = new Stack<NodeAsset>();
             var visited = new HashSet<NodeAsset>();
             var parentByNode = new Dictionary<NodeAsset, IParentNode>();
@@ -102,7 +102,7 @@ namespace TreeFlow.Editor.Helpers
                 }
 
                 var cachedChildren = new Stack<NodeAsset>();
-                
+
                 foreach (var child in parentNode.GetChildren(tree))
                 {
                     if (child == null)

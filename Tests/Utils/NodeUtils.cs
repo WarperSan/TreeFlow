@@ -11,13 +11,13 @@ namespace TreeFlow.Tests.Utils
         private class AlwaysStatusNode : Node
         {
             private readonly NodeStatus status;
-            
+
             public AlwaysStatusNode(NodeStatus status)
             {
                 this.status = status;
             }
 
-            /// <inheritdoc/>
+            /// <inheritdoc />
             public override NodeStatus Process() => status;
         }
     }

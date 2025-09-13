@@ -1,12 +1,12 @@
 namespace TreeFlow.Runtime.Core
 {
     /// <summary>
-    /// Class that represents any node in a tree
+    ///     Class that represents any node in a tree
     /// </summary>
     public abstract class Node
     {
         /// <summary>
-        /// Statuses of the node
+        ///     Statuses of the node
         /// </summary>
         public enum NodeStatus
         {
@@ -23,7 +23,7 @@ namespace TreeFlow.Runtime.Core
         #region Processing
 
         /// <summary>
-        /// Processes the current tick of this node
+        ///     Processes the current tick of this node
         /// </summary>
         /// <returns>Current status of this node</returns>
         public abstract NodeStatus Process();
