@@ -9,7 +9,6 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Resources = TreeFlow.Editor.Helpers.Resources;
 
 namespace TreeFlow.Editor.UIElements
 {
@@ -40,7 +39,7 @@ namespace TreeFlow.Editor.UIElements
 
         private void CreateUI()
         {
-            styleSheets.Add(Resources.Load<StyleSheet>(Resources.TREE_GRAPH_VIEW_USS));
+            styleSheets.Add(Helpers.Resources.Load<StyleSheet>(Helpers.Resources.TREE_GRAPH_VIEW_USS));
 
             var background = new GridBackground();
             background.AddToClassList("grid");
