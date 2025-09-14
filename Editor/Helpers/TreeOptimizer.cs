@@ -19,12 +19,13 @@ namespace TreeFlow.Editor.Helpers
         /// </summary>
         [SuppressMessage("ReSharper", "InvertIf")]
         [SuppressMessage("ReSharper", "ConvertIfStatementToSwitchStatement")]
+        [SuppressMessage("ReSharper", "RedundantJumpStatement")]
         public static void Optimize(BehaviorTreeAsset tree)
         {
             TreeUtils.TraverseTreeFromBottom(tree, (parent, current) =>
             {
-                // Don't handle root yet
-                if (parent == null)
+                // Don't optimize root
+                if (parent == null || current.IsRoot)
                     return;
 
                 if (current is InverterNodeAsset inverter)
@@ -286,8 +287,13 @@ namespace TreeFlow.Editor.Helpers
 
         #region Temporary Nodes
 
+        // ReSharper disable once ClassNeverInstantiated.Local
         private class AlwaysFailureNodeAsset : LeafNodeAsset { }
+        
+        // ReSharper disable once ClassNeverInstantiated.Local
         private class AlwaysSuccessNodeAsset : LeafNodeAsset { }
+        
+        // ReSharper disable once ClassNeverInstantiated.Local
         private class AlwaysRunningNodeAsset : LeafNodeAsset { }
 
         #endregion
