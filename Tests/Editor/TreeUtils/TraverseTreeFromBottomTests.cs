@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using NUnit.Framework;
-using TreeFlow.Editor.Nodes.Composite;
 using TreeFlow.Editor.Nodes.Core;
-using TreeFlow.Editor.Nodes.Leaf;
+using TreeFlow.Runtime.Nodes.Composite;
+using TreeFlow.Runtime.Nodes.Leaf;
 
 namespace TreeFlow.Tests.Editor.TreeUtils
 {
@@ -12,10 +12,10 @@ namespace TreeFlow.Tests.Editor.TreeUtils
         public void Test()
         {
             var tree = Utils.TreeUtils.CreateTree();
-            var seq1 = tree.AddNode<SequenceNodeAsset>();
-            var act1 = tree.AddNode<ActionNodeAsset>();
-            var act2 = tree.AddNode<ActionNodeAsset>();
-            var act3 = tree.AddNode<ActionNodeAsset>();
+            var seq1 = tree.AddNode<Sequence>();
+            var act1 = tree.AddNode<Action>();
+            var act2 = tree.AddNode<Action>();
+            var act3 = tree.AddNode<Action>();
 
             var root = tree.GetNode(tree.Root);
 

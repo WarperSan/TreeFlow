@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using TreeFlow.Editor.Interfaces;
-using TreeFlow.Editor.Nodes.Composite;
 using TreeFlow.Editor.Nodes.Core;
 using TreeFlow.Editor.ScriptableObjects;
+using TreeFlow.Runtime.Nodes.Composite;
 using UnityEngine;
 
 namespace TreeFlow.Editor.Helpers
@@ -23,7 +23,7 @@ namespace TreeFlow.Editor.Helpers
         {
             var asset = ScriptableObject.CreateInstance<BehaviorTreeAsset>();
 
-            var root = asset.AddNode<SelectorNodeAsset>();
+            var root = asset.AddNode<Selector>();
             asset.PromotesToRoot(root);
 
             // ReSharper disable once InvertIf

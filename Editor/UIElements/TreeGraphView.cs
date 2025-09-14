@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using TreeFlow.Editor.Interfaces;
-using TreeFlow.Editor.Nodes.Composite;
 using TreeFlow.Editor.Nodes.Core;
-using TreeFlow.Editor.Nodes.Decorator;
-using TreeFlow.Editor.Nodes.Leaf;
 using TreeFlow.Editor.ScriptableObjects;
+using TreeFlow.Runtime.Nodes.Composite;
+using TreeFlow.Runtime.Nodes.Decorator;
+using TreeFlow.Runtime.Nodes.Leaf;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -56,14 +56,14 @@ namespace TreeFlow.Editor.UIElements
         {
             var mousePos = this.ChangeCoordinatesTo(contentViewContainer, evt.localMousePosition);
 
-            evt.menu.AppendAction("Composite/Sequence", _ => CreateNode<SequenceNodeAsset>(mousePos));
-            evt.menu.AppendAction("Composite/Selector", _ => CreateNode<SelectorNodeAsset>(mousePos));
-            evt.menu.AppendAction("Composite/Parallel", _ => CreateNode<ParallelNodeAsset>(mousePos));
+            evt.menu.AppendAction("Composite/Sequence", _ => CreateNode<Sequence>(mousePos));
+            evt.menu.AppendAction("Composite/Selector", _ => CreateNode<Selector>(mousePos));
+            evt.menu.AppendAction("Composite/Parallel", _ => CreateNode<Parallel>(mousePos));
 
-            evt.menu.AppendAction("Decorator/Inverter", _ => CreateNode<InverterNodeAsset>(mousePos));
+            evt.menu.AppendAction("Decorator/Inverter", _ => CreateNode<Inverter>(mousePos));
 
-            evt.menu.AppendAction("Leaf/Action", _ => CreateNode<ActionNodeAsset>(mousePos));
-            evt.menu.AppendAction("Leaf/Condition", _ => CreateNode<ConditionNodeAsset>(mousePos));
+            evt.menu.AppendAction("Leaf/Action", _ => CreateNode<Action>(mousePos));
+            evt.menu.AppendAction("Leaf/Condition", _ => CreateNode<Condition>(mousePos));
         }
 
         /// <summary>
@@ -233,9 +233,13 @@ namespace TreeFlow.Editor.UIElements
         /// <summary>
         ///     Creates a brand new <see cref="NodeAsset" /> from the given information
         /// </summary>
-        private void CreateNode<T>(Vector2 position) where T : NodeAsset, new()
+        private void CreateNode<T>(Vector2 position) where T : Runtime.Core.Node
         {
             var newNode = treeAsset.AddNode<T>();
+
+            if (newNode == null)
+                return;
+            
             newNode.Position = position;
 
             AddNodeToGraph(newNode);

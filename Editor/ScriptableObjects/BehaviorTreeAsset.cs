@@ -52,13 +52,15 @@ namespace TreeFlow.Editor.ScriptableObjects
         /// <summary>
         ///     Adds a brand-new node with the given type to this tree
         /// </summary>
-        public T AddNode<T>() where T : NodeAsset, new()
+        public NodeAsset AddNode<T>()
         {
-            var node = new T
-            {
-                GUID = GUID.Generate().ToString()
-            };
+            var node = Helpers.NodeRegistry.CreateAsset<T>();
 
+            if (node == null)
+                return null;
+
+            node.GUID = GUID.Generate().ToString();
+            
             nodes.Add(node);
             nodesByGUID.TryAdd(node.GUID, node);
 

@@ -1,6 +1,6 @@
 using NUnit.Framework;
 using TreeFlow.Editor.Interfaces;
-using TreeFlow.Editor.Nodes.Composite;
+using TreeFlow.Runtime.Nodes.Composite;
 
 namespace TreeFlow.Tests.Editor.TreeSanitizer
 {
@@ -10,7 +10,7 @@ namespace TreeFlow.Tests.Editor.TreeSanitizer
         public void RootAndNode()
         {
             var tree = Utils.TreeUtils.CreateTree();
-            var node = tree.AddNode<SelectorNodeAsset>().GUID;
+            var node = tree.AddNode<Selector>().GUID;
 
             tree.Compute();
             TreeFlow.Editor.Helpers.TreeSanitizer.RemoveDetachedNodes(tree);
@@ -22,8 +22,8 @@ namespace TreeFlow.Tests.Editor.TreeSanitizer
         public void RootWithChild()
         {
             var tree = Utils.TreeUtils.CreateTree();
-            var node1 = tree.AddNode<SelectorNodeAsset>();
-            var node2 = tree.AddNode<SelectorNodeAsset>();
+            var node1 = tree.AddNode<Selector>();
+            var node2 = tree.AddNode<Selector>();
 
             var root = tree.GetNode(tree.Root);
 
