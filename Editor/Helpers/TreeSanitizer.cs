@@ -3,7 +3,6 @@ using TreeFlow.Editor.Interfaces;
 using TreeFlow.Editor.Nodes.Core;
 using TreeFlow.Editor.ScriptableObjects;
 using UnityEditor;
-using UnityEngine;
 
 namespace TreeFlow.Editor.Helpers
 {
@@ -37,10 +36,7 @@ namespace TreeFlow.Editor.Helpers
             var root = tree.GetNode(tree.Root);
 
             if (root == null)
-            {
-                Debug.LogWarning("No root was found in the tree.");
                 return;
-            }
 
             var navigationStack = new Stack<NodeAsset>();
             navigationStack.Push(root);
