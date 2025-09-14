@@ -1,0 +1,20 @@
+{
+    "name": "TreeFlow.Tests",
+    "rootNamespace": "TreeFlow.Tests",
+    "references": [
+        "GUID:ba3d385c22150edcfb9b5c6dc0946852",
+        "GUID:ae12d2bdb651358489ea1ab08583c441",
+        "GUID:0acc523941302664db1f4e527237feb3"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

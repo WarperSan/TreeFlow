@@ -1,0 +1,126 @@
+.node {
+    min-width: 150px;
+    margin: 0;
+}
+
+#node-border {
+    background-color: #424242;
+    
+    border-radius: 10px;
+    border-width: 1px;
+    border-color: #252525;
+
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+/* HEADER */
+#header {
+    flex-direction: row;
+}
+
+#header #background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: #5e5e5e;
+}
+
+#title-label,
+#title-input,
+#title-input #unity-text-input {
+    flex-grow: 1;
+    
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    
+    font-size: 15px;
+    margin: 0;
+}
+
+#title-input #unity-text-input {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-width: 0;
+}
+
+/* PORTS */
+#ports {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#input,
+#output {
+    flex-direction: row;
+    justify-content: space-around;
+
+    position: absolute;
+    left: 12.5%;
+    right: 12.5%;
+}
+
+#input {
+    top: -10px;
+}
+
+#output {
+    bottom: -10px;
+}
+
+#input .connectorText,
+#output .connectorText {
+    display: none;
+}
+
+#input .port,
+#output .port {
+    background-color: #545454;
+    height: 20px;
+}
+
+#input .port {
+    border-radius: 5px 5px 0 0;
+    align-items: flex-start;
+}
+
+#output .port {
+    border-radius: 0 0 5px 5px;
+    align-items: flex-end;
+}
+
+.connectorText {
+    display: none;
+}
+
+.connectorBox {
+    border-width: 0;
+}
+
+/* CONTENT */
+#contents {
+    flex-grow: 1;
+}
+
+/* SELECTION */
+#selection-border {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    
+    border-color: rgb(0, 165, 255);
+    border-width: 0;
+    border-radius: 10px;
+}
+
+.node:hover > #selection-border,
+.node:selected > #selection-border {
+    border-width: 1px;
+}

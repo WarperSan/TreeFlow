@@ -1,0 +1,16 @@
+using TreeFlow.Runtime.Core;
+
+public class #CLASS_NAME#
+{
+    private Node _root;
+
+    public #CLASS_NAME#()
+    {
+        
+    }
+    
+    public void Tick()
+    {
+        _root?.Process();
+    }
+}

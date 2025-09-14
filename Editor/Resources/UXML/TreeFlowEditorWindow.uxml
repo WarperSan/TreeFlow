@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <uie:Toolbar>
+        <uie:ToolbarMenu display-tooltip-when-elided="true" text="File" name="file-menu" />
+        <uie:ToolbarSpacer style="flex-grow: 1;" />
+    </uie:Toolbar>
+    <ui:TwoPaneSplitView>
+        <ui:VisualElement name="LeftPanel" style="min-width: 10px;" />
+        <ui:VisualElement name="RightPanel" style="min-width: 10px;">
+            <TreeFlow.Editor.UIElements.TreeGraphView focusable="true" style="flex-grow: 1;" />
+        </ui:VisualElement>
+    </ui:TwoPaneSplitView>
+</ui:UXML>
