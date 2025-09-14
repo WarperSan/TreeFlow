@@ -30,11 +30,18 @@ namespace TreeFlow.Editor.Helpers
         /// <summary>
         ///     Converts the given relative path of an editor resource to an absolute path
         /// </summary>
-        private static string FromPackageRoot(string relativePath) => Path.Combine(
-            Application.dataPath,
-            EDITOR_ROOT,
-            relativePath
-        );
+        private static string FromPackageRoot(string relativePath)
+        {
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var packageInfo = UnityEditor.PackageManager.PackageInfo.FindForAssembly(assembly);
+            var sourcePath = packageInfo?.assetPath ?? Application.dataPath;
+            
+            return Path.Combine(
+                sourcePath,
+                EDITOR_ROOT,
+                relativePath
+            );
+        }
 
         /// <summary>
         ///     Loads the resource at the given absolute path
