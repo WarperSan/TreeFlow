@@ -45,7 +45,7 @@ namespace TreeFlow.Editor
 
         private void CreateGUI()
         {
-            var editorWindowUXML = Resources.Load<VisualTreeAsset>(Resources.EDITOR_WINDOW_UXML);
+            var editorWindowUXML = Resources.LoadResource<VisualTreeAsset>(Resources.EDITOR_WINDOW_UXML);
             editorWindowUXML.CloneTree(rootVisualElement);
 
             treeGraphView = rootVisualElement.Q<TreeGraphView>();

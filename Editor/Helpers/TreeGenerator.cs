@@ -42,7 +42,7 @@ namespace TreeFlow.Editor.Helpers
         /// </summary>
         public static void Generate(BehaviorTreeAsset tree, string path)
         {
-            var template = Resources.Load<TextAsset>("Templates/BehaviorTree.txt");
+            var template = Resources.LoadResource<TextAsset>("Templates/BehaviorTree.txt");
 
             if (template == null)
             {

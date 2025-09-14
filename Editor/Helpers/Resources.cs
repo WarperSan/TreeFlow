@@ -11,53 +11,43 @@ namespace TreeFlow.Editor.Helpers
     {
         private const string EDITOR_ROOT = "dev.warpersan.treeflow/Editor/Resources/";
 
-        public static string NODE_VIEW_USS => FromPackageRoot("StyleSheets/NodeView.uss");
-        public static string TREE_GRAPH_VIEW_USS => FromPackageRoot("StyleSheets/TreeGraphView.uss");
+        public const string NODE_VIEW_USS = EDITOR_ROOT + "StyleSheets/NodeView.uss";
+        public const string TREE_GRAPH_VIEW_USS = EDITOR_ROOT + "StyleSheets/TreeGraphView.uss";
 
-        public static string NODE_VIEW_UXML => FromPackageRoot("UXML/NodeView.uxml");
-        public static string EDITOR_WINDOW_UXML => FromPackageRoot("UXML/TreeFlowEditorWindow.uxml");
-
-        /// <summary>
-        ///     Converts the given absolute path to a path relative to <see cref="Application.dataPath" />
-        /// </summary>
-        public static string AbsoluteToRelative(string absolutePath)
-        {
-            var projectPath = Path.GetDirectoryName(Application.dataPath);
-
-            return Path.GetRelativePath(projectPath, absolutePath);
-        }
+        public const string NODE_VIEW_UXML = EDITOR_ROOT + "UXML/NodeView.uxml";
+        public const string EDITOR_WINDOW_UXML = EDITOR_ROOT + "UXML/TreeFlowEditorWindow.uxml";
 
         /// <summary>
-        ///     Converts the given relative path of an editor resource to an absolute path
+        ///     Gets the package path from the given relative path
         /// </summary>
-        private static string FromPackageRoot(string relativePath)
+        public static string GetPackageResource(string path)
         {
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
             var packageInfo = UnityEditor.PackageManager.PackageInfo.FindForAssembly(assembly);
-            var sourcePath = packageInfo?.resolvedPath ?? Application.dataPath;
-            
-            return Path.Combine(
-                sourcePath,
-                EDITOR_ROOT,
-                relativePath
-            );
+
+            var sourcePath = Path.GetDirectoryName(packageInfo?.assetPath) ?? Path.GetFileName(Application.dataPath);
+
+            return Path.Combine(sourcePath, path);
         }
 
         /// <summary>
-        ///     Loads the resource at the given absolute path
+        ///     Loads the editor resource at the given relative path
         /// </summary>
-        public static T Load<T>(string path) where T : Object
+        public static T LoadResource<T>(string path) where T : Object
         {
             AssetDatabase.Refresh();
-            return AssetDatabase.LoadAssetAtPath<T>(AbsoluteToRelative(path));
+            return AssetDatabase.LoadAssetAtPath<T>(GetPackageResource(path));
         }
 
         /// <summary>
         ///     Saves the given asset to the given absolute path
         /// </summary>
-        public static void Save(Object asset, string path)
+        public static void SaveAsset(Object asset, string path)
         {
-            AssetDatabase.CreateAsset(asset, AbsoluteToRelative(path));
+            var projectPath = Path.GetDirectoryName(Application.dataPath);
+            path = Path.GetRelativePath(projectPath, path);
+            
+            AssetDatabase.CreateAsset(asset, path);
             AssetDatabase.Refresh();
         }
 

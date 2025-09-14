@@ -30,7 +30,7 @@ namespace TreeFlow.Editor.Helpers
             if (path != null)
             {
                 Resources.SaveChanges(asset);
-                Resources.Save(asset, path);
+                Resources.SaveAsset(asset, path);
             }
 
             return asset;
