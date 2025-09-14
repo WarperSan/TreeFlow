@@ -11,9 +11,6 @@ namespace TreeFlow.Editor.Helpers
     {
         private const string EDITOR_ROOT = "dev.warpersan.treeflow/Editor/Resources/";
 
-        public const string NODE_VIEW_USS = EDITOR_ROOT + "StyleSheets/NodeView.uss";
-        public const string TREE_GRAPH_VIEW_USS = EDITOR_ROOT + "StyleSheets/TreeGraphView.uss";
-
         public const string NODE_VIEW_UXML = EDITOR_ROOT + "UXML/NodeView.uxml";
         public const string EDITOR_WINDOW_UXML = EDITOR_ROOT + "UXML/TreeFlowEditorWindow.uxml";
 

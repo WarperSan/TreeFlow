@@ -22,8 +22,6 @@ namespace TreeFlow.Editor.UIElements
 
         internal NodeView(TreeGraphView graphView) : base(Resources.GetPackageResource(Resources.NODE_VIEW_UXML))
         {
-            styleSheets.Add(Resources.LoadResource<StyleSheet>(Resources.NODE_VIEW_USS));
-
             CreateHeader();
 
             this.graphView = graphView;
