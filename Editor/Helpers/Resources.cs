@@ -34,7 +34,7 @@ namespace TreeFlow.Editor.Helpers
         {
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
             var packageInfo = UnityEditor.PackageManager.PackageInfo.FindForAssembly(assembly);
-            var sourcePath = packageInfo?.assetPath ?? Application.dataPath;
+            var sourcePath = packageInfo?.resolvedPath ?? Application.dataPath;
             
             return Path.Combine(
                 sourcePath,
