@@ -4,7 +4,6 @@ using TreeFlow.Editor.Nodes.Core;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Resources = TreeFlow.Editor.Helpers.Resources;
 
 namespace TreeFlow.Editor.UIElements
 {
@@ -20,7 +19,7 @@ namespace TreeFlow.Editor.UIElements
 
         private readonly TreeGraphView graphView;
 
-        internal NodeView(TreeGraphView graphView) : base(Resources.GetPackageResource(Resources.NODE_VIEW_UXML))
+        internal NodeView(TreeGraphView graphView) : base(Helpers.Resources.GetPackageResource(Helpers.Resources.NODE_VIEW_UXML))
         {
             CreateHeader();
 
